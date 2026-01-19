@@ -1,0 +1,26 @@
+# Eclipse specific files
+.classpath
+.project
+.settings/
+
+# Build directories
+build/
+target/
+bin/
+
+# Class files
+*.class
+
+# Log files
+*.log
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# IDE specific
+*.swp
+*.swo
+*~
+.idea/
+*.iml
