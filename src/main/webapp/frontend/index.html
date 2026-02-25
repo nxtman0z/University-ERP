@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>University ERP Portal</title>
+  <meta name="description" content="Enterprise Resource Portal – Secure Academic Gateway" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-section {
+      display: none;
+    }
+    .page-section.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     SECTION 1 – ROLE SELECTION (HOME)
+     ══════════════════════════════════════════ -->
+<div id="home-page" class="page-section active">
+  <div class="page-wrapper">
+    <!-- Animated background -->
+    <div class="erp-bg"></div>
+    <!-- Floating Academic Shapes -->
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+      <div class="shape shape-5"></div>
+      <div class="shape shape-6"></div>
+    </div>
+    <!-- Floating Professional Icons -->
+    <div class="floating-icons">
+      <div class="float-icon icon-1">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M22 10v6m-2-2v4c0 1-2 3-8 3s-8-2-8-3v-4"/><path d="m2 10 10-5 10 5-10 5z"/></svg>
+      </div>
+      <div class="float-icon icon-2">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+      </div>
+      <div class="float-icon icon-3">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="float-icon icon-4">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+      </div>
+    </div>
+    <!-- Top bar -->
+    <header class="erp-topbar">
+      <div class="topbar-brand">
+        <div class="topbar-logo">
+          <div class="logo-ring logo-ring-outer"></div>
+          <div class="logo-ring logo-ring-middle"></div>
+          <div class="logo-content">
+            <svg class="icon logo-icon" viewBox="0 0 24 24">
+              <path d="M22 10v6m-2-2v4c0 1-2 3-8 3s-8-2-8-3v-4"/>
+              <path d="m2 10 10-5 10 5-10 5z"/>
+              <circle cx="12" cy="10" r="1.5" class="logo-star"/>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <p class="topbar-title">ABC University</p>
+          <p class="topbar-subtitle">Enterprise Resource Portal</p>
+        </div>
+      </div>
+      <span class="topbar-est">EST. 2026</span>
+    </header>
+    <!-- Main content -->
+    <main class="role-selection-main page-content">
+      <!-- Hero -->
+      <div class="hero-section">
+        <div class="role-badge role-badge-mb">
+          <span class="badge-dot">●</span> Secure Academic Gateway
+        </div>
+        <h1 class="hero-title">
+          Welcome to the <span class="gold-shimmer">ERP Portal</span>
+        </h1>
+        <div class="gold-line"></div>
+        <p class="hero-subtitle">
+          Your unified academic management system. Select your role to access personalised tools and resources.
+        </p>
+      </div>
+      <!-- Role cards -->
+      <div class="role-cards-grid">
+        <!-- Student card -->
+        <a href="#" onclick="showPage('login-page', 'student'); return false;" class="role-card glass-card">
+          <div class="icon-ring">
+            <svg class="icon icon-gold" viewBox="0 0 24 24"><path d="M22 10v6m-2-2v4c0 1-2 3-8 3s-8-2-8-3v-4"/><path d="m2 10 10-5 10 5-10 5z"/></svg>
+          </div>
+          <span class="role-badge role-badge-ma">Student</span>
+          <h2 class="role-card-title font-display">Student Portal</h2>
+          <p class="role-card-desc">Access your academic records, course schedules, assignments, and campus resources.</p>
+          <div class="role-card-cta">
+            Access Portal
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </a>
+        <!-- Faculty card -->
+        <a href="#" onclick="showPage('login-page', 'faculty'); return false;" class="role-card glass-card">
+          <div class="icon-ring">
+            <svg class="icon icon-faculty" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+          </div>
+          <span class="role-badge badge-faculty role-badge-ma">Faculty</span>
+          <h2 class="role-card-title font-display">Faculty Portal</h2>
+          <p class="role-card-desc">Manage courses, grade submissions, student records, and academic planning tools.</p>
+          <div class="role-card-cta cta-faculty">
+            Access Portal
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </a>
+        <!-- Admin card -->
+        <a href="#" onclick="showPage('login-page', 'admin'); return false;" class="role-card glass-card">
+          <div class="icon-ring">
+            <svg class="icon icon-admin" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <span class="role-badge badge-admin role-badge-ma">Admin</span>
+          <h2 class="role-card-title font-display">Admin Portal</h2>
+          <p class="role-card-desc">Oversee university operations, staff management, and institutional analytics.</p>
+          <div class="role-card-cta cta-admin">
+            Access Portal
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </a>
+      </div>
+      <p class="footer-note">
+        Protected by institutional-grade security · © 2024
+      </p>
+    </main>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 2 – LOGIN PAGE
+     ══════════════════════════════════════════ -->
+<div id="login-page" class="page-section">
+  <div class="page-wrapper">
+    <div class="erp-bg"></div>
+    <!-- Floating Academic Shapes -->
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+      <div class="shape shape-5"></div>
+      <div class="shape shape-6"></div>
+    </div>
+    <!-- Floating Professional Icons -->
+    <div class="floating-icons">
+      <div class="float-icon icon-1">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M22 10v6m-2-2v4c0 1-2 3-8 3s-8-2-8-3v-4"/><path d="m2 10 10-5 10 5-10 5z"/></svg>
+      </div>
+      <div class="float-icon icon-2">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+      </div>
+      <div class="float-icon icon-3">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="float-icon icon-4">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+      </div>
+    </div>
+    <!-- Top bar -->
+    <header class="erp-topbar">
+      <div class="topbar-brand">
+        <div class="topbar-logo">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M22 10v6m-2-2v4c0 1-2 3-8 3s-8-2-8-3v-4"/><path d="m2 10 10-5 10 5-10 5z"/></svg>
+        </div>
+        <div>
+          <p class="topbar-title">ABC University</p>
+          <p class="topbar-subtitle">Enterprise Resource Portal</p>
+        </div>
+      </div>
+      <a href="#" onclick="showPage('home-page'); return false;" class="topbar-link">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Back to Portal
+      </a>
+    </header>
+    <!-- Split layout -->
+    <div class="login-split page-content">
+      <!-- Left: Branding panel -->
+      <div class="branding-panel">
+        <div class="icon-ring icon-ring-90" id="login-icon-ring">
+          <svg class="icon icon-36" viewBox="0 0 24 24" id="login-icon-svg"><path d="M22 10v6m-2-2v4c0 1-2 3-8 3s-8-2-8-3v-4"/><path d="m2 10 10-5 10 5-10 5z"/></svg>
+        </div>
+        <div class="role-badge role-badge-mb" id="login-badge">
+          <span class="badge-dot">●</span> <span id="login-badge-text">Student Access</span>
+        </div>
+        <h2 class="font-display branding-title" id="login-title">
+          Access your academic journey
+        </h2>
+        <div class="gold-line"></div>
+        <p class="branding-desc" id="login-desc">
+          Connect with your coursework, grades, schedules, library resources, and campus life — all in one place.
+        </p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <p class="stat-num">12k+</p>
+            <p class="stat-label">Students</p>
+          </div>
+          <div class="stat-item">
+            <p class="stat-num">480+</p>
+            <p class="stat-label">Faculty</p>
+          </div>
+          <div class="stat-item">
+            <p class="stat-num">98%</p>
+            <p class="stat-label">Uptime</p>
+          </div>
+        </div>
+        <!-- Student Quote -->
+        <div class="admin-quote" id="student-quote">
+          <div class="quote-border"></div>
+          <p class="quote-text">
+            <em>Education is the most powerful weapon which you can use to change the world.</em>
+          </p>
+          <p class="quote-author">— Nelson Mandela</p>
+        </div>
+        <!-- Faculty Quote -->
+        <div class="admin-quote hidden" id="faculty-quote">
+          <div class="quote-border"></div>
+          <p class="quote-text">
+            <em>The art of teaching is the art of assisting discovery.</em>
+          </p>
+          <p class="quote-author">— Mark Van Doren</p>
+        </div>
+        <!-- Admin Quote -->
+        <div class="admin-quote hidden" id="admin-quote">
+          <div class="quote-border"></div>
+          <p class="quote-text">
+            <em>Administration is not an end in itself. It is a means to serve the mission of excellence.</em>
+          </p>
+          <p class="quote-author">— Institutional Charter</p>
+        </div>
+      </div>
+      <!-- Right: Login form -->
+      <div class="form-panel">
+        <div class="form-wrapper">
+          <!-- Mobile role header -->
+          <div class="mobile-role-header">
+            <div class="icon-ring" id="mobile-icon-ring">
+              <svg class="icon icon-28" viewBox="0 0 24 24" id="mobile-icon-svg"><path d="M22 10v6m-2-2v4c0 1-2 3-8 3s-8-2-8-3v-4"/><path d="m2 10 10-5 10 5-10 5z"/></svg>
+            </div>
+            <h2 class="font-display" id="mobile-title">Access your academic journey</h2>
+          </div>
+          <!-- Form card -->
+          <div class="glass-card form-card">
+            <h3 class="form-card-title">Sign In</h3>
+            <p class="form-card-subtitle">Enter your institutional credentials to continue</p>
+            <form id="loginForm" action="LoginServlet" method="post" onsubmit="return handleLogin(event)">
+              <!-- ID / Key -->
+              <div class="input-group">
+                <span class="input-icon" id="login-id-icon">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </span>
+                <input class="erp-input" type="text" id="login-id-input" name="userId" placeholder="Student ID" autocomplete="username" required />
+              </div>
+              <!-- Password -->
+              <div class="input-group">
+                <span class="input-icon">
+                  <svg class="icon" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </span>
+                <input class="erp-input" type="password" name="password" placeholder="Password" autocomplete="current-password" required />
+              </div>
+              <!-- Hidden role field -->
+              <input type="hidden" id="userRole" name="userRole" value="student" />
+              <!-- Remember me & Forgot password row -->
+              <div class="remember-forgot-row">
+                <label class="remember-me">
+                  <input type="checkbox" name="remember" id="rememberMe" />
+                  <span class="checkbox-custom"></span>
+                  <span class="checkbox-label">Remember me</span>
+                </label>
+                <a href="#" onclick="showPage('forgot-page', currentRole); return false;" class="forgot-link">Forgot password?</a>
+              </div>
+              <!-- Sign in button -->
+              <button type="submit" class="btn-primary btn-gap" id="login-button">
+                Sign In to Student Portal
+              </button>
+            </form>
+            <!-- Role switch -->
+            <p class="role-switch" id="role-switch">
+              Not Student? <a href="#" onclick="showPage('login-page', 'faculty'); return false;">Faculty</a> · <a href="#" onclick="showPage('login-page', 'admin'); return false;">Admin</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 3 – FORGOT PASSWORD PAGE
+     ══════════════════════════════════════════ -->
+<div id="forgot-page" class="page-section">
+  <div class="page-wrapper">
+    <div class="erp-bg"></div>
+    <!-- Floating Academic Shapes -->
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+      <div class="shape shape-5"></div>
+      <div class="shape shape-6"></div>
+    </div>
+    <!-- Floating Professional Icons -->
+    <div class="floating-icons">
+      <div class="float-icon icon-1">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M22 10v6m-2-2v4c0 1-2 3-8 3s-8-2-8-3v-4"/><path d="m2 10 10-5 10 5-10 5z"/></svg>
+      </div>
+      <div class="float-icon icon-2">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+      </div>
+      <div class="float-icon icon-3">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="float-icon icon-4">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+      </div>
+    </div>
+    <!-- Top bar -->
+    <header class="erp-topbar">
+      <div class="topbar-brand">
+        <div class="topbar-logo">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M22 10v6m-2-2v4c0 1-2 3-8 3s-8-2-8-3v-4"/><path d="m2 10 10-5 10 5-10 5z"/></svg>
+        </div>
+        <div>
+          <p class="topbar-title">ABC University</p>
+          <p class="topbar-subtitle">Enterprise Resource Portal</p>
+        </div>
+      </div>
+      <a href="#" onclick="showPage('login-page', currentRole); return false;" class="topbar-link">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Back to Login
+      </a>
+    </header>
+    <!-- Centered forgot password form -->
+    <main class="signup-main page-content">
+      <div class="signup-wrapper">
+        <!-- Header -->
+        <div class="signup-header">
+          <div class="icon-ring icon-ring-76">
+            <svg class="icon icon-gold" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="role-badge role-badge-mb">
+            <span class="badge-dot">●</span> Password Recovery
+          </div>
+          <h1 class="signup-title">Reset Your Password</h1>
+          <div class="gold-line"></div>
+          <p class="signup-subtitle">Enter your university email to receive reset instructions</p>
+        </div>
+        <!-- Form card -->
+        <div class="glass-card signup-card">
+          <form>
+            <!-- Email -->
+            <div class="field-group">
+              <label class="form-label">University Email</label>
+              <div class="input-group input-group-mb-zero">
+                <span class="input-icon">
+                  <svg class="icon" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                </span>
+                <input class="erp-input" type="email" placeholder="you@university.edu" autocomplete="email" required />
+              </div>
+            </div>
+            <!-- Info text -->
+            <p class="terms-text">
+              We'll send a password reset link to your registered email address. Please check your inbox and spam folder.
+            </p>
+            <!-- Submit -->
+            <button type="submit" class="btn-primary btn-gap">
+              Send Reset Link
+            </button>
+            <a href="#" onclick="showPage('login-page', currentRole); return false;">
+              <button type="button" class="btn-secondary">
+                Back to Sign In
+              </button>
+            </a>
+          </form>
+        </div>
+        <p class="page-footer">
+          University ERP · Secure Academic Gateway
+        </p>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Navigation Script -->
+<script>
+  let currentRole = 'student';
+  
+  function showPage(pageId, role) {
+    // Hide all pages
+    const pages = document.querySelectorAll('.page-section');
+    pages.forEach(page => page.classList.remove('active'));
+    
+    // Show selected page
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+      targetPage.classList.add('active');
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+    
+    // Update role if provided
+    if (role) {
+      currentRole = role;
+      if (pageId === 'login-page') {
+        updateLoginPage(role);
+      }
+    }
+  }
+  
+  function updateLoginPage(role) {
+    const roleData = {
+      student: {
+        iconPath: 'M22 10v6m-2-2v4c0 1-2 3-8 3s-8-2-8-3v-4',
+        iconPath2: 'm2 10 10-5 10 5-10 5z',
+        iconColor: '#C8A951',
+        badgeText: 'Student Access',
+        badgeClass: '',
+        title: 'Access your academic journey',
+        description: 'Students login with their Student ID and password to access coursework, grades, schedules, and campus resources.',
+        buttonText: 'Sign In to Student Portal',
+        idPlaceholder: 'Student ID',
+        idIcon: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+        roleSwitch: 'Not Student? <a href="#" onclick="showPage(\'login-page\', \'faculty\'); return false;">Faculty</a> · <a href="#" onclick="showPage(\'login-page\', \'admin\'); return false;">Admin</a>'
+      },
+      faculty: {
+        iconPath: 'M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20',
+        iconPath2: '',
+        iconColor: '#7BAADB',
+        badgeText: 'Faculty Access',
+        badgeClass: 'badge-faculty',
+        title: 'Manage your teaching portal',
+        description: 'Faculty login with their Faculty ID and password to access course management, grade submissions, and student records.',
+        buttonText: 'Sign In to Faculty Portal',
+        idPlaceholder: 'Faculty ID',
+        idIcon: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+        roleSwitch: 'Not Faculty? <a href="#" onclick="showPage(\'login-page\', \'student\'); return false;">Student</a> · <a href="#" onclick="showPage(\'login-page\', \'admin\'); return false;">Admin</a>'
+      },
+      admin: {
+        iconPath: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
+        iconPath2: '',
+        iconColor: '#9B7FD4',
+        badgeText: 'Admin Access',
+        badgeClass: 'badge-admin',
+        title: 'Full System Control',
+        description: 'Admin has complete control to add students and faculty, verify users, manage passwords, and oversee all ERP operations.',
+        buttonText: 'Sign In to Admin Portal',
+        idPlaceholder: 'Admin Special Key',
+        idIcon: '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>',
+        roleSwitch: 'Not Admin? <a href="#" onclick="showPage(\'login-page\', \'student\'); return false;">Student</a> · <a href="#" onclick="showPage(\'login-page\', \'faculty\'); return false;">Faculty</a>'
+      }
+    };
+    
+    const data = roleData[role];
+    
+    // Update icon
+    const iconSvg = document.getElementById('login-icon-svg');
+    const mobileIconSvg = document.getElementById('mobile-icon-svg');
+    if (data.iconPath2) {
+      iconSvg.innerHTML = `<path d="${data.iconPath}"/><path d="${data.iconPath2}"/>`;
+      mobileIconSvg.innerHTML = `<path d="${data.iconPath}"/><path d="${data.iconPath2}"/>`;
+    } else {
+      iconSvg.innerHTML = `<path d="${data.iconPath}"/>`;
+      mobileIconSvg.innerHTML = `<path d="${data.iconPath}"/>`;
+    }
+    iconSvg.style.color = data.iconColor;
+    mobileIconSvg.style.color = data.iconColor;
+    
+    // Update badge
+    const badge = document.getElementById('login-badge');
+    badge.className = 'role-badge role-badge-mb ' + data.badgeClass;
+    document.getElementById('login-badge-text').textContent = data.badgeText;
+    
+    // Update title and description
+    document.getElementById('login-title').textContent = data.title;
+    document.getElementById('mobile-title').textContent = data.title;
+    document.getElementById('login-desc').textContent = data.description;
+    
+    // Update button
+    document.getElementById('login-button').textContent = data.buttonText;
+    
+    // Update ID input placeholder and icon
+    const idInput = document.getElementById('login-id-input');
+    const idIconSvg = document.getElementById('login-id-icon').querySelector('svg');
+    if (idInput) {
+      idInput.placeholder = data.idPlaceholder;
+    }
+    if (idIconSvg) {
+      idIconSvg.innerHTML = data.idIcon;
+    }
+    
+    // Update role switch
+    document.getElementById('role-switch').innerHTML = data.roleSwitch;
+    
+    // Show/hide role-specific quotes
+    const studentQuote = document.getElementById('student-quote');
+    const facultyQuote = document.getElementById('faculty-quote');
+    const adminQuote = document.getElementById('admin-quote');
+    
+    if (studentQuote && facultyQuote && adminQuote) {
+      // Hide all quotes first
+      studentQuote.classList.add('hidden');
+      facultyQuote.classList.add('hidden');
+      adminQuote.classList.add('hidden');
+      
+      // Show the appropriate quote
+      if (role === 'student') {
+        studentQuote.classList.remove('hidden');
+      } else if (role === 'faculty') {
+        facultyQuote.classList.remove('hidden');
+      } else if (role === 'admin') {
+        adminQuote.classList.remove('hidden');
+      }
+    }
+    
+    // Update hidden role field
+    const roleInput = document.getElementById('userRole');
+    if (roleInput) {
+      roleInput.value = role;
+    }
+  }
+  
+  // Handle Login - Demo Mode (redirects to local pages)
+  // For production: Remove this function and let form submit to backend
+  function handleLogin(event) {
+    const DEMO_MODE = true; // Set to false for production with backend
+    
+    if (DEMO_MODE) {
+      event.preventDefault(); // Prevent form submission
+      
+      const userId = document.getElementById('login-id-input').value;
+      const password = document.querySelector('input[name="password"]').value;
+      const role = document.getElementById('userRole').value;
+      
+      // Basic validation
+      if (!userId || !password) {
+        alert('Please enter both User ID and Password');
+        return false;
+      }
+      
+      // Admin special authentication with unique key
+      if (role === 'admin') {
+        // Admin requires special key: ADMIN2026KEY
+        // Admin password: UniAdmin@2026
+        if (userId === 'ADMIN2026KEY' && password === 'UniAdmin@2026') {
+          window.location.href = 'admin/dashboard.html';
+          return false;
+        } else {
+          alert('❌ Invalid Admin Credentials!\n\nAdmin requires:\n✓ Special Key: ADMIN2026KEY\n✓ Password: UniAdmin@2026\n\nAccess Denied.');
+          return false;
+        }
+      }
+      
+      // Demo credentials for student and faculty (remove in production)
+      if (userId === 'demo' || userId === 'student') {
+        // Redirect based on role
+        if (role === 'student') {
+          window.location.href = 'student/dashboard.html';
+        } else if (role === 'faculty') {
+          window.location.href = 'faculty/dashboard.html';
+        }
+      } else {
+        alert('Invalid credentials. Demo credentials: ID="demo" or "student", Password=any');
+      }
+      
+      return false;
+    }
+    
+    // Production mode: Allow normal form submission to backend
+    return true;
+  }
+</script>
+
+</body>
+</html>

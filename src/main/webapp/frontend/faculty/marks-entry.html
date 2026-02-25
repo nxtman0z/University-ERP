@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marks Entry - Faculty Portal</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #0B1F3B 0%, #0d2444 20%, #112a4e 40%, #0e2a50 60%, #091929 80%, #0B1F3B 100%); min-height: 100vh; color: #fff; }
+.dashboard-container { display: flex; min-height: 100vh; }
+.sidebar { width: 260px; background: rgba(11, 31, 59, 0.8); backdrop-filter: blur(12px); border-right: 1px solid rgba(200, 169, 81, 0.1); padding: 20px; position: fixed; height: 100vh; overflow-y: auto; }
+.sidebar-header { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(200, 169, 81, 0.2); }
+.sidebar-header h2 { color: #C8A951; font-size: 1.25rem; margin-bottom: 5px; }
+.sidebar-header p { color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; }
+.sidebar-menu { list-style: none; }
+.sidebar-menu li { margin-bottom: 8px; }
+.sidebar-menu a { display: flex; align-items: center; padding: 12px 16px; color: rgba(255, 255, 255, 0.7); text-decoration: none; border-radius: 8px; transition: all 0.3s ease; }
+.sidebar-menu a:hover, .sidebar-menu a.active { background: rgba(200, 169, 81, 0.15); color: #C8A951; }
+.sidebar-menu a i { margin-right: 12px; font-style: normal; }
+.main-content { margin-left: 260px; flex: 1; padding: 20px; }
+.top-nav { background: rgba(11, 31, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(200, 169, 81, 0.1); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+.top-nav h1 { color: #C8A951; font-size: 1.75rem; }
+.top-nav-right { display: flex; align-items: center; gap: 20px; }
+.notification-icon { position: relative; font-size: 1.5rem; cursor: pointer; }
+.notification-badge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; font-size: 0.75rem; padding: 2px 6px; border-radius: 10px; }
+.user-info { display: flex; align-items: center; gap: 10px; }
+.user-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #C8A951, #dcc574); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0B1F3B; font-weight: bold; }
+.user-name { color: rgba(255, 255, 255, 0.9); font-weight: 500; }
+.content-card { background: rgba(11, 31, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(200, 169, 81, 0.1); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+.card-header h3 { color: #C8A951; font-size: 1.25rem; margin-bottom: 15px; }
+.form-control { width: 100%; padding: 10px 15px; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(200, 169, 81, 0.3); border-radius: 8px; color: #0B1F3B; font-size: 0.95rem; font-family: 'Inter', sans-serif; font-weight: 600; }
+.form-control:focus { outline: none; border-color: rgba(200, 169, 81, 0.7); background: #fff; box-shadow: 0 0 0 3px rgba(200, 169, 81, 0.1); }
+.form-control option { background: #fff; color: #0B1F3B; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>👨‍🏫 Faculty Portal</h2>
+                <p>University ERP</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i>📊</i> Dashboard</a></li>
+                <li><a href="profile.html"><i>👤</i> My Profile</a></li>
+                <li><a href="attendance-marking.html"><i>📅</i> Mark Attendance</a></li>
+                <li><a href="view-attendance.html"><i>📊</i> View Attendance</a></li>
+                <li><a href="assignments.html"><i>📝</i> Assignments</a></li>
+                <li><a href="marks-entry.html" class="active"><i>✏️</i> Marks Entry</a></li>
+                <li><a href="students.html"><i>👥</i> My Students</a></li>
+                <li><a href="timetable.html"><i>🕐</i> My Timetable</a></li>
+                <li><a href="approvals.html"><i>✅</i> Approvals</a></li>
+                <li><a href="notices.html"><i>📢</i> Notices</a></li>
+                <li><a href="notifications.html"><i>🔔</i> Notifications</a></li>
+                <li><a href="../index.html"><i>🚪</i> Logout</a></li>
+            </ul>
+        </aside>
+        <main class="main-content">
+            <nav class="top-nav">
+                <h1>✏️ Marks Entry</h1>
+                <div class="top-nav-right">
+                    <div class="notification-icon" onclick="window.location.href='notifications.html'" style="cursor: pointer;">🔔<span class="notification-badge">0</span></div>
+                    <div class="user-info">
+                        <div class="user-avatar">F</div>
+                        <span class="user-name">Faculty</span>
+                    </div>
+                </div>
+            </nav>
+            <div class="content-card">
+                <h3 style="margin-bottom: 20px; color: #C8A951;">Select Exam Details</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                    <select class="form-control" id="classSelect" onchange="updateMarksEntry()">
+                        <option value="">Select Class</option>
+                        <option value="BCA Semester 4" selected>BCA Semester 4</option>
+                        <option value="BCA Semester 6">BCA Semester 6</option>
+                        <option value="BTech CSE Semester 6">BTech CSE Semester 6</option>
+                    </select>
+                    <select class="form-control" id="subjectSelect" onchange="updateMarksEntry()">
+                        <option value="">Select Subject</option>
+                        <option value="Java Programming" selected>Java Programming</option>
+                        <option value="Data Structures">Data Structures</option>
+                        <option value="Database Management">Database Management</option>
+                    </select>
+                    <select class="form-control" id="examTypeSelect" onchange="updateMarksEntry()">
+                        <option value="">Select Exam Type</option>
+                        <option value="Mid-Term 1" selected>Mid-Term 1</option>
+                        <option value="Mid-Term 2">Mid-Term 2</option>
+                        <option value="End Semester">End Semester</option>
+                        <option value="Assignment">Assignment</option>
+                    </select>
+                    <input type="number" class="form-control" id="maxMarksInput" placeholder="Max Marks" value="30" min="1" max="100" onchange="updateMarksEntry()">
+                </div>
+            </div>
+            
+            <div class="content-card" id="marksEntryCard" style="display: block;">
+                <div class="card-header">
+                    <h3 id="marksEntryHeading">📝 Enter Marks - BCA Semester 4 (Java Programming - Mid-Term 1)</h3>
+                    <div>
+                        <button class="btn btn-secondary" style="margin-right: 10px;" onclick="fillSampleMarks()">Fill Sample</button>
+                        <button class="btn btn-primary" onclick="submitMarks()">Submit All Marks</button>
+                    </div>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Student Name</th>
+                                <th>Marks Obtained (Out of 30)</th>
+                                <th>Grade</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody id="marksTable">
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 40px; color: rgba(255,255,255,0.6);">
+                                    <div style="font-size: 3rem; margin-bottom: 10px;">📋</div>
+                                    <div>No students found</div>
+                                    <small>Please select class and subject to load students</small>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: rgba(200, 169, 81, 0.1); border-left: 4px solid #C8A951; border-radius: 8px;">
+                    <strong style="color: #C8A951;">Grading Scheme:</strong>
+                    <span style="color: rgba(255, 255, 255, 0.8); margin-left: 15px;" id="gradingScheme">
+                        A+ (90-100%) | A (80-89%) | B+ (70-79%) | B (60-69%) | C (50-59%) | D (33-49%) | F (0-32%)
+                    </span>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Students data for different classes
+        const studentsData = {};
+        
+        function updateMarksEntry() {
+            const classSelect = document.getElementById('classSelect');
+            const subjectSelect = document.getElementById('subjectSelect');
+            const examTypeSelect = document.getElementById('examTypeSelect');
+            const maxMarksInput = document.getElementById('maxMarksInput');
+            
+            if (!classSelect.value || !subjectSelect.value || !examTypeSelect.value) {
+                document.getElementById('marksEntryCard').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('marksEntryCard').style.display = 'block';
+            
+            const maxMarks = parseInt(maxMarksInput.value) || 30;
+            
+            // Update heading
+            const heading = document.getElementById('marksEntryHeading');
+            heading.textContent = `📝 Enter Marks - ${classSelect.value} (${subjectSelect.value} - ${examTypeSelect.value})`;
+            
+            // Load and display students
+            loadStudents(classSelect.value, maxMarks);
+        }
+        
+        function loadStudents(className, maxMarks) {
+            const tbody = document.getElementById('marksTable');
+            const students = studentsData[className] || studentsData['BCA Semester 4'];
+            
+            tbody.innerHTML = '';
+            
+            students.forEach(student => {
+                const row = `
+                    <tr>
+                        <td>${student.rollNo}</td>
+                        <td><strong>${student.name}</strong></td>
+                        <td>
+                            <input type="number" class="form-control" min="0" max="${maxMarks}" placeholder="0-${maxMarks}" style="max-width: 120px;" oninput="calculateGrade(this, ${maxMarks})">
+                        </td>
+                        <td><span class="grade-display" style="font-weight: bold; color: #C8A951;">-</span></td>
+                        <td>
+                            <select class="form-control" style="max-width: 150px;">
+                                <option>Good</option>
+                                <option>Excellent</option>
+                                <option>Average</option>
+                                <option>Need Improvement</option>
+                                <option>Absent</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+        
+        function calculateGrade(input, maxMarks) {
+            const marks = parseFloat(input.value);
+            const gradeSpan = input.closest('tr').querySelector('.grade-display');
+            
+            if (isNaN(marks) || marks === '') {
+                gradeSpan.textContent = '-';
+                gradeSpan.style.color = '#C8A951';
+                return;
+            }
+            
+            // Calculate grade based on percentage
+            const percentage = (marks / maxMarks) * 100;
+            let grade = '';
+            let color = '';
+            
+            if (percentage >= 90) { grade = 'A+'; color = '#10b981'; }
+            else if (percentage >= 80) { grade = 'A'; color = '#10b981'; }
+            else if (percentage >= 70) { grade = 'B+'; color = '#3b82f6'; }
+            else if (percentage >= 60) { grade = 'B'; color = '#3b82f6'; }
+            else if (percentage >= 50) { grade = 'C'; color = '#fb923c'; }
+            else if (percentage >= 33) { grade = 'D'; color = '#fb923c'; }
+            else { grade = 'F'; color = '#ef4444'; }
+            
+            gradeSpan.textContent = grade;
+            gradeSpan.style.color = color;
+        }
+        
+        function fillSampleMarks() {
+            const maxMarksInput = document.getElementById('maxMarksInput');
+            const maxMarks = parseInt(maxMarksInput.value) || 30;
+            const inputs = document.querySelectorAll('#marksTable input[type="number"]');
+            
+            // Generate sample marks as percentage of max marks
+            const percentages = [90, 93, 63, 83, 70]; // Different performance levels
+            
+            inputs.forEach((input, index) => {
+                const sampleMark = Math.round((percentages[index % percentages.length] / 100) * maxMarks);
+                input.value = sampleMark;
+                calculateGrade(input, maxMarks);
+            });
+        }
+        
+        function submitMarks() {
+            const classSelect = document.getElementById('classSelect');
+            const subjectSelect = document.getElementById('subjectSelect');
+            const examTypeSelect = document.getElementById('examTypeSelect');
+            
+            if (!classSelect.value || !subjectSelect.value || !examTypeSelect.value) {
+                alert('Please select class, subject, and exam type first!');
+                return;
+            }
+            
+            const filledMarks = document.querySelectorAll('#marksTable input[type="number"]');
+            let allFilled = true;
+            
+            filledMarks.forEach(input => {
+                if (!input.value) allFilled = false;
+            });
+            
+            if (!allFilled) {
+                if (!confirm('Some marks are not filled. Do you want to submit anyway?')) {
+                    return;
+                }
+            }
+            
+            alert(`✅ Marks submitted successfully!\n\nClass: ${classSelect.value}\nSubject: ${subjectSelect.value}\nExam: ${examTypeSelect.value}\n\nStudents will be notified via SMS and Email.`);
+        }
+        
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            updateMarksEntry();
+        });
+        
+        function logout() {
+            if(confirm('Are you sure you want to logout?')) {
+                window.location.href = '../index.html';
+            }
+        }
+    </script>
+</body>
+</html>

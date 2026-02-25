@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Faculty Portal</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+/* Faculty Portal Common Styles */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #0B1F3B 0%, #0d2444 20%, #112a4e 40%, #0e2a50 60%, #091929 80%, #0B1F3B 100%); min-height: 100vh; color: #fff; }
+.dashboard-container { display: flex; min-height: 100vh; }
+.sidebar { width: 260px; background: rgba(11, 31, 59, 0.8); backdrop-filter: blur(12px); border-right: 1px solid rgba(200, 169, 81, 0.1); padding: 20px; position: fixed; height: 100vh; overflow-y: auto; }
+.sidebar-header { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(200, 169, 81, 0.2); }
+.sidebar-header h2 { color: #C8A951; font-size: 1.25rem; margin-bottom: 5px; }
+.sidebar-header p { color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; }
+.sidebar-menu { list-style: none; }
+.sidebar-menu li { margin-bottom: 8px; }
+.sidebar-menu a { display: flex; align-items: center; padding: 12px 16px; color: rgba(255, 255, 255, 0.7); text-decoration: none; border-radius: 8px; transition: all 0.3s ease; }
+.sidebar-menu a:hover, .sidebar-menu a.active { background: rgba(200, 169, 81, 0.15); color: #C8A951; }
+.sidebar-menu a i { margin-right: 12px; font-style: normal; }
+.main-content { margin-left: 260px; flex: 1; padding: 20px; }
+.top-nav { background: rgba(11, 31, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(200, 169, 81, 0.1); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+.top-nav h1 { color: #C8A951; font-size: 1.75rem; }
+.top-nav-right { display: flex; align-items: center; gap: 20px; }
+.notification-icon { position: relative; font-size: 1.5rem; cursor: pointer; }
+.notification-badge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; font-size: 0.75rem; padding: 2px 6px; border-radius: 10px; }
+.user-info { display: flex; align-items: center; gap: 10px; }
+.user-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #C8A951, #dcc574); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0B1F3B; font-weight: bold; }
+.user-name { color: rgba(255, 255, 255, 0.9); font-weight: 500; }
+.content-card { background: rgba(11, 31, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(200, 169, 81, 0.1); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+.card-header h3 { color: #C8A951; font-size: 1.25rem; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>👨‍🏫 Faculty Portal</h2>
+                <p>University ERP</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i>📊</i> Dashboard</a></li>
+                <li><a href="profile.html" class="active"><i>👤</i> My Profile</a></li>
+                <li><a href="attendance-marking.html"><i>📅</i> Mark Attendance</a></li>
+                <li><a href="view-attendance.html"><i>📊</i> View Attendance</a></li>
+                <li><a href="assignments.html"><i>📝</i> Assignments</a></li>
+                <li><a href="marks-entry.html"><i>✏️</i> Marks Entry</a></li>
+                <li><a href="students.html"><i>👥</i> My Students</a></li>
+                <li><a href="timetable.html"><i>🕐</i> My Timetable</a></li>
+                <li><a href="approvals.html"><i>✅</i> Approvals</a></li>
+                <li><a href="notices.html"><i>📢</i> Notices</a></li>
+                <li><a href="notifications.html"><i>🔔</i> Notifications</a></li>
+                <li><a href="../index.html"><i>🚪</i> Logout</a></li>
+            </ul>
+        </aside>
+        <main class="main-content">
+            <nav class="top-nav">
+                <h1>👤 My Profile</h1>
+                <div class="top-nav-right">
+                    <div class="notification-icon" onclick="window.location.href='notifications.html'" style="cursor: pointer;">🔔<span class="notification-badge">0</span></div>
+                    <div class="user-info">
+                        <div class="user-avatar">F</div>
+                        <span class="user-name">Faculty</span>
+                    </div>
+                </div>
+            </nav>
+            <div class="content-card">
+                <div style="display: grid; grid-template-columns: auto 1fr; gap: 30px; align-items: start;">
+                    <div style="text-align: center;">
+                        <div id="profileAvatar" style="width: 150px; height: 150px; background: linear-gradient(135deg, #C8A951, #dcc574); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: #0B1F3B; margin-bottom: 15px; overflow: hidden; position: relative;">
+                            <span id="avatarIcon">👨‍🏫</span>
+                            <img id="avatarImage" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <input type="file" id="photoInput" accept="image/*" style="display: none;" onchange="uploadPhoto(event)">
+                        <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="document.getElementById('photoInput').click()">Upload Photo</button>
+                        <button class="btn btn-secondary" style="width: 100%;" onclick="removePhoto()" id="removePhotoBtn">Remove Photo</button>
+                    </div>
+                    <div>
+                        <h2 style="color: #C8A951; margin-bottom: 20px;">Faculty Name</h2>
+                        <div style="display: grid; gap: 15px;">
+                            <div style="padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; border-left: 3px solid #C8A951;">
+                                <strong style="color: rgba(255, 255, 255, 0.6);">Employee ID:</strong>
+                                <p style="color: rgba(255, 255, 255, 0.9); margin-top: 5px;">--</p>
+                            </div>
+                            <div style="padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; border-left: 3px solid #C8A951;">
+                                <strong style="color: rgba(255, 255, 255, 0.6);">Department:</strong>
+                                <p style="color: rgba(255, 255, 255, 0.9); margin-top: 5px;">--</p>
+                            </div>
+                            <div style="padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; border-left: 3px solid #C8A951;">
+                                <strong style="color: rgba(255, 255, 255, 0.6);">Designation:</strong>
+                                <p style="color: rgba(255, 255, 255, 0.9); margin-top: 5px;">--</p>
+                            </div>
+                            <div style="padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; border-left: 3px solid #C8A951;">
+                                <strong style="color: rgba(255, 255, 255, 0.6);">Email:</strong>
+                                <p style="color: rgba(255, 255, 255, 0.9); margin-top: 5px;">--</p>
+                            </div>
+                            <div style="padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; border-left: 3px solid #C8A951;">
+                                <strong style="color: rgba(255, 255, 255, 0.6);">Phone:</strong>
+                                <p style="color: rgba(255, 255, 255, 0.9); margin-top: 5px;">--</p>
+                            </div>
+                            <div style="padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; border-left: 3px solid #C8A951;">
+                                <strong style="color: rgba(255, 255, 255, 0.6);">Joined Date:</strong>
+                                <p style="color: rgba(255, 255, 255, 0.9); margin-top: 5px;">--</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <div class="card-header">
+                    <h3>Qualifications</h3>
+                </div>
+                <div style="text-align: center; padding: 40px;">
+                    <p style="color: rgba(255,255,255,0.4);">No qualifications data available</p>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <div class="card-header">
+                    <h3>Subjects Teaching</h3>
+                </div>
+                <div style="text-align: center; padding: 40px;">
+                    <p style="color: rgba(255,255,255,0.4);">No subjects data available</p>
+                </div>
+    
+    <script>
+        function uploadPhoto(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const avatarIcon = document.getElementById('avatarIcon');
+                    const avatarImage = document.getElementById('avatarImage');
+                    
+                    // Hide the icon and show the image
+                    avatarIcon.style.display = 'none';
+                    avatarImage.src = e.target.result;
+                    avatarImage.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Please select a valid image file.');
+            }
+        }
+        
+        function removePhoto() {
+            const avatarIcon = document.getElementById('avatarIcon');
+            const avatarImage = document.getElementById('avatarImage');
+            const photoInput = document.getElementById('photoInput');
+            
+            // Show the icon and hide the image
+            avatarIcon.style.display = 'flex';
+            avatarImage.style.display = 'none';
+            avatarImage.src = '';
+            photoInput.value = ''; // Clear the file input
+        }
+        
+        function logout() {
+            if(confirm('Are you sure you want to logout?')) {
+                window.location.href = '../index.html';
+            }
+        }
+    </script>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
