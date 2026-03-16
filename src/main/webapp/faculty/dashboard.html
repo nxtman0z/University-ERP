@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard - University ERP</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+/* Faculty Portal Common Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0B1F3B 0%, #0d2444 20%, #112a4e 40%, #0e2a50 60%, #091929 80%, #0B1F3B 100%);
+    min-height: 100vh;
+    color: #fff;
+}
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 260px;
+    background: rgba(11, 31, 59, 0.8);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(200, 169, 81, 0.1);
+    padding: 20px;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(200, 169, 81, 0.2);
+}
+
+.sidebar-header h2 {
+    color: #C8A951;
+    font-size: 1.25rem;
+    margin-bottom: 5px;
+}
+
+.sidebar-header p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+}
+
+.sidebar-menu {
+    list-style: none;
+}
+
+.sidebar-menu li {
+    margin-bottom: 8px;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu a.active {
+    background: rgba(200, 169, 81, 0.15);
+    color: #C8A951;
+}
+
+.sidebar-menu a i {
+    margin-right: 12px;
+    font-style: normal;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 260px;
+    flex: 1;
+    padding: 20px;
+}
+
+.top-nav {
+    background: rgba(11, 31, 59, 0.6);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(200, 169, 81, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-nav h1 {
+    color: #C8A951;
+    font-size: 1.75rem;
+}
+
+.top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.notification-icon {
+    position: relative;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.notification-icon:hover {
+    transform: scale(1.1);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ef4444;
+    color: white;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #C8A951, #dcc574);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0B1F3B;
+    font-weight: bold;
+}
+
+.user-name {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+}
+
+/* Cards */
+.content-card {
+    background: rgba(11, 31, 59, 0.6);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(200, 169, 81, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header h3 {
+    color: #C8A951;
+    font-size: 1.25rem;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Stat Cards */
+.stat-card {
+    background: rgba(11, 31, 59, 0.6);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(200, 169, 81, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.stat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.stat-card-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #C8A951;
+    margin-bottom: 5px;
+}
+
+.stat-card-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+}
+
+.stat-card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.stat-card-icon.blue {
+    background: rgba(59, 130, 246, 0.2);
+}
+
+.stat-card-icon.green {
+    background: rgba(16, 185, 129, 0.2);
+}
+
+.stat-card-icon.orange {
+    background: rgba(251, 146, 60, 0.2);
+}
+
+.stat-card-icon.red {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.badge-success {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.badge-warning {
+    background: rgba(251, 146, 60, 0.2);
+    color: #fb923c;
+}
+
+.badge-danger {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+/* Alerts */
+.alert {
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.alert-warning {
+    background: rgba(251, 146, 60, 0.15);
+    border-left: 4px solid #fb923c;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Table */
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: rgba(200, 169, 81, 0.1);
+}
+
+thead tr {
+    background: #C8A951 !important;
+}
+
+th {
+    padding: 15px;
+    text-align: left;
+    color: #0B1F3B !important;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    background: #C8A951;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+tbody tr:hover {
+    background: rgba(200, 169, 81, 0.05);
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: #C8A951;
+    color: #0B1F3B;
+}
+
+.btn-primary:hover {
+    background: #dcc574;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-success {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.btn-danger {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.btn-warning {
+    background: rgba(251, 146, 60, 0.2);
+    color: #fb923c;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.875rem;
+}
+
+/* Form Controls */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(200, 169, 81, 0.3);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #C8A951;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 0 3px rgba(200, 169, 81, 0.1);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Date input specific styling */
+input[type="date"].form-control {
+    color-scheme: dark;
+}
+
+input[type="date"].form-control::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(0.8);
+    cursor: pointer;
+}
+
+select.form-control {
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23C8A951' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 35px;
+}
+
+select.form-control option {
+    background: #1a2332;
+    color: #ffffff;
+    padding: 10px;
+    font-size: 0.95rem;
+}
+
+select.form-control option:hover,
+select.form-control option:checked {
+    background: #C8A951;
+    color: #0B1F3B;
+    font-weight: 600;
+}
+
+/* CSS Variables */
+:root {
+    --primary-color: #C8A951;
+    --text-secondary: rgba(255, 255, 255, 0.6);
+    --light: rgba(255, 255, 255, 0.05);
+    --warning-color: #fb923c;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --info-color: #3b82f6;
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Scrollbar Styling */
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: rgba(200, 169, 81, 0.4);
+    border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: rgba(200, 169, 81, 0.6);
+}
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>👨‍🏫 Faculty Portal</h2>
+                <p>University ERP</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html" class="active"><i>📊</i> Dashboard</a></li>
+                <li><a href="profile.html"><i>👤</i> My Profile</a></li>
+                <li><a href="attendance-marking.html"><i>📅</i> Mark Attendance</a></li>
+                <li><a href="view-attendance.html"><i>📊</i> View Attendance</a></li>
+                <li><a href="assignments.html"><i>📝</i> Assignments</a></li>
+                <li><a href="marks-entry.html"><i>✏️</i> Marks Entry</a></li>
+                <li><a href="students.html"><i>👥</i> My Students</a></li>
+                <li><a href="timetable.html"><i>🕐</i> My Timetable</a></li>
+                <li><a href="approvals.html"><i>✅</i> Approvals</a></li>
+                <li><a href="notices.html"><i>📢</i> Notices</a></li>
+                <li><a href="notifications.html"><i>🔔</i> Notifications</a></li>
+                <li><a href="../index.html" onclick="logout()"><i>🚪</i> Logout</a></li>
+            </ul>
+        </aside>
+        
+        <main class="main-content">
+            <nav class="top-nav">
+                <h1>Faculty Dashboard</h1>
+                <div class="top-nav-right">
+                    <div class="notification-icon" onclick="window.location.href='notifications.html'" style="cursor: pointer;">🔔<span class="notification-badge">0</span></div>
+                    <div class="user-info">
+                        <div class="user-avatar">F</div>
+                        <span class="user-name">Faculty</span>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="content-card">
+                <h2 style="color: var(--primary-color); margin-bottom: 10px;">Welcome Back! 👋</h2>
+                <p style="color: var(--text-secondary);">Here's your teaching overview for today.</p>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div>
+                            <div class="stat-card-value">0</div>
+                            <div class="stat-card-label">Total Students</div>
+                        </div>
+                        <div class="stat-card-icon blue">👥</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div>
+                            <div class="stat-card-value">0</div>
+                            <div class="stat-card-label">Subjects Assigned</div>
+                        </div>
+                        <div class="stat-card-icon green">📚</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div>
+                            <div class="stat-card-value">0</div>
+                            <div class="stat-card-label">Pending Approvals</div>
+                        </div>
+                        <div class="stat-card-icon orange">⏳</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div>
+                            <div class="stat-card-value">0</div>
+                            <div class="stat-card-label">Assignments to Check</div>
+                        </div>
+                        <div class="stat-card-icon red">📝</div>
+                    </div>
+                </div>
+            </div>
+            
+
+            
+            <div class="dashboard-grid">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>📅 Today's Classes</h3>
+                    </div>
+                    <div style="padding: 40px; text-align: center; color: var(--text-secondary);">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">📅</div>
+                        <div>No classes scheduled</div>
+                        <small>Your class schedule will appear here</small>
+                    </div>
+                </div>
+                
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3>⏳ Pending Tasks</h3>
+                    </div>
+                    <div style="padding: 40px; text-align: center; color: var(--text-secondary);">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">✓</div>
+                        <div>No pending tasks</div>
+                        <small>Your pending tasks will appear here</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <div class="card-header">
+                    <h3>📊 Class-wise Attendance Summary</h3>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Subject</th>
+                                <th>Total Students</th>
+                                <th>Avg Attendance</th>
+                                <th>Low Attendance (<75%)</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                                    <div style="font-size: 3rem; margin-bottom: 10px;">📊</div>
+                                    <div>No attendance data available</div>
+                                    <small>Attendance summary will appear here</small>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <div class="card-header">
+                    <h3>📢 Recent Announcements</h3>
+                    <button class="btn btn-sm btn-primary" onclick="window.location='notices.html'">Post Announcement</button>
+                </div>
+                <div style="padding: 40px; text-align: center; color: var(--text-secondary);">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">📢</div>
+                    <div>No announcements</div>
+                    <small>Your recent announcements will appear here</small>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Session check placeholder
+        function checkAuth() {
+            // Add session authentication logic here
+        }
+        
+        checkAuth();
+        
+        function markAttendance(subject, className) {
+            window.location.href = 'attendance-marking.html?subject=' + subject + '&class=' + className;
+        }
+        
+        function viewClassDetails(classId) {
+            window.location.href = 'view-attendance.html?class=' + classId;
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '../index.html';
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>
