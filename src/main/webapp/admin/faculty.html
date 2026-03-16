@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Management - Admin Portal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary-color: #C8A951;
+            --dark-bg: #0A1929;
+            --card-bg: #1A2332;
+            --sidebar-bg: #0D1B2A;
+            --text-primary: #fff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(200, 169, 81, 0.2);
+            --success-color: #4CAF50;
+            --danger-color: #f44336;
+            --warning-color: #ff9800;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .sidebar-header h2 {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-header p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 1rem 0;
+        }
+        
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-menu li a:hover,
+        .sidebar-menu li a.active {
+            background: rgba(200, 169, 81, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+        
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .top-nav h1 {
+            font-size: 1.75rem;
+            color: var(--text-primary);
+        }
+        
+        .top-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .notification-icon {
+            position: relative;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .notification-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--dark-bg);
+        }
+        
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header h3 {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .empty-state-text {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state-subtext {
+            font-size: 0.875rem;
+            opacity: 0.7;
+        }
+        
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--dark-bg);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(200, 169, 81, 0.4);
+        }
+        
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
+        }
+        
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #da190b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+        }
+        
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .badge-success {
+            background: rgba(76, 175, 80, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+        
+        .badge-warning {
+            background: rgba(255, 152, 0, 0.2);
+            color: var(--warning-color);
+            border: 1px solid var(--warning-color);
+        }
+        
+        .badge-danger {
+            background: rgba(244, 67, 54, 0.2);
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+        }
+        
+        .badge-info {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+            border: 1px solid #2196F3;
+        }
+
+        .badge-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .form-control {
+            padding: 0.625rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+        }
+        
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            background: rgba(200, 169, 81, 0.05);
+        }
+        
+        td {
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            vertical-align: middle;
+        }
+        
+        tr:hover {
+            background: rgba(200, 169, 81, 0.03);
+        }
+        
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        td button {
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+        
+        td button:last-child {
+            margin-right: 0;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 0;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+        
+        .modal-header h2 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+        
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            padding: 2rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .info-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .info-label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .info-value {
+            color: var(--text-primary);
+            font-size: 1rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border-color);
+            flex-shrink: 0;
+            background: var(--card-bg);
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        select.form-input {
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C8A951' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1em;
+            padding-right: 2.5rem;
+        }
+        
+        select.form-input option {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            padding: 0.5rem;
+        }
+        
+        select.form-input option:hover,
+        select.form-input option:checked {
+            background: rgba(200, 169, 81, 0.2);
+            color: var(--primary-color);
+        }
+        
+        /* Scrollbar styling for modal */
+        .modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .modal-body::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        
+        .modal-body::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+        
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #B89841;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>⚙️ Admin Portal</h2>
+                <p>University ERP</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i>📊</i> Dashboard</a></li>
+                <li><a href="students.html"><i>👨‍🎓</i> Student Management</a></li>
+                <li><a href="faculty.html" class="active"><i>👨‍🏫</i> Faculty Management</a></li>
+                <li><a href="departments.html"><i>🏢</i> Departments</a></li>
+                <li><a href="courses.html"><i>📚</i> Courses & Subjects</a></li>
+                <li><a href="fees.html"><i>💰</i> Fee Management</a></li>
+                <li><a href="exams.html"><i>📋</i> Exam Management</a></li>
+                <li><a href="library-passes.html"><i>📚</i> Library Passes</a></li>
+                <li><a href="users.html"><i>👤</i> User Accounts</a></li>
+                <li><a href="reports.html"><i>📈</i> Reports</a></li>
+                <li><a href="complaints.html"><i>📝</i> Complaints</a></li>
+                <li><a href="notices.html"><i>📢</i> Notice Board</a></li>
+                <li><a href="notifications.html"><i>🔔</i> Notifications</a></li>
+                <li><a href="../index.html" onclick="return logout()"><i>🚪</i> Logout</a></li>
+            </ul>
+        </aside>
+        
+        <main class="main-content">
+            <nav class="top-nav">
+                <h1>👨‍🏫 Faculty Management</h1>
+                <div class="top-nav-right">
+                    <div class="notification-icon" onclick="window.location.href='notifications.html'">
+                        🔔<span class="notification-badge">0</span>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-avatar">A</div>
+                        <span class="user-name">Admin</span>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="content-card">
+                <div class="card-header">
+                    <h3>👨‍🏫 All Faculty Members</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search faculty..." style="width: 300px;">
+                        <button class="btn btn-primary" onclick="addFaculty()">➕ Add Faculty</button>
+                        <button class="btn btn-success" onclick="exportData()">📥 Export</button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="facultyTable">
+                        <thead>
+                            <tr>
+                                <th>Faculty ID</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Designation</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- View Faculty Modal -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>👁️ View Faculty Details</h2>
+                <button class="modal-close" onclick="closeModal('viewModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="info-group">
+                    <span class="info-label">Faculty ID</span>
+                    <div class="info-value" id="viewFacultyId"></div>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">Full Name</span>
+                    <div class="info-value" id="viewName"></div>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">Department</span>
+                    <div class="info-value" id="viewDept"></div>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">Designation</span>
+                    <div class="info-value" id="viewDesignation"></div>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">Email Address</span>
+                    <div class="info-value" id="viewEmail"></div>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">Phone Number</span>
+                    <div class="info-value" id="viewPhone"></div>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">Status</span>
+                    <div class="info-value" id="viewStatus"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('viewModal')">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Faculty Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ Edit Faculty Details</h2>
+                <button class="modal-close" onclick="closeModal('editModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Faculty ID</label>
+                    <input type="text" id="editFacultyId" class="form-input" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="editName" class="form-input" placeholder="Enter full name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <select id="editDept" class="form-input">
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Business Administration">Business Administration</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Mechanical">Mechanical</option>
+                        <option value="Civil">Civil</option>
+                        <option value="Mathematics">Mathematics</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Designation</label>
+                    <select id="editDesignation" class="form-input">
+                        <option value="Professor">Professor</option>
+                        <option value="Associate Professor">Associate Professor</option>
+                        <option value="Assistant Professor">Assistant Professor</option>
+                        <option value="Lecturer">Lecturer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="editEmail" class="form-input" placeholder="email@university.edu">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" id="editPhone" class="form-input" placeholder="+91 98765 00000">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select id="editStatus" class="form-input">
+                        <option value="Active">Active</option>
+                        <option value="On Leave">On Leave</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('editModal')">Cancel</button>
+                <button class="btn btn-success" onclick="saveFaculty()">💾 Save Changes</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Faculty Modal -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>➕ Add New Faculty</h2>
+                <button class="modal-close" onclick="closeModal('addModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Faculty ID</label>
+                    <input type="text" id="addFacultyId" class="form-input" placeholder="e.g., FAC007">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="addName" class="form-input" placeholder="Enter full name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <select id="addDept" class="form-input">
+                        <option value="">Select Department</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Business Administration">Business Administration</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Mechanical">Mechanical</option>
+                        <option value="Civil">Civil</option>
+                        <option value="Mathematics">Mathematics</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Designation</label>
+                    <select id="addDesignation" class="form-input">
+                        <option value="">Select Designation</option>
+                        <option value="Professor">Professor</option>
+                        <option value="Associate Professor">Associate Professor</option>
+                        <option value="Assistant Professor">Assistant Professor</option>
+                        <option value="Lecturer">Lecturer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="addEmail" class="form-input" placeholder="email@university.edu">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" id="addPhone" class="form-input" placeholder="+91 98765 00000">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select id="addStatus" class="form-input">
+                        <option value="Active">Active</option>
+                        <option value="On Leave">On Leave</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addModal')">Cancel</button>
+                <button class="btn btn-success" onclick="saveNewFaculty()">➕ Add Faculty</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        console.log('=== Faculty Page Script Loaded ===');
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '../index.html';
+            }
+            return false;
+        }
+        
+        function addFaculty() {
+            // Clear all fields
+            document.getElementById('addFacultyId').value = '';
+            document.getElementById('addName').value = '';
+            document.getElementById('addDept').value = '';
+            document.getElementById('addDesignation').value = '';
+            document.getElementById('addEmail').value = '';
+            document.getElementById('addPhone').value = '';
+            document.getElementById('addStatus').value = 'Active';
+            
+            // Show the modal
+            document.getElementById('addModal').classList.add('active');
+        }
+        
+        function viewFaculty(facultyId) {
+            // Faculty data
+            const facultyData = {};
+            
+            const faculty = facultyData[facultyId];
+            if (faculty) {
+                // Fill the view modal with data
+                document.getElementById('viewFacultyId').textContent = facultyId;
+                document.getElementById('viewName').textContent = faculty.name;
+                document.getElementById('viewDept').textContent = faculty.dept;
+                document.getElementById('viewDesignation').textContent = faculty.designation;
+                document.getElementById('viewEmail').textContent = faculty.email;
+                document.getElementById('viewPhone').textContent = faculty.phone;
+                document.getElementById('viewStatus').textContent = faculty.status;
+                
+                // Show the modal
+                document.getElementById('viewModal').classList.add('active');
+            }
+        }
+        
+        function editFaculty(facultyId) {
+            console.log('=== Edit Faculty ===');
+            console.log('Faculty ID:', facultyId);
+            
+            // Find the faculty row in the table
+            const rows = document.querySelectorAll('tbody tr');
+            let facultyFound = false;
+            
+            rows.forEach(row => {
+                const facultyIdCell = row.querySelector('td:first-child');
+                if (facultyIdCell && facultyIdCell.textContent === facultyId) {
+                    facultyFound = true;
+                    
+                    // Extract data from table row
+                    const name = row.cells[1].textContent.trim();
+                    const dept = row.cells[2].textContent.trim();
+                    const designation = row.cells[3].textContent.trim();
+                    const email = row.cells[4].textContent.trim();
+                    const phone = row.cells[5].textContent.trim();
+                    const statusBadge = row.cells[6].querySelector('.badge');
+                    const status = statusBadge ? statusBadge.textContent.trim() : 'Active';
+                    
+                    console.log('Found faculty:', name);
+                    
+                    // Fill the edit modal with data
+                    document.getElementById('editFacultyId').value = facultyId;
+                    document.getElementById('editName').value = name;
+                    document.getElementById('editDept').value = dept;
+                    document.getElementById('editDesignation').value = designation;
+                    document.getElementById('editEmail').value = email;
+                    document.getElementById('editPhone').value = phone;
+                    document.getElementById('editStatus').value = status;
+                    
+                    // Show the modal
+                    document.getElementById('editModal').classList.add('active');
+                }
+            });
+            
+            if (!facultyFound) {
+                console.error('Faculty not found:', facultyId);
+                alert('❌ Error: Faculty not found!');
+            }
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        function saveFaculty() {
+            console.log('=== Save Faculty Changes ===');
+            
+            const facultyId = document.getElementById('editFacultyId').value;
+            const name = document.getElementById('editName').value;
+            const dept = document.getElementById('editDept').value;
+            const designation = document.getElementById('editDesignation').value;
+            const email = document.getElementById('editEmail').value;
+            const phone = document.getElementById('editPhone').value;
+            const status = document.getElementById('editStatus').value;
+            
+            console.log('Updating faculty:', facultyId);
+            
+            // Find and update the row in the table
+            const rows = document.querySelectorAll('tbody tr');
+            let updated = false;
+            
+            rows.forEach(row => {
+                const facultyIdCell = row.querySelector('td:first-child');
+                if (facultyIdCell && facultyIdCell.textContent === facultyId) {
+                    console.log('Found row for faculty ID:', facultyId);
+                    
+                    // Update all cells
+                    row.cells[1].textContent = name;
+                    row.cells[2].textContent = dept;
+                    row.cells[3].textContent = designation;
+                    row.cells[4].textContent = email;
+                    row.cells[5].textContent = phone;
+                    
+                    // Update status badge
+                    const statusCell = row.cells[6];
+                    if (status === 'Active') {
+                        statusCell.innerHTML = '<span class="badge badge-success">Active</span>';
+                    } else if (status === 'On Leave') {
+                        statusCell.innerHTML = '<span class="badge badge-warning">On Leave</span>';
+                    } else {
+                        statusCell.innerHTML = '<span class="badge badge-secondary">Inactive</span>';
+                    }
+                    
+                    updated = true;
+                    console.log('Faculty data updated in table');
+                }
+            });
+            
+            // Close the modal
+            closeModal('editModal');
+            
+            if (updated) {
+                alert('✅ Faculty Updated Successfully!\n\n' +
+                      'Faculty ID: ' + facultyId + '\n' +
+                      'Name: ' + name + '\n' +
+                      'Department: ' + dept + '\n' +
+                      'Designation: ' + designation);
+            } else {
+                alert('❌ Error: Could not find faculty to update');
+            }
+        }
+        
+        function saveNewFaculty() {
+            console.log('=== Add New Faculty ===');
+            
+            const facultyId = document.getElementById('addFacultyId').value.trim();
+            const name = document.getElementById('addName').value.trim();
+            const dept = document.getElementById('addDept').value;
+            const designation = document.getElementById('addDesignation').value;
+            const email = document.getElementById('addEmail').value.trim();
+            const phone = document.getElementById('addPhone').value.trim();
+            const status = document.getElementById('addStatus').value;
+            
+            // Validate required fields
+            if (!facultyId || !name || !dept || !designation || !email || !phone) {
+                alert('❌ Please fill all required fields!');
+                return;
+            }
+            
+            console.log('Adding faculty:', facultyId, name);
+            
+            // Check if faculty already exists
+            const rows = document.querySelectorAll('tbody tr');
+            let exists = false;
+            rows.forEach(row => {
+                const facultyIdCell = row.querySelector('td:first-child');
+                if (facultyIdCell && facultyIdCell.textContent === facultyId) {
+                    exists = true;
+                }
+            });
+            
+            if (exists) {
+                alert('❌ Error: A faculty with ID ' + facultyId + ' already exists!');
+                return;
+            }
+            
+            // Create new table row
+            const tbody = document.querySelector('tbody');
+            const newRow = document.createElement('tr');
+            
+            // Determine status badge class
+            let statusClass = 'badge-success';
+            let statusText = status;
+            if (status === 'On Leave') {
+                statusClass = 'badge-warning';
+            } else if (status === 'Inactive') {
+                statusClass = 'badge-secondary';
+            }
+            
+            // Create cells with data
+            newRow.innerHTML = `
+                <td>${facultyId}</td>
+                <td><strong>${name}</strong></td>
+                <td>${dept}</td>
+                <td>${designation}</td>
+                <td>${email}</td>
+                <td>${phone}</td>
+                <td><span class="badge ${statusClass}">${statusText}</span></td>
+                <td>
+                    <button class="btn btn-sm btn-secondary" onclick="viewFaculty('${facultyId}')">👁️</button>
+                    <button class="btn btn-sm btn-primary" onclick="editFaculty('${facultyId}')">✏️</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteFaculty('${facultyId}')">🗑️</button>
+                </td>
+            `;
+            
+            // Add row to table
+            tbody.appendChild(newRow);
+            console.log('New faculty row added to table');
+            
+            // Clear form
+            document.getElementById('addFacultyId').value = '';
+            document.getElementById('addName').value = '';
+            document.getElementById('addDept').value = '';
+            document.getElementById('addDesignation').value = '';
+            document.getElementById('addEmail').value = '';
+            document.getElementById('addPhone').value = '';
+            document.getElementById('addStatus').value = 'Active';
+            
+            // Close the modal
+            closeModal('addModal');
+            
+            // Show success message
+            alert('✅ New Faculty Added Successfully!\n\n' +
+                  'Faculty ID: ' + facultyId + '\n' +
+                  'Name: ' + name + '\n' +
+                  'Department: ' + dept + '\n' +
+                  'Designation: ' + designation + '\n\n' +
+                  'The faculty has been added to the table!');
+        }
+        
+        function deleteFaculty(facultyId) {
+            console.log('=== Delete Faculty Clicked ===');
+            console.log('Faculty ID:', facultyId);
+            
+            const facultyData = {};
+            
+            const facultyName = facultyData[facultyId];
+            console.log('Faculty Name:', facultyName);
+            
+            if (confirm('🗑️ DELETE FACULTY\n\n' +
+                'Are you sure you want to delete?\n\n' +
+                'Faculty ID: ' + facultyId + '\n' +
+                'Name: ' + facultyName + '\n\n' +
+                '⚠️ This action cannot be undone!')) {
+                
+                console.log('Delete confirmed for:', facultyId);
+                
+                // Find and remove the row from the table
+                const rows = document.querySelectorAll('tbody tr');
+                let deleted = false;
+                
+                rows.forEach(row => {
+                    const facultyIdCell = row.querySelector('td:first-child');
+                    if (facultyIdCell && facultyIdCell.textContent === facultyId) {
+                        console.log('Found row for faculty ID:', facultyId);
+                        row.remove();
+                        deleted = true;
+                        console.log('Row removed successfully');
+                    }
+                });
+                
+                if (deleted) {
+                    alert('✅ Faculty Deleted Successfully!\n\n' +
+                          facultyName + ' (' + facultyId + ') has been removed from the table.');
+                } else {
+                    console.error('Could not find faculty row:', facultyId);
+                }
+            } else {
+                console.log('Delete cancelled');
+            }
+        }
+        
+        function exportData() {
+            const table = document.querySelector('table');
+            if (!table) {
+                alert('No data available to export');
+                return;
+            }
+            
+            let csv = [];
+            const rows = table.querySelectorAll('tr');
+            
+            for (let i = 0; i < rows.length; i++) {
+                const row = [], cols = rows[i].querySelectorAll('td, th');
+                for (let j = 0; j < cols.length - 1; j++) { // Exclude last column (Actions)
+                    let cellText = cols[j].textContent.trim().replace(/"/g, '""');
+                    row.push('"' + cellText + '"');
+                }
+                csv.push(row.join(','));
+            }
+            
+            const csvContent = csv.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'faculty_data_' + new Date().toISOString().split('T')[0] + '.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert('✅ Export Successful!\n\nFaculty data has been exported to CSV.\n\nFile: faculty_data_' + new Date().toISOString().split('T')[0] + '.csv');
+        }
+        
+        // Setup search functionality
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                console.log('Searching for:', searchTerm);
+                
+                const rows = document.querySelectorAll('tbody tr');
+                let visibleCount = 0;
+                
+                rows.forEach(row => {
+                    const facultyId = row.cells[0].textContent.toLowerCase();
+                    const name = row.cells[1].textContent.toLowerCase();
+                    const dept = row.cells[2].textContent.toLowerCase();
+                    const designation = row.cells[3].textContent.toLowerCase();
+                    const email = row.cells[4].textContent.toLowerCase();
+                    const phone = row.cells[5].textContent.toLowerCase();
+                    
+                    // Check if search term matches any field
+                    if (facultyId.includes(searchTerm) || 
+                        name.includes(searchTerm) || 
+                        dept.includes(searchTerm) || 
+                        designation.includes(searchTerm) ||
+                        email.includes(searchTerm) ||
+                        phone.includes(searchTerm)) {
+                        row.style.display = '';
+                        visibleCount++;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+                
+                console.log('Visible rows:', visibleCount);
+            });
+        }
+        
+        // Close modal when clicking outside of it
+        document.addEventListener('click', function(event) {
+            const viewModal = document.getElementById('viewModal');
+            const editModal = document.getElementById('editModal');
+            
+            if (event.target === viewModal) {
+                closeModal('viewModal');
+            }
+            if (event.target === editModal) {
+                closeModal('editModal');
+            }
+        });
+    </script>
+</body>
+</html>
