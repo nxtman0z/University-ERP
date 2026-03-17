@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -553,13 +554,13 @@
                 <li><a href="students.html"><i>👨‍🎓</i> Student Management</a></li>
                 <li><a href="faculty.html"><i>👨‍🏫</i> Faculty Management</a></li>
                 <li><a href="departments.html"><i>🏢</i> Departments</a></li>
-                <li><a href="courses.html"><i>📚</i> Courses & Subjects</a></li>
+                <li><a href="courses.jsp"><i>📚</i> Courses & Subjects</a></li>
                 <li><a href="fees.html"><i>💰</i> Fee Management</a></li>
-                <li><a href="exams.html" class="active"><i>📋</i> Exam Management</a></li>
+                <li><a href="exams.jsp" class="active"><i>📋</i> Exam Management</a></li>
                 <li><a href="library-passes.html"><i>📚</i> Library Passes</a></li>
                 <li><a href="users.html"><i>👤</i> User Accounts</a></li>
                 <li><a href="reports.html"><i>📈</i> Reports</a></li>
-                <li><a href="complaints.html"><i>📝</i> Complaints</a></li>
+                <li><a href="complaints.jsp"><i>📝</i> Complaints</a></li>
                 <li><a href="notices.html"><i>📢</i> Notice Board</a></li>
                 <li><a href="notifications.html"><i>🔔</i> Notifications</a></li>
                 <li><a href="../index.html" onclick="return logout()"><i>🚪</i> Logout</a></li>
