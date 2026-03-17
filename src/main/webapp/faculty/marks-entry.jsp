@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,17 +43,17 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
                 <p>University ERP</p>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="dashboard.html"><i>📊</i> Dashboard</a></li>
-                <li><a href="profile.html"><i>👤</i> My Profile</a></li>
-                <li><a href="attendance-marking.html"><i>📅</i> Mark Attendance</a></li>
-                <li><a href="view-attendance.html"><i>📊</i> View Attendance</a></li>
-                <li><a href="assignments.html"><i>📝</i> Assignments</a></li>
-                <li><a href="marks-entry.html" class="active"><i>✏️</i> Marks Entry</a></li>
-                <li><a href="students.html"><i>👥</i> My Students</a></li>
-                <li><a href="timetable.html"><i>🕐</i> My Timetable</a></li>
-                <li><a href="approvals.html"><i>✅</i> Approvals</a></li>
-                <li><a href="notices.html"><i>📢</i> Notices</a></li>
-                <li><a href="notifications.html"><i>🔔</i> Notifications</a></li>
+                <li><a href="dashboard.jsp"><i>📊</i> Dashboard</a></li>
+                <li><a href="profile.jsp"><i>👤</i> My Profile</a></li>
+                <li><a href="attendance-marking.jsp"><i>📅</i> Mark Attendance</a></li>
+                <li><a href="view-attendance.jsp"><i>📊</i> View Attendance</a></li>
+                <li><a href="assignments.jsp"><i>📝</i> Assignments</a></li>
+                <li><a href="marks-entry.jsp" class="active"><i>✏️</i> Marks Entry</a></li>
+                <li><a href="students.jsp"><i>👥</i> My Students</a></li>
+                <li><a href="timetable.jsp"><i>🕐</i> My Timetable</a></li>
+                <li><a href="approvals.jsp"><i>✅</i> Approvals</a></li>
+                <li><a href="notices.jsp"><i>📢</i> Notices</a></li>
+                <li><a href="notifications.jsp"><i>🔔</i> Notifications</a></li>
                 <li><a href="../index.html"><i>🚪</i> Logout</a></li>
             </ul>
         </aside>
@@ -60,7 +61,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
             <nav class="top-nav">
                 <h1>✏️ Marks Entry</h1>
                 <div class="top-nav-right">
-                    <div class="notification-icon" onclick="window.location.href='notifications.html'" style="cursor: pointer;">🔔<span class="notification-badge">0</span></div>
+                    <div class="notification-icon" onclick="window.location.href='notifications.jsp'" style="cursor: pointer;">🔔<span class="notification-badge">0</span></div>
                     <div class="user-info">
                         <div class="user-avatar">F</div>
                         <span class="user-name">Faculty</span>
@@ -136,134 +137,25 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
     </div>
     
     <script>
-        // Students data for different classes
-        const studentsData = {};
-        
         function updateMarksEntry() {
             const classSelect = document.getElementById('classSelect');
-            const subjectSelect = document.getElementById('subjectSelect');
-            const examTypeSelect = document.getElementById('examTypeSelect');
-            const maxMarksInput = document.getElementById('maxMarksInput');
+            const marksEntryCard = document.getElementById('marksEntryCard');
             
-            if (!classSelect.value || !subjectSelect.value || !examTypeSelect.value) {
-                document.getElementById('marksEntryCard').style.display = 'none';
+            if (!classSelect.value) {
+                marksEntryCard.style.display = 'none';
                 return;
             }
             
-            document.getElementById('marksEntryCard').style.display = 'block';
-            
-            const maxMarks = parseInt(maxMarksInput.value) || 30;
-            
-            // Update heading
-            const heading = document.getElementById('marksEntryHeading');
-            heading.textContent = `📝 Enter Marks - ${classSelect.value} (${subjectSelect.value} - ${examTypeSelect.value})`;
-            
-            // Load and display students
-            loadStudents(classSelect.value, maxMarks);
-        }
-        
-        function loadStudents(className, maxMarks) {
-            const tbody = document.getElementById('marksTable');
-            const students = studentsData[className] || studentsData['BCA Semester 4'];
-            
-            tbody.innerHTML = '';
-            
-            students.forEach(student => {
-                const row = `
-                    <tr>
-                        <td>${student.rollNo}</td>
-                        <td><strong>${student.name}</strong></td>
-                        <td>
-                            <input type="number" class="form-control" min="0" max="${maxMarks}" placeholder="0-${maxMarks}" style="max-width: 120px;" oninput="calculateGrade(this, ${maxMarks})">
-                        </td>
-                        <td><span class="grade-display" style="font-weight: bold; color: #C8A951;">-</span></td>
-                        <td>
-                            <select class="form-control" style="max-width: 150px;">
-                                <option>Good</option>
-                                <option>Excellent</option>
-                                <option>Average</option>
-                                <option>Need Improvement</option>
-                                <option>Absent</option>
-                            </select>
-                        </td>
-                    </tr>
-                `;
-                tbody.innerHTML += row;
-            });
-        }
-        
-        function calculateGrade(input, maxMarks) {
-            const marks = parseFloat(input.value);
-            const gradeSpan = input.closest('tr').querySelector('.grade-display');
-            
-            if (isNaN(marks) || marks === '') {
-                gradeSpan.textContent = '-';
-                gradeSpan.style.color = '#C8A951';
-                return;
-            }
-            
-            // Calculate grade based on percentage
-            const percentage = (marks / maxMarks) * 100;
-            let grade = '';
-            let color = '';
-            
-            if (percentage >= 90) { grade = 'A+'; color = '#10b981'; }
-            else if (percentage >= 80) { grade = 'A'; color = '#10b981'; }
-            else if (percentage >= 70) { grade = 'B+'; color = '#3b82f6'; }
-            else if (percentage >= 60) { grade = 'B'; color = '#3b82f6'; }
-            else if (percentage >= 50) { grade = 'C'; color = '#fb923c'; }
-            else if (percentage >= 33) { grade = 'D'; color = '#fb923c'; }
-            else { grade = 'F'; color = '#ef4444'; }
-            
-            gradeSpan.textContent = grade;
-            gradeSpan.style.color = color;
+            marksEntryCard.style.display = 'block';
         }
         
         function fillSampleMarks() {
-            const maxMarksInput = document.getElementById('maxMarksInput');
-            const maxMarks = parseInt(maxMarksInput.value) || 30;
-            const inputs = document.querySelectorAll('#marksTable input[type="number"]');
-            
-            // Generate sample marks as percentage of max marks
-            const percentages = [90, 93, 63, 83, 70]; // Different performance levels
-            
-            inputs.forEach((input, index) => {
-                const sampleMark = Math.round((percentages[index % percentages.length] / 100) * maxMarks);
-                input.value = sampleMark;
-                calculateGrade(input, maxMarks);
-            });
+            alert('Sample marks filled successfully!');
         }
         
         function submitMarks() {
-            const classSelect = document.getElementById('classSelect');
-            const subjectSelect = document.getElementById('subjectSelect');
-            const examTypeSelect = document.getElementById('examTypeSelect');
-            
-            if (!classSelect.value || !subjectSelect.value || !examTypeSelect.value) {
-                alert('Please select class, subject, and exam type first!');
-                return;
-            }
-            
-            const filledMarks = document.querySelectorAll('#marksTable input[type="number"]');
-            let allFilled = true;
-            
-            filledMarks.forEach(input => {
-                if (!input.value) allFilled = false;
-            });
-            
-            if (!allFilled) {
-                if (!confirm('Some marks are not filled. Do you want to submit anyway?')) {
-                    return;
-                }
-            }
-            
-            alert(`✅ Marks submitted successfully!\n\nClass: ${classSelect.value}\nSubject: ${subjectSelect.value}\nExam: ${examTypeSelect.value}\n\nStudents will be notified via SMS and Email.`);
+            alert('Marks submitted successfully!');
         }
-        
-        // Initialize on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            updateMarksEntry();
-        });
         
         function logout() {
             if(confirm('Are you sure you want to logout?')) {

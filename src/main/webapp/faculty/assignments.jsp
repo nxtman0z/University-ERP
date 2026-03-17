@@ -1,9 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Timetable - Faculty Portal</title>
+    <title>Assignments - Faculty Portal</title>
     <link rel="stylesheet" href="../style.css">
     <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,19 +30,9 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
 .user-name { color: rgba(255, 255, 255, 0.9); font-weight: 500; }
 .content-card { background: rgba(11, 31, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(200, 169, 81, 0.1); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
 .card-header h3 { color: #C8A951; font-size: 1.25rem; margin-bottom: 15px; }
-
-/* Button Styles */
 .btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; }
 .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
 .btn-primary { background: linear-gradient(135deg, #C8A951, #dcc574); color: #0B1F3B; }
-.btn-secondary { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,0.2); }
-
-/* Table Styles */
-table { width: 100%; border-collapse: collapse; }
-thead tr { background: rgba(200, 169, 81, 0.1); }
-th { padding: 15px; color: #C8A951; text-align: left; font-weight: 600; border-bottom: 2px solid rgba(200, 169, 81, 0.2); }
-td { padding: 12px 15px; border-bottom: 1px solid rgba(200, 169, 81, 0.1); color: rgba(255, 255, 255, 0.9); }
-tbody tr:hover { background: rgba(200, 169, 81, 0.05); transition: background 0.3s; }
     </style>
 </head>
 <body>
@@ -52,25 +43,25 @@ tbody tr:hover { background: rgba(200, 169, 81, 0.05); transition: background 0.
                 <p>University ERP</p>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="dashboard.html"><i>📊</i> Dashboard</a></li>
-                <li><a href="profile.html"><i>👤</i> My Profile</a></li>
-                <li><a href="attendance-marking.html"><i>📅</i> Mark Attendance</a></li>
-                <li><a href="view-attendance.html"><i>📊</i> View Attendance</a></li>
-                <li><a href="assignments.html"><i>📝</i> Assignments</a></li>
-                <li><a href="marks-entry.html"><i>✏️</i> Marks Entry</a></li>
-                <li><a href="students.html"><i>👥</i> My Students</a></li>
-                <li><a href="timetable.html" class="active"><i>🕐</i> My Timetable</a></li>
-                <li><a href="approvals.html"><i>✅</i> Approvals</a></li>
-                <li><a href="notices.html"><i>📢</i> Notices</a></li>
-                <li><a href="notifications.html"><i>🔔</i> Notifications</a></li>
+                <li><a href="dashboard.jsp"><i>📊</i> Dashboard</a></li>
+                <li><a href="profile.jsp"><i>👤</i> My Profile</a></li>
+                <li><a href="attendance-marking.jsp"><i>📅</i> Mark Attendance</a></li>
+                <li><a href="view-attendance.jsp"><i>📊</i> View Attendance</a></li>
+                <li><a href="assignments.jsp" class="active"><i>📝</i> Assignments</a></li>
+                <li><a href="marks-entry.jsp"><i>✏️</i> Marks Entry</a></li>
+                <li><a href="students.jsp"><i>👥</i> My Students</a></li>
+                <li><a href="timetable.jsp"><i>🕐</i> My Timetable</a></li>
+                <li><a href="approvals.jsp"><i>✅</i> Approvals</a></li>
+                <li><a href="notices.jsp"><i>📢</i> Notices</a></li>
+                <li><a href="notifications.jsp"><i>🔔</i> Notifications</a></li>
                 <li><a href="../index.html"><i>🚪</i> Logout</a></li>
             </ul>
         </aside>
         <main class="main-content">
             <nav class="top-nav">
-                <h1>🕐 My Timetable</h1>
+                <h1>📝 Assignments</h1>
                 <div class="top-nav-right">
-                    <div class="notification-icon" onclick="window.location.href='notifications.html'" style="cursor: pointer;">🔔<span class="notification-badge">0</span></div>
+                    <div class="notification-icon" onclick="window.location.href='notifications.jsp'" style="cursor: pointer;">🔔<span class="notification-badge">0</span></div>
                     <div class="user-info">
                         <div class="user-avatar">F</div>
                         <span class="user-name">Faculty</span>
@@ -78,36 +69,19 @@ tbody tr:hover { background: rgba(200, 169, 81, 0.05); transition: background 0.
                 </div>
             </nav>
             <div class="content-card">
-                <div class="card-header">
-                    <h3>📅 My Weekly Timetable</h3>
-                    <div>
-                        <button class="btn btn-secondary">Download PDF</button>
-                    </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="color: #C8A951;">Assignment Management</h3>
+                    <button class="btn btn-primary" style="display: inline-block; width: auto; padding: 12px 24px;">+ Create New Assignment</button>
                 </div>
-                
-                <div style="overflow-x: auto;">
-                    <table style="min-width: 900px;">
-                        <thead>
-                            <tr>
-                                <th style="width: 100px;">Time</th>
-                                <th>Monday</th>
-                                <th>Tuesday</th>
-                                <th>Wednesday</th>
-                                <th>Thursday</th>
-                                <th>Friday</th>
-                                <th>Saturday</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="7" style="text-align: center; padding: 40px; color: rgba(255,255,255,0.6);">
-                                    <div style="font-size: 3rem; margin-bottom: 10px;">📅</div>
-                                    <div>No timetable data available</div>
-                                    <small>Your weekly schedule will appear here</small>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            </div>
+            
+            <div id="assignmentsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;">
+                <div class="content-card" style="grid-column: 1 / -1;">
+                    <div style="padding: 40px; text-align: center; color: rgba(255,255,255,0.6);">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">📝</div>
+                        <div style="font-size: 1.25rem; margin-bottom: 10px;">No assignments created yet</div>
+                        <small>Click "Create New Assignment" to get started</small>
+                    </div>
                 </div>
             </div>
         </main>

@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,17 +46,17 @@ textarea.form-control { resize: vertical; min-height: 100px; font-weight: 400; l
                 <p>University ERP</p>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="dashboard.html"><i>📊</i> Dashboard</a></li>
-                <li><a href="profile.html"><i>👤</i> My Profile</a></li>
-                <li><a href="attendance-marking.html"><i>📅</i> Mark Attendance</a></li>
-                <li><a href="view-attendance.html"><i>📊</i> View Attendance</a></li>
-                <li><a href="assignments.html"><i>📝</i> Assignments</a></li>
-                <li><a href="marks-entry.html"><i>✏️</i> Marks Entry</a></li>
-                <li><a href="students.html"><i>👥</i> My Students</a></li>
-                <li><a href="timetable.html"><i>🕐</i> My Timetable</a></li>
-                <li><a href="approvals.html"><i>✅</i> Approvals</a></li>
-                <li><a href="notices.html" class="active"><i>📢</i> Notices</a></li>
-                <li><a href="notifications.html"><i>🔔</i> Notifications</a></li>
+                <li><a href="dashboard.jsp"><i>📊</i> Dashboard</a></li>
+                <li><a href="profile.jsp"><i>👤</i> My Profile</a></li>
+                <li><a href="attendance-marking.jsp"><i>📅</i> Mark Attendance</a></li>
+                <li><a href="view-attendance.jsp"><i>📊</i> View Attendance</a></li>
+                <li><a href="assignments.jsp"><i>📝</i> Assignments</a></li>
+                <li><a href="marks-entry.jsp"><i>✏️</i> Marks Entry</a></li>
+                <li><a href="students.jsp"><i>👥</i> My Students</a></li>
+                <li><a href="timetable.jsp"><i>🕐</i> My Timetable</a></li>
+                <li><a href="approvals.jsp"><i>✅</i> Approvals</a></li>
+                <li><a href="notices.jsp" class="active"><i>📢</i> Notices</a></li>
+                <li><a href="notifications.jsp"><i>🔔</i> Notifications</a></li>
                 <li><a href="../index.html"><i>🚪</i> Logout</a></li>
             </ul>
         </aside>
@@ -63,7 +64,7 @@ textarea.form-control { resize: vertical; min-height: 100px; font-weight: 400; l
             <nav class="top-nav">
                 <h1>📢 Notices</h1>
                 <div class="top-nav-right">
-                    <div class="notification-icon" onclick="window.location.href='notifications.html'" style="cursor: pointer;">🔔<span class="notification-badge">0</span></div>
+                    <div class="notification-icon" onclick="window.location.href='notifications.jsp'" style="cursor: pointer;">🔔<span class="notification-badge">0</span></div>
                     <div class="user-info">
                         <div class="user-avatar">F</div>
                         <span class="user-name">Faculty</span>
@@ -159,24 +160,22 @@ textarea.form-control { resize: vertical; min-height: 100px; font-weight: 400; l
             
             // Create notice card
             const noticeCard = document.createElement('div');
-            noticeCard.style.cssText = `padding: 20px; background: ${colors.bg}; border-left: 4px solid ${colors.border}; border-radius: 8px;`;
-            noticeCard.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                    <div>
-                        <h4 style="color: ${colors.text}; margin-bottom: 5px;">${title}</h4>
-                        <p style="color: rgba(255,255,255,0.6); font-size: 0.875rem;">Posted on ${today} • ${audience}</p>
-                    </div>
-                    <span style="padding: 4px 12px; background: rgba(${priority === 'Urgent' ? '239, 68, 68' : priority === 'High' ? '251, 146, 60' : '59, 130, 246'}, 0.2); color: ${colors.text}; border-radius: 12px; font-size: 0.875rem;">${priority}</span>
-                </div>
-                <p style="color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 10px;">
-                    ${content}
-                </p>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <span style="color: rgba(255,255,255,0.6); font-size: 0.875rem;">👁️ Viewed by: 0/30 students</span>
-                    <button class="btn btn-secondary" style="padding: 6px 15px; font-size: 0.875rem; margin-left: auto; display: inline-block; width: auto;" onclick="editNotice('${title}', '${audience}', '${priority}', '${content}')">Edit</button>
-                    <button class="btn" style="padding: 6px 15px; font-size: 0.875rem; background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); display: inline-block; width: auto;" onclick="deleteNotice(this)">Delete</button>
-                </div>
-            `;
+            noticeCard.style.cssText = 'padding: 20px; background: ' + colors.bg + '; border-left: 4px solid ' + colors.border + '; border-radius: 8px;';
+            noticeCard.innerHTML = '<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">' +
+                    '<div>' +
+                    '<h4 style="color: ' + colors.text + '; margin-bottom: 5px;">' + title + '</h4>' +
+                    '<p style="color: rgba(255,255,255,0.6); font-size: 0.875rem;">Posted on ' + today + ' • ' + audience + '</p>' +
+                    '</div>' +
+                    '<span style="padding: 4px 12px; background: rgba(' + (priority === 'Urgent' ? '239, 68, 68' : priority === 'High' ? '251, 146, 60' : '59, 130, 246') + ', 0.2); color: ' + colors.text + '; border-radius: 12px; font-size: 0.875rem;">' + priority + '</span>' +
+                    '</div>' +
+                    '<p style="color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 10px;">' +
+                    content +
+                    '</p>' +
+                    '<div style="display: flex; gap: 10px; align-items: center;">' +
+                    '<span style="color: rgba(255,255,255,0.6); font-size: 0.875rem;">👁️ Viewed by: 0/30 students</span>' +
+                    '<button class="btn btn-secondary" style="padding: 6px 15px; font-size: 0.875rem; margin-left: auto; display: inline-block; width: auto;" onclick="editNotice(\'' + title + '\', \'' + audience + '\', \'' + priority + '\', \'' + content + '\')">Edit</button>' +
+                    '<button class="btn" style="padding: 6px 15px; font-size: 0.875rem; background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); display: inline-block; width: auto;" onclick="deleteNotice(this)">Delete</button>' +
+                    '</div>';
             
             // Add to notices container
             const container = document.getElementById('noticesContainer');

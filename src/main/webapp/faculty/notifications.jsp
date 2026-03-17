@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,17 +46,17 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
                 <p>University ERP</p>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="dashboard.html"><i>📊</i> Dashboard</a></li>
-                <li><a href="profile.html"><i>👤</i> My Profile</a></li>
-                <li><a href="attendance-marking.html"><i>📅</i> Mark Attendance</a></li>
-                <li><a href="view-attendance.html"><i>📊</i> View Attendance</a></li>
-                <li><a href="assignments.html"><i>📝</i> Assignments</a></li>
-                <li><a href="marks-entry.html"><i>✏️</i> Marks Entry</a></li>
-                <li><a href="students.html"><i>👥</i> My Students</a></li>
-                <li><a href="timetable.html"><i>🕐</i> My Timetable</a></li>
-                <li><a href="approvals.html"><i>✅</i> Approvals</a></li>
-                <li><a href="notices.html"><i>📢</i> Notices</a></li>
-                <li><a href="notifications.html" class="active"><i>🔔</i> Notifications</a></li>
+                <li><a href="dashboard.jsp"><i>📊</i> Dashboard</a></li>
+                <li><a href="profile.jsp"><i>👤</i> My Profile</a></li>
+                <li><a href="attendance-marking.jsp"><i>📅</i> Mark Attendance</a></li>
+                <li><a href="view-attendance.jsp"><i>📊</i> View Attendance</a></li>
+                <li><a href="assignments.jsp"><i>📝</i> Assignments</a></li>
+                <li><a href="marks-entry.jsp"><i>✏️</i> Marks Entry</a></li>
+                <li><a href="students.jsp"><i>👥</i> My Students</a></li>
+                <li><a href="timetable.jsp"><i>🕐</i> My Timetable</a></li>
+                <li><a href="approvals.jsp"><i>✅</i> Approvals</a></li>
+                <li><a href="notices.jsp"><i>📢</i> Notices</a></li>
+                <li><a href="notifications.jsp" class="active"><i>🔔</i> Notifications</a></li>
                 <li><a href="../index.html"><i>🚪</i> Logout</a></li>
             </ul>
         </aside>
@@ -63,7 +64,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
             <nav class="top-nav">
                 <h1>🔔 Notifications</h1>
                 <div class="top-nav-right">
-                    <div class="notification-icon" onclick="window.location.href='notifications.html'" style="cursor: pointer;">🔔<span class="notification-badge">0</span></div>
+                    <div class="notification-icon" onclick="window.location.href='notifications.jsp'" style="cursor: pointer;">🔔<span class="notification-badge">0</span></div>
                     <div class="user-info">
                         <div class="user-avatar">F</div>
                         <span class="user-name">Faculty</span>
@@ -117,31 +118,31 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
         }
         
         function reviewSubmission(studentName, studentID, assignmentTitle) {
-            const message = `📝 Assignment Submission Review\n\n` +
-                          `Student: ${studentName} (${studentID})\n` +
-                          `Assignment: ${assignmentTitle}\n` +
-                          `Submitted: Feb 21, 2026 at 2:30 PM\n\n` +
-                          `Opening assignment review panel...`;
+            const message = '📝 Assignment Submission Review\n\n' +
+                          'Student: ' + studentName + ' (' + studentID + ')\n' +
+                          'Assignment: ' + assignmentTitle + '\n' +
+                          'Submitted: Feb 21, 2026 at 2:30 PM\n\n' +
+                          'Opening assignment review panel...';
             alert(message);
             
             // Redirect to assignments page for review
             if (confirm('Redirect to Assignments page to review submission?')) {
-                window.location.href = 'assignments.html';
+                window.location.href = 'assignments.jsp';
             }
         }
         
         function viewRequest(studentName, studentID, requestType, duration, reason) {
-            const message = `🔔 ${requestType} Request Details\n\n` +
-                          `Student: ${studentName} (${studentID})\n` +
-                          `Request Type: ${requestType}\n` +
-                          `Duration: ${duration}\n` +
-                          `Reason: ${reason}\n\n` +
-                          `Opening approvals page...`;
+            const message = '🔔 ' + requestType + ' Request Details\n\n' +
+                          'Student: ' + studentName + ' (' + studentID + ')\n' +
+                          'Request Type: ' + requestType + '\n' +
+                          'Duration: ' + duration + '\n' +
+                          'Reason: ' + reason + '\n\n' +
+                          'Opening approvals page...';
             alert(message);
             
             // Redirect to approvals page
             if (confirm('Redirect to Approvals page to review this request?')) {
-                window.location.href = 'approvals.html';
+                window.location.href = 'approvals.jsp';
             }
         }
         
@@ -158,7 +159,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
                         const remainingNotifications = document.querySelectorAll('.content-card[style*="border-left: 4px"]').length - 1;
                         const header = document.querySelector('h3[style*="color: #C8A951"]');
                         if (header) {
-                            header.textContent = `All Notifications (${remainingNotifications})`;
+                            header.textContent = 'All Notifications (' + remainingNotifications + ')';
                         }
                         const badge = document.querySelector('.notification-badge');
                         if (badge && remainingNotifications > 0) {
@@ -190,7 +191,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
             // Update notification count in header
             const header = document.querySelector('h3[style*="color: #C8A951"]');
             if (header) {
-                header.textContent = `All Notifications (${visibleCount})`;
+                header.textContent = 'All Notifications (' + visibleCount + ')';
             }
         }
         

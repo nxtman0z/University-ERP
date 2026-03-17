@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,17 +45,17 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
                 <p>University ERP</p>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="dashboard.html"><i>📊</i> Dashboard</a></li>
-                <li><a href="profile.html"><i>👤</i> My Profile</a></li>
-                <li><a href="attendance-marking.html"><i>📅</i> Mark Attendance</a></li>
-                <li><a href="view-attendance.html"><i>📊</i> View Attendance</a></li>
-                <li><a href="assignments.html"><i>📝</i> Assignments</a></li>
-                <li><a href="marks-entry.html"><i>✏️</i> Marks Entry</a></li>
-                <li><a href="students.html"><i>👥</i> My Students</a></li>
-                <li><a href="timetable.html"><i>🕐</i> My Timetable</a></li>
-                <li><a href="approvals.html" class="active"><i>✅</i> Approvals</a></li>
-                <li><a href="notices.html"><i>📢</i> Notices</a></li>
-                <li><a href="notifications.html"><i>🔔</i> Notifications</a></li>
+                <li><a href="dashboard.jsp"><i>📊</i> Dashboard</a></li>
+                <li><a href="profile.jsp"><i>👤</i> My Profile</a></li>
+                <li><a href="attendance-marking.jsp"><i>📅</i> Mark Attendance</a></li>
+                <li><a href="view-attendance.jsp"><i>📊</i> View Attendance</a></li>
+                <li><a href="assignments.jsp"><i>📝</i> Assignments</a></li>
+                <li><a href="marks-entry.jsp"><i>✏️</i> Marks Entry</a></li>
+                <li><a href="students.jsp"><i>👥</i> My Students</a></li>
+                <li><a href="timetable.jsp"><i>🕐</i> My Timetable</a></li>
+                <li><a href="approvals.jsp" class="active"><i>✅</i> Approvals</a></li>
+                <li><a href="notices.jsp"><i>📢</i> Notices</a></li>
+                <li><a href="notifications.jsp"><i>🔔</i> Notifications</a></li>
                 <li><a href="../index.html"><i>🚪</i> Logout</a></li>
             </ul>
         </aside>
@@ -62,7 +63,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
             <nav class="top-nav">
                 <h1>✅ Approvals</h1>
                 <div class="top-nav-right">
-                    <div class="notification-icon" onclick="window.location.href='notifications.html'" style="cursor: pointer;">🔔<span class="notification-badge">0</span></div>
+                    <div class="notification-icon" onclick="window.location.href='notifications.jsp'" style="cursor: pointer;">🔔<span class="notification-badge">0</span></div>
                     <div class="user-info">
                         <div class="user-avatar">F</div>
                         <span class="user-name">Faculty</span>
@@ -93,11 +94,11 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
     
     <script>
         function approveRequest(button, student, type) {
-            if(confirm(`Approve ${type} request for ${student}?`)) {
+            if(confirm('Approve ' + type + ' request for ' + student + '?')) {
                 // Find the parent card element
                 const card = button.closest('.request-item');
                 
-                alert(`✅ ${type} request approved successfully!\n\nStudent: ${student}\nNotifications sent via:\n• Email\n• SMS\n• Portal notification`);
+                alert('✅ ' + type + ' request approved successfully!\n\nStudent: ' + student + '\nNotifications sent via:\n• Email\n• SMS\n• Portal notification');
                 
                 // Remove the card with fade-out effect
                 if(card) {
@@ -112,13 +113,13 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
         }
         
         function rejectRequest(button, student, type) {
-            if(confirm(`Reject ${type} request for ${student}?`)) {
+            if(confirm('Reject ' + type + ' request for ' + student + '?')) {
                 const reason = prompt('Please provide reason for rejection:');
                 if(reason) {
                     // Find the parent card element
                     const card = button.closest('.request-item');
                     
-                    alert(`❌ ${type} request rejected.\n\nStudent: ${student}\nReason: ${reason}\n\nNotification sent to student with rejection reason.`);
+                    alert('❌ ' + type + ' request rejected.\n\nStudent: ' + student + '\nReason: ' + reason + '\n\nNotification sent to student with rejection reason.');
                     
                     // Remove the card with fade-out effect
                     if(card) {
@@ -146,22 +147,22 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
                                  filter === 'leave' ? 'Leave' :
                                  filter === 'assignment' ? 'Assignment Extension' : 'Attendance Correction';
                 const suffix = filter === 'all' ? 'Requests' : 'Requests';
-                header.textContent = `Pending Approvals (${visibleItems.length}) - ${filterName} ${suffix}`;
+                header.textContent = 'Pending Approvals (' + visibleItems.length + ') - ' + filterName + ' ' + suffix;
             }
         }
         
         function viewDetails(name, rollNo, type, details, fromDate, toDate) {
-            alert(`📋 Request Details\n\n` +
-                  `Student: ${name} (${rollNo})\n` +
-                  `Type: ${type}\n` +
-                  `Details: ${details}\n` +
-                  `From: ${fromDate}\n` +
-                  `To: ${toDate}\n\n` +
-                  `In a full implementation, this would open a detailed modal view with:\n` +
-                  `• Complete student profile\n` +
-                  `• Attached documents/proof\n` +
-                  `• Previous request history\n` +
-                  `• Comments section`);
+            alert('📋 Request Details\n\n' +
+                  'Student: ' + name + ' (' + rollNo + ')\n' +
+                  'Type: ' + type + '\n' +
+                  'Details: ' + details + '\n' +
+                  'From: ' + fromDate + '\n' +
+                  'To: ' + toDate + '\n\n' +
+                  'In a full implementation, this would open a detailed modal view with:\n' +
+                  '• Complete student profile\n' +
+                  '• Attached documents/proof\n' +
+                  '• Previous request history\n' +
+                  '• Comments section');
         }
         
         function filterRequests() {
@@ -186,8 +187,8 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans
                                  filter === 'assignment' ? 'Assignment Extension' : 'Attendance Correction';
                 const suffix = 'Requests';
                 header.textContent = visibleCount > 0 
-                    ? `Pending Approvals (${visibleCount}) - ${filterName} ${suffix}`
-                    : `No Pending ${filterName} ${suffix}`;
+                    ? 'Pending Approvals (' + visibleCount + ') - ' + filterName + ' ' + suffix
+                    : 'No Pending ' + filterName + ' ' + suffix;
             }
         }
         
