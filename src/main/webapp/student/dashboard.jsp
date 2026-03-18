@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard - University ERP</title>
-    <link rel="stylesheet" href="../style.css">
     <style>
 /* Student Portal Common Styles */
 * {
@@ -599,6 +598,7 @@ select.form-control option:checked {
                 <li><a href="internal-marks.jsp"><i>📊</i> Internal Marks</a></li>
                 <li><a href="exam.jsp"><i>📋</i> Exam</a></li>
                 <li><a href="results.jsp"><i>🏆</i> Results</a></li>
+                <li><a href="library-pass.jsp"><i>📖</i> Library Pass</a></li>
                 <li><a href="requests.jsp"><i>📄</i> Requests</a></li>
                 <li><a href="notifications.jsp"><i>🔔</i> Notifications</a></li>
                 <li><a href="../index.html" onclick="return confirmLogout()"><i>🚪</i> Logout</a></li>
