@@ -599,7 +599,7 @@
             const toastText = document.getElementById('toastText');
             
             toast.className = 'toast-message show ' + type;
-            toastIcon.textContent = type === 'success' ? '✅' : '❌';
+            toastIcon.textContent = type == 'success' ? '✅' : '❌';
             toastText.textContent = message;
             
             setTimeout(() => {
@@ -881,3 +881,4 @@
     </script>
 </body>
 </html>
+

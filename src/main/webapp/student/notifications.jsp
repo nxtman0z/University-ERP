@@ -580,7 +580,7 @@ body {
                 top: 20px;
                 right: 20px;
                 padding: 12px 20px;
-                background: ${type === 'success' ? '#10b981' : type === 'warning' ? '#fb923c' : '#3b82f6'};
+                background: ${type == 'success' ? '#10b981' : type === 'warning' ? '#fb923c' : '#3b82f6'};
                 color: white;
                 border-radius: 8px;
                 z-index: 9999;
@@ -592,3 +592,4 @@ body {
     </script>
 </body>
 </html>
+

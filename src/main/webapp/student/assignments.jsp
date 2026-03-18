@@ -764,7 +764,7 @@ function showNotification(message, type) {
     var notification = document.createElement('div');
     notification.className = "notification notification-" + type;
     notification.textContent = message;
-    var borderColor = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6';
+    var borderColor = type == 'success' ? '#10b981' : type == 'error' ? '#ef4444' : '#3b82f6';
     notification.style.cssText = "position: fixed; top: 20px; right: 20px; background: rgba(11, 31, 59, 0.95); color: white; padding: 15px 20px; border-radius: 8px; border-left: 4px solid " + borderColor + "; z-index: 10000; animation: slideInRight 0.3s ease;";
     
     document.body.appendChild(notification);
@@ -827,3 +827,4 @@ function showNotification(message, type) {
     </script>
 </body>
 </html>
+
