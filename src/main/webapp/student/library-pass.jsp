@@ -1,0 +1,883 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Pass Request - Student Portal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary-color: #C8A951;
+            --dark-bg: #0A1929;
+            --card-bg: #1A2332;
+            --sidebar-bg: #0D1B2A;
+            --text-primary: #fff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(200, 169, 81, 0.2);
+            --success-color: #4CAF50;
+            --danger-color: #f44336;
+            --warning-color: #ff9800;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            background: rgba(200, 169, 81, 0.05);
+        }
+        
+        .sidebar-header h2 {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .sidebar-header p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 1rem 0;
+        }
+        
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            font-size: 0.9rem;
+        }
+        
+        .sidebar-menu li a:hover,
+        .sidebar-menu li a.active {
+            background: rgba(200, 169, 81, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+        
+        .sidebar-menu li a .icon {
+            display: inline-block;
+            width: 24px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .top-nav h1 {
+            font-size: 1.75rem;
+            color: var(--text-primary);
+        }
+        
+        .top-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .notification-icon {
+            position: relative;
+            font-size: 1.5rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--dark-bg);
+        }
+        
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .card-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header h3 {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-header p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .info-box {
+            background: rgba(200, 169, 81, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+        }
+        
+        .info-box h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .info-box ul li {
+            padding: 0.25rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .info-box ul li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .form-group label span {
+            color: var(--danger-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .form-control:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .file-upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .file-upload-area * {
+            pointer-events: none;
+        }
+        
+        .file-upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(200, 169, 81, 0.05);
+        }
+        
+        .file-upload-area.dragover {
+            border-color: var(--primary-color);
+            background: rgba(200, 169, 81, 0.1);
+        }
+        
+        .file-upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .file-upload-text {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .file-upload-hint {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .file-preview {
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .file-preview.active {
+            display: block;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+        }
+        
+        .file-name {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .remove-file {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--dark-bg);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(200, 169, 81, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.4);
+        }
+        
+        .status-approved {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 1px solid rgba(76, 175, 80, 0.4);
+        }
+        
+        .status-rejected {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.4);
+        }
+        
+        .request-history {
+            margin-top: 2rem;
+        }
+        
+        .history-item {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+        
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .history-date {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        .toast-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .toast-message.show {
+            display: flex;
+            animation: slideInRight 0.3s ease;
+        }
+        
+        .toast-message.success {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .toast-message.error {
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🎓 Student Portal</h2>
+                <p>University ERP</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.jsp"><span class="icon">📊</span> Dashboard</a></li>
+                <li><a href="profile.jsp"><span class="icon">👤</span> My Profile</a></li>
+                <li><a href="attendance.jsp"><span class="icon">📅</span> Attendance</a></li>
+                <li><a href="timetable.jsp"><span class="icon">📋</span> Timetable</a></li>
+                <li><a href="assignments.jsp"><span class="icon">📝</span> Assignments</a></li>
+                <li><a href="internal-marks.jsp"><span class="icon">📊</span> Internal Marks</a></li>
+                <li><a href="exam.jsp"><span class="icon">📃</span> Exam</a></li>
+                <li><a href="results.jsp"><span class="icon">🏆</span> Results</a></li>
+                <li><a href="fees.jsp"><span class="icon">💰</span> Fees</a></li>
+                <li><a href="library-pass.jsp" class="active"><span class="icon">📖</span> Library Pass</a></li>
+                <li><a href="requests.jsp"><span class="icon">📨</span> Requests</a></li>
+                <li><a href="notifications.jsp"><span class="icon">🔔</span> Notifications</a></li>
+                <li><a href="../index.html" onclick="return confirmLogout()"><span class="icon">🚪</span> Logout</a></li>
+            </ul>
+        </aside>
+        
+        <main class="main-content">
+            <nav class="top-nav">
+                <h1>📖 Library Pass Request</h1>
+                <div class="top-nav-right">
+                    <a href="notifications.jsp" class="notification-icon" style="text-decoration: none;">
+                        🔔
+                        <span class="notification-badge">5</span>
+                    </a>
+                    <div class="user-info">
+                        <div class="user-avatar">S</div>
+                        <span class="user-name">Student</span>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="content-card">
+                <div class="card-header">
+                    <h3>📝 Request Library Access Pass</h3>
+                    <p>Submit your identity card to get access to the university library</p>
+                </div>
+                
+                <div class="info-box">
+                    <h4>📋 Requirements</h4>
+                    <ul>
+                        <li>Upload a clear photo or scanned copy of your student ID card</li>
+                        <li>Accepted formats: JPEG, JPG, PNG, PDF</li>
+                        <li>Maximum file size: 5 MB</li>
+                        <li>Ensure all details on the ID card are clearly visible</li>
+                        <li>Request will be reviewed by admin within 24-48 hours</li>
+                    </ul>
+                </div>
+                
+                <form id="libraryPassForm">
+                    <div class="form-group">
+                        <label>Student Name <span>*</span></label>
+                        <input type="text" class="form-control" id="studentName" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Roll Number <span>*</span></label>
+                        <input type="text" class="form-control" id="rollNumber" placeholder="Enter your roll number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Department <span>*</span></label>
+                        <input type="text" class="form-control" id="department" placeholder="Enter your department" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email <span>*</span></label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Phone Number <span>*</span></label>
+                        <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Upload Identity Card <span>*</span></label>
+                        <div class="file-upload-area" id="uploadArea">
+                            <div class="file-upload-icon">📄</div>
+                            <div class="file-upload-text">Click to upload or drag and drop</div>
+                            <div class="file-upload-hint">JPEG, JPG, PNG or PDF (Max 5MB)</div>
+                        </div>
+                        <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.pdf">
+                        
+                        <div class="file-preview" id="filePreview">
+                            <img id="previewImage" class="preview-image" alt="ID Card Preview">
+                            <div class="file-info">
+                                <span class="file-name" id="fileName"></span>
+                                <button type="button" class="remove-file" onclick="removeFile()">🗑️ Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
+                        📤 Submit Request
+                    </button>
+                </form>
+            </div>
+            
+            <div class="content-card">
+                <div class="card-header">
+                    <h3>📜 Request History</h3>
+                    <p>View your previous library pass requests</p>
+                </div>
+                
+                <div class="request-history" id="requestHistory">
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <strong>Request #LIB001</strong>
+                                <span class="status-badge status-approved" style="margin-left: 1rem;">Approved</span>
+                            </div>
+                            <div class="history-date">Submitted: Feb 15, 2026</div>
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                            Your library pass has been approved. Valid until: Dec 31, 2026
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Toast Message -->
+    <div id="toastMessage" class="toast-message">
+        <span id="toastIcon"></span>
+        <span id="toastText"></span>
+    </div>
+    
+    <script src="../js/main.js"></script>
+    <script>
+        let selectedFile = null;
+        
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastText = document.getElementById('toastText');
+            
+            toast.className = 'toast-message show ' + type;
+            toastIcon.textContent = type === 'success' ? '✅' : '❌';
+            toastText.textContent = message;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        function confirmLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.clear();
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('userId');
+                return true;
+            }
+            return false;
+        }
+        
+        // Drag and drop functionality
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        
+        if (uploadArea && fileInput) {
+            // Click to upload
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            // File input change
+            fileInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    handleFile(file);
+                }
+            });
+            
+            // Drag over
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            // Drag leave
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+            
+            // Drop
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFile(files[0]);
+                }
+            });
+        }
+        
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+        
+        function handleFile(file) {
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+            if (!validTypes.includes(file.type)) {
+                showToast('Invalid file type. Please upload JPEG, JPG, PNG or PDF', 'error');
+                return;
+            }
+            
+            // Validate file size (5MB)
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                showToast('File size exceeds 5MB. Please upload a smaller file', 'error');
+                return;
+            }
+            
+            selectedFile = file;
+            
+            // Show preview
+            const filePreview = document.getElementById('filePreview');
+            const fileName = document.getElementById('fileName');
+            const previewImage = document.getElementById('previewImage');
+            
+            fileName.textContent = file.name;
+            
+            if (file.type === 'application/pdf') {
+                previewImage.src = 'https://via.placeholder.com/400x250/1A2332/C8A951?text=PDF+File';
+            } else {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            filePreview.classList.add('active');
+            checkFormValidity();
+            
+            showToast('File uploaded successfully!', 'success');
+        }
+        
+        function removeFile() {
+            selectedFile = null;
+            document.getElementById('filePreview').classList.remove('active');
+            document.getElementById('fileInput').value = '';
+            checkFormValidity();
+        }
+        
+        function checkFormValidity() {
+            const studentName = document.getElementById('studentName').value.trim();
+            const rollNumber = document.getElementById('rollNumber').value.trim();
+            const department = document.getElementById('department').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (studentName && rollNumber && department && email && phone && selectedFile) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+        
+        // Load request history from localStorage
+        function loadRequestHistory() {
+            const libraryRequests = JSON.parse(localStorage.getItem('libraryRequests') || '[]');
+            const historyContainer = document.getElementById('requestHistory');
+            
+            if (libraryRequests.length === 0) {
+                historyContainer.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                        <p>No previous requests found. Submit your first library pass request above!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            historyContainer.innerHTML = '';
+            
+            // Display requests in reverse order (newest first)
+            const reversedRequests = [...libraryRequests].reverse();
+            reversedRequests.forEach(req => {
+                const statusMessage = req.status === 'approved' 
+                    ? 'Your library pass has been approved. You can now access the library.'
+                    : req.status === 'rejected'
+                    ? 'Your request was not approved. Please contact admin for details.'
+                    : 'Your request is under review by admin. Expected response within 24-48 hours.';
+                
+                const historyHTML = `
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <strong>Request #${req.id}</strong>
+                                <span class="status-badge status-${req.status}" style="margin-left: 1rem;">${req.status.charAt(0).toUpperCase() + req.status.slice(1)}</span>
+                            </div>
+                            <div class="history-date">Submitted: ${req.submittedOn}</div>
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                            ${statusMessage}
+                        </div>
+                    </div>
+                `;
+                
+                historyContainer.insertAdjacentHTML('beforeend', historyHTML);
+            });
+        }
+        
+        // Add input event listeners to check form validity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load existing request history
+            loadRequestHistory();
+            
+            const formInputs = ['studentName', 'rollNumber', 'department', 'email', 'phone'];
+            formInputs.forEach(inputId => {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    input.addEventListener('input', checkFormValidity);
+                }
+            });
+        });
+        
+        // Form submission
+        document.getElementById('libraryPassForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate all fields
+            const studentName = document.getElementById('studentName').value.trim();
+            const rollNumber = document.getElementById('rollNumber').value.trim();
+            const department = document.getElementById('department').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            
+            if (!studentName) {
+                showToast('Please enter your name', 'error');
+                return;
+            }
+            
+            if (!rollNumber) {
+                showToast('Please enter your roll number', 'error');
+                return;
+            }
+            
+            if (!department) {
+                showToast('Please enter your department', 'error');
+                return;
+            }
+            
+            if (!email) {
+                showToast('Please enter your email address', 'error');
+                return;
+            }
+            
+            if (!phone) {
+                showToast('Please enter your phone number', 'error');
+                return;
+            }
+            
+            if (!selectedFile) {
+                showToast('Please upload your identity card', 'error');
+                return;
+            }
+            
+            // Simulate submission
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Submitting...';
+            
+            // Save the uploaded image to localStorage so admin can view it
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imageData = e.target.result;
+                
+                // Get existing requests from localStorage
+                let libraryRequests = JSON.parse(localStorage.getItem('libraryRequests') || '[]');
+                
+                // Create new request
+                const newRequest = {
+                    id: 'LIB' + String(libraryRequests.length + 1).padStart(3, '0'),
+                    studentName: studentName,
+                    rollNumber: rollNumber,
+                    department: department,
+                    email: email,
+                    phone: phone,
+                    submittedOn: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+                    status: 'pending',
+                    idCardImage: imageData,
+                    fileName: selectedFile.name
+                };
+                
+                // Add to requests array
+                libraryRequests.push(newRequest);
+                
+                // Save to localStorage
+                localStorage.setItem('libraryRequests', JSON.stringify(libraryRequests));
+                
+                setTimeout(() => {
+                    showToast('Library pass request submitted successfully! You will be notified once approved.', 'success');
+                    submitBtn.textContent = '✅ Request Submitted';
+                    
+                    // Reload the request history to show the new submission
+                    loadRequestHistory();
+                    
+                    // Reset form after 2 seconds
+                    setTimeout(() => {
+                        document.getElementById('libraryPassForm').reset();
+                        removeFile();
+                        submitBtn.textContent = '📤 Submit Request';
+                        submitBtn.disabled = true;
+                    }, 2000);
+                }, 1500);
+            };
+            
+            reader.readAsDataURL(selectedFile);
+        });
+    </script>
+</body>
+</html>
