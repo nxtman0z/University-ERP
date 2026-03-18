@@ -722,7 +722,7 @@ tbody tr:hover {
                 top: 20px;
                 right: 20px;
                 padding: 15px 20px;
-                background: ${type == 'success' ? '#10b981' : type == 'error' ? '#ef4444' : '#3b82f6'};
+                background: \${type == 'success' ? '#10b981' : type == 'error' ? '#ef4444' : '#3b82f6'};
                 color: white;
                 border-radius: 8px;
                 z-index: 9999;
@@ -742,7 +742,7 @@ tbody tr:hover {
                 const cols = row.querySelectorAll('td, th');
                 const csvCols = Array.from(cols).map(col => {
                     const text = col.textContent.trim();
-                    return `"${text.replace(/"/g, '""')}"`;
+                    return `"\${text.replace(/"/g, '""')}"`;
                 });
                 csv.push(csvCols.join(','));
             });
