@@ -739,9 +739,6 @@ select.form-control option:checked {
     
     <script src="../js/main.js"></script>
     <script>
-        // Check authentication
-        SessionManager.checkAuth();
-
         // Student Portal Common JavaScript Functions
 
         // Logout confirmation
