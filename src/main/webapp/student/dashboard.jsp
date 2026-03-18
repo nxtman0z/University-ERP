@@ -803,7 +803,7 @@ select.form-control option:checked {
                 color: white;
                 padding: 15px 20px;
                 border-radius: 8px;
-                border-left: 4px solid ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                border-left: 4px solid ${type == 'success' ? '#10b981' : type == 'error' ? '#ef4444' : '#3b82f6'};
                 z-index: 10000;
                 animation: slideInRight 0.3s ease;
             `;
