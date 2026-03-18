@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exam - Student Portal</title>
-    <link rel="stylesheet" href="../style.css">
     <style>
 /* Student Portal Common Styles */
 * {
@@ -818,8 +817,6 @@ select.form-control option:checked {
     
     <script src="../js/main.js"></script>
     <script>
-        SessionManager.checkAuth();
-
         // Student Portal Common JavaScript Functions
 
         // Logout confirmation

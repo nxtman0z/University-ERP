@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fees & Payments - Student Portal</title>
-    <link rel="stylesheet" href="../style.css">
     <style>
 /* Student Portal Common Styles */
 * {
@@ -1282,8 +1281,6 @@ function downloadReceipt(id) {
     
     <script src="../js/main.js"></script>
     <script>
-        SessionManager.checkAuth();
-        
         function payFee(semester) {
             document.getElementById('paySemester').value = 'Semester ' + semester;
             if (semester === 4) {

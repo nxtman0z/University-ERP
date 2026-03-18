@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance - Student Portal</title>
-    <link rel="stylesheet" href="../style.css">
     <style>
 /* Student Portal Common Styles */
 * {
@@ -709,8 +708,6 @@ tbody tr:hover {
     
     <script src="../js/main.js"></script>
     <script>
-        SessionManager.checkAuth();
-
         function confirmLogout() {
             if (confirm('Are you sure you want to logout?')) {
                 return true;
