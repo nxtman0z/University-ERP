@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+
+    <display-name>UniversityERP</display-name>
+
+    <!-- Admin Login Servlet -->
+    <servlet>
+        <servlet-name>AdminLoginServlet</servlet-name>
+        <servlet-class>com.project.servlet.AdminLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminLoginServlet</servlet-name>
+        <url-pattern>/adminLogin</url-pattern>
+    </servlet-mapping>
+
+    <!-- Faculty Login Servlet -->
+    <servlet>
+        <servlet-name>FacultyLoginServlet</servlet-name>
+        <servlet-class>com.project.servlet.FacultyLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FacultyLoginServlet</servlet-name>
+        <url-pattern>/facultyLogin</url-pattern>
+    </servlet-mapping>
+
+    <!-- Student Login Servlet -->
+    <servlet>
+        <servlet-name>StudentLoginServlet</servlet-name>
+        <servlet-class>com.project.servlet.StudentLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StudentLoginServlet</servlet-name>
+        <url-pattern>/studentLogin</url-pattern>
+    </servlet-mapping>
+
+    <!-- Add Student Servlet -->
+    <servlet>
+        <servlet-name>AddStudentServlet</servlet-name>
+        <servlet-class>com.project.servlet.AddStudentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddStudentServlet</servlet-name>
+        <url-pattern>/addStudent</url-pattern>
+    </servlet-mapping>
+
+    <!-- Add Faculty Servlet -->
+    <servlet>
+        <servlet-name>AddFacultyServlet</servlet-name>
+        <servlet-class>com.project.servlet.AddFacultyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddFacultyServlet</servlet-name>
+        <url-pattern>/addFaculty</url-pattern>
+    </servlet-mapping>
+
+    <!-- Create Timetable Servlet -->
+    <servlet>
+        <servlet-name>CreateTimetableServlet</servlet-name>
+        <servlet-class>com.project.servlet.CreateTimetableServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateTimetableServlet</servlet-name>
+        <url-pattern>/createTimetable</url-pattern>
+    </servlet-mapping>
+
+    <!-- Create Exam Servlet -->
+    <servlet>
+        <servlet-name>CreateExamServlet</servlet-name>
+        <servlet-class>com.project.servlet.CreateExamServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateExamServlet</servlet-name>
+        <url-pattern>/createExam</url-pattern>
+    </servlet-mapping>
+
+    <!-- Send Notice Servlet -->
+    <servlet>
+        <servlet-name>SendNoticeServlet</servlet-name>
+        <servlet-class>com.project.servlet.SendNoticeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SendNoticeServlet</servlet-name>
+        <url-pattern>/sendNotice</url-pattern>
+    </servlet-mapping>
+
+    <!-- Upload Assignment Servlet -->
+    <servlet>
+        <servlet-name>UploadAssignmentServlet</servlet-name>
+        <servlet-class>com.project.servlet.UploadAssignmentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UploadAssignmentServlet</servlet-name>
+        <url-pattern>/uploadAssignment</url-pattern>
+    </servlet-mapping>
+
+    <!-- Mark Attendance Servlet -->
+    <servlet>
+        <servlet-name>MarkAttendanceServlet</servlet-name>
+        <servlet-class>com.project.servlet.MarkAttendanceServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MarkAttendanceServlet</servlet-name>
+        <url-pattern>/markAttendance</url-pattern>
+    </servlet-mapping>
+
+    <!-- Logout Servlet -->
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.project.servlet.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <!-- Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- Session Configuration -->
+    <session-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+</web-app>
