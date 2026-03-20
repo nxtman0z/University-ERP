@@ -1,21 +1,146 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.sql.Connection,java.sql.PreparedStatement,java.sql.ResultSet" %>
+<%@ page import="com.project.util.DatabaseUtil" %>
 <%
-    Object classesTodayAttr = request.getAttribute("classesToday");
-    Object attendancePercentAttr = request.getAttribute("attendancePercent");
-    Object pendingAssignmentsAttr = request.getAttribute("pendingAssignments");
-    Object latestNoticesAttr = request.getAttribute("latestNotices");
-
-    String classesToday = classesTodayAttr != null ? classesTodayAttr.toString() : "0";
-    String attendancePercent = attendancePercentAttr != null ? attendancePercentAttr.toString() : "0";
-    String pendingAssignments = pendingAssignmentsAttr != null ? pendingAssignmentsAttr.toString() : "0";
-    String latestNotices = latestNoticesAttr != null ? latestNoticesAttr.toString() : "0";
+    String classesToday = "0";
+    String attendancePercent = "0";
+    String pendingAssignments = "0";
+    String latestNotices = "0";
     String studentDisplayName = session.getAttribute("userId") != null ? session.getAttribute("userId").toString() : "User";
+    String studentIdProfile = studentDisplayName;
+    String studentCourse = "Not Available";
+    String studentEmail = "Not Available";
+    String studentPhone = "Not Available";
 
-    List<?> timetableRows = (List<?>) request.getAttribute("timetableRows");
-    List<?> attendanceRows = (List<?>) request.getAttribute("attendanceRows");
-    List<?> assignmentRows = (List<?>) request.getAttribute("assignmentRows");
-    List<?> noticeRows = (List<?>) request.getAttribute("noticeRows");
+    List<String[]> timetableRows = new ArrayList<String[]>();
+    List<String[]> attendanceRows = new ArrayList<String[]>();
+    List<String[]> assignmentRows = new ArrayList<String[]>();
+    List<String[]> noticeRows = new ArrayList<String[]>();
+
+    if (session.getAttribute("userId") != null) {
+        String studentId = session.getAttribute("userId").toString();
+        try (Connection conn = DatabaseUtil.getConnection()) {
+            try (PreparedStatement statsStmt = conn.prepareStatement(
+                    "SELECT "
+                            + "(SELECT COUNT(*) FROM timetable t JOIN students s ON s.department_id = t.department_id WHERE s.student_id = ? AND t.day_name = DAYNAME(CURDATE()) AND t.is_active = 1) AS classes_today, "
+                            + "(SELECT ROUND(100 * SUM(CASE WHEN ar.status = 'Present' THEN 1 ELSE 0 END) / NULLIF(COUNT(*),0), 2) FROM attendance_records ar WHERE ar.student_id = ?) AS attendance_percent, "
+                            + "(SELECT COUNT(*) FROM assignments a JOIN students s ON s.department_id = a.department_id WHERE s.student_id = ? AND a.due_date >= CURDATE()) AS pending_assignments, "
+                            + "(SELECT COUNT(*) FROM notices n WHERE n.is_active = 1) AS latest_notices")) {
+                statsStmt.setString(1, studentId);
+                statsStmt.setString(2, studentId);
+                statsStmt.setString(3, studentId);
+                try (ResultSet rs = statsStmt.executeQuery()) {
+                    if (rs.next()) {
+                        classesToday = String.valueOf(rs.getInt("classes_today"));
+                        String attendanceVal = rs.getString("attendance_percent");
+                        attendancePercent = attendanceVal != null ? attendanceVal : "0";
+                        pendingAssignments = String.valueOf(rs.getInt("pending_assignments"));
+                        latestNotices = String.valueOf(rs.getInt("latest_notices"));
+                    }
+                }
+            }
+
+            try (PreparedStatement profileStmt = conn.prepareStatement(
+                    "SELECT s.full_name, d.department_code, u.email, u.phone "
+                            + "FROM students s "
+                            + "JOIN users u ON u.user_id = s.student_id "
+                            + "JOIN departments d ON d.department_id = s.department_id "
+                            + "WHERE s.student_id = ?")) {
+                profileStmt.setString(1, studentId);
+                try (ResultSet rs = profileStmt.executeQuery()) {
+                    if (rs.next()) {
+                        studentDisplayName = rs.getString("full_name");
+                        studentCourse = rs.getString("department_code");
+                        studentEmail = rs.getString("email");
+                        studentPhone = rs.getString("phone") != null ? rs.getString("phone") : "Not Available";
+                    }
+                }
+            }
+
+            try (PreparedStatement timetableStmt = conn.prepareStatement(
+                    "SELECT t.day_name, sub.subject_name, CONCAT(TIME_FORMAT(t.start_time, '%H:%i'), ' - ', TIME_FORMAT(t.end_time, '%H:%i')) AS slot, f.full_name AS faculty_name "
+                            + "FROM timetable t "
+                            + "JOIN subjects sub ON sub.subject_id = t.subject_id "
+                            + "JOIN faculty f ON f.faculty_id = t.faculty_id "
+                            + "JOIN students s ON s.department_id = t.department_id "
+                            + "WHERE s.student_id = ? AND t.is_active = 1 "
+                            + "ORDER BY FIELD(t.day_name, 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'), t.start_time")) {
+                timetableStmt.setString(1, studentId);
+                try (ResultSet rs = timetableStmt.executeQuery()) {
+                    while (rs.next()) {
+                        timetableRows.add(new String[] {
+                                rs.getString("day_name"),
+                                rs.getString("subject_name"),
+                                rs.getString("slot"),
+                                rs.getString("faculty_name")
+                        });
+                    }
+                }
+            }
+
+            try (PreparedStatement attendanceStmt = conn.prepareStatement(
+                    "SELECT sub.subject_name, COUNT(*) AS total_classes, "
+                            + "SUM(CASE WHEN ar.status = 'Present' THEN 1 ELSE 0 END) AS present_classes, "
+                            + "ROUND(100 * SUM(CASE WHEN ar.status = 'Present' THEN 1 ELSE 0 END) / NULLIF(COUNT(*),0), 2) AS attendance_percent "
+                            + "FROM attendance_records ar "
+                            + "JOIN attendance_sessions a ON a.attendance_id = ar.attendance_id "
+                            + "JOIN subjects sub ON sub.subject_id = a.subject_id "
+                            + "WHERE ar.student_id = ? "
+                            + "GROUP BY sub.subject_name ORDER BY sub.subject_name")) {
+                attendanceStmt.setString(1, studentId);
+                try (ResultSet rs = attendanceStmt.executeQuery()) {
+                    while (rs.next()) {
+                        attendanceRows.add(new String[] {
+                                rs.getString("subject_name"),
+                                String.valueOf(rs.getInt("total_classes")),
+                                String.valueOf(rs.getInt("present_classes")),
+                                rs.getString("attendance_percent") != null ? rs.getString("attendance_percent") : "0"
+                        });
+                    }
+                }
+            }
+
+            try (PreparedStatement assignmentStmt = conn.prepareStatement(
+                    "SELECT a.title, sub.subject_name, a.due_date, "
+                            + "CASE WHEN s.assignment_id IS NULL THEN 'Pending' ELSE s.submission_status END AS status, "
+                            + "CASE WHEN s.assignment_id IS NULL THEN 'Submit' ELSE 'View' END AS action_text "
+                            + "FROM assignments a "
+                            + "JOIN subjects sub ON sub.subject_id = a.subject_id "
+                            + "JOIN students st ON st.department_id = a.department_id "
+                            + "LEFT JOIN assignment_submissions s ON s.assignment_id = a.assignment_id AND s.student_id = st.student_id "
+                            + "WHERE st.student_id = ? ORDER BY a.due_date DESC")) {
+                assignmentStmt.setString(1, studentId);
+                try (ResultSet rs = assignmentStmt.executeQuery()) {
+                    while (rs.next()) {
+                        assignmentRows.add(new String[] {
+                                rs.getString("title"),
+                                rs.getString("subject_name"),
+                                rs.getString("due_date"),
+                                rs.getString("status"),
+                                rs.getString("action_text")
+                        });
+                    }
+                }
+            }
+
+            try (PreparedStatement noticeStmt = conn.prepareStatement(
+                    "SELECT notice_title, notice_text, notice_date FROM notices WHERE is_active = 1 ORDER BY notice_date DESC LIMIT 100")) {
+                try (ResultSet rs = noticeStmt.executeQuery()) {
+                    while (rs.next()) {
+                        noticeRows.add(new String[] {
+                                rs.getString("notice_title"),
+                                rs.getString("notice_text"),
+                                rs.getString("notice_date")
+                        });
+                    }
+                }
+            }
+        } catch (Exception ignore) {
+            // Keep page usable if DB is unavailable.
+        }
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -70,8 +195,13 @@
                         <thead><tr><th>Day</th><th>Subject</th><th>Time</th><th>Faculty Name</th></tr></thead>
                         <tbody>
                             <% if (timetableRows != null && !timetableRows.isEmpty()) { %>
-                                <% for (Object row : timetableRows) { %>
-                                    <tr><td colspan="4"><%= row %></td></tr>
+                                <% for (String[] row : timetableRows) { %>
+                                    <tr>
+                                        <td><%= row[0] %></td>
+                                        <td><%= row[1] %></td>
+                                        <td><%= row[2] %></td>
+                                        <td><%= row[3] %></td>
+                                    </tr>
                                 <% } %>
                             <% } else { %>
                                 <tr><td colspan="4">No Data Available</td></tr>
@@ -88,8 +218,13 @@
                         <thead><tr><th>Subject</th><th>Total Classes</th><th>Present Classes</th><th>Attendance %</th></tr></thead>
                         <tbody>
                             <% if (attendanceRows != null && !attendanceRows.isEmpty()) { %>
-                                <% for (Object row : attendanceRows) { %>
-                                    <tr><td colspan="4"><%= row %></td></tr>
+                                <% for (String[] row : attendanceRows) { %>
+                                    <tr>
+                                        <td><%= row[0] %></td>
+                                        <td><%= row[1] %></td>
+                                        <td><%= row[2] %></td>
+                                        <td><%= row[3] %></td>
+                                    </tr>
                                 <% } %>
                             <% } else { %>
                                 <tr><td colspan="4">No Data Available</td></tr>
@@ -106,8 +241,14 @@
                         <thead><tr><th>Assignment Title</th><th>Subject</th><th>Due Date</th><th>Status</th><th>Action</th></tr></thead>
                         <tbody>
                             <% if (assignmentRows != null && !assignmentRows.isEmpty()) { %>
-                                <% for (Object row : assignmentRows) { %>
-                                    <tr><td colspan="5"><%= row %></td></tr>
+                                <% for (String[] row : assignmentRows) { %>
+                                    <tr>
+                                        <td><%= row[0] %></td>
+                                        <td><%= row[1] %></td>
+                                        <td><%= row[2] %></td>
+                                        <td><%= row[3] %></td>
+                                        <td><%= row[4] %></td>
+                                    </tr>
                                 <% } %>
                             <% } else { %>
                                 <tr><td colspan="5">No Data Available</td></tr>
@@ -124,8 +265,12 @@
                         <thead><tr><th>Title</th><th>Description</th><th>Date</th></tr></thead>
                         <tbody>
                             <% if (noticeRows != null && !noticeRows.isEmpty()) { %>
-                                <% for (Object row : noticeRows) { %>
-                                    <tr><td colspan="3"><%= row %></td></tr>
+                                <% for (String[] row : noticeRows) { %>
+                                    <tr>
+                                        <td><%= row[0] %></td>
+                                        <td><%= row[1] %></td>
+                                        <td><%= row[2] %></td>
+                                    </tr>
                                 <% } %>
                             <% } else { %>
                                 <tr><td colspan="3">No Data Available</td></tr>
@@ -136,14 +281,14 @@
             </section>
 
             <section id="profile" class="content-section">
-                <div class="section-header"><h2>Profile</h2><p>Profile details from request attributes</p></div>
+                <div class="section-header"><h2>Profile</h2><p>Profile details from database</p></div>
                 <div class="profile-card">
                     <div class="profile-grid">
-                        <div class="profile-field"><span class="label">Name</span><span class="value"><%= request.getAttribute("studentName") != null ? request.getAttribute("studentName") : "No Data Available" %></span></div>
-                        <div class="profile-field"><span class="label">ID</span><span class="value"><%= request.getAttribute("studentId") != null ? request.getAttribute("studentId") : "No Data Available" %></span></div>
-                        <div class="profile-field"><span class="label">Course</span><span class="value"><%= request.getAttribute("studentCourse") != null ? request.getAttribute("studentCourse") : "No Data Available" %></span></div>
-                        <div class="profile-field"><span class="label">Email</span><span class="value"><%= request.getAttribute("studentEmail") != null ? request.getAttribute("studentEmail") : "No Data Available" %></span></div>
-                        <div class="profile-field"><span class="label">Phone</span><span class="value"><%= request.getAttribute("studentPhone") != null ? request.getAttribute("studentPhone") : "No Data Available" %></span></div>
+                        <div class="profile-field"><span class="label">Name</span><span class="value"><%= studentDisplayName %></span></div>
+                        <div class="profile-field"><span class="label">ID</span><span class="value"><%= studentIdProfile %></span></div>
+                        <div class="profile-field"><span class="label">Course</span><span class="value"><%= studentCourse %></span></div>
+                        <div class="profile-field"><span class="label">Email</span><span class="value"><%= studentEmail %></span></div>
+                        <div class="profile-field"><span class="label">Phone</span><span class="value"><%= studentPhone %></span></div>
                     </div>
                 </div>
             </section>

@@ -1,20 +1,70 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.sql.Connection,java.sql.PreparedStatement,java.sql.ResultSet" %>
+<%@ page import="com.project.util.DatabaseUtil" %>
 <%
-    Object totalStudentsAttr = request.getAttribute("totalStudents");
-    Object totalFacultyAttr = request.getAttribute("totalFaculty");
-    Object totalCoursesAttr = request.getAttribute("totalCourses");
-    Object totalNoticesAttr = request.getAttribute("totalNotices");
-
-    String totalStudents = totalStudentsAttr != null ? totalStudentsAttr.toString() : "0";
-    String totalFaculty = totalFacultyAttr != null ? totalFacultyAttr.toString() : "0";
-    String totalCourses = totalCoursesAttr != null ? totalCoursesAttr.toString() : "0";
-    String totalNotices = totalNoticesAttr != null ? totalNoticesAttr.toString() : "0";
+    String totalStudents = "0";
+    String totalFaculty = "0";
+    String totalCourses = "0";
+    String totalNotices = "0";
     String adminDisplayName = session.getAttribute("userId") != null ? session.getAttribute("userId").toString() : "User";
     String adminSessionId = session.getId();
 
-    List<?> courseRows = (List<?>) request.getAttribute("courseRows");
-    List<?> libraryRequests = (List<?>) request.getAttribute("libraryRequests");
+    List<String[]> courseRows = new ArrayList<String[]>();
+    List<String[]> libraryRequests = new ArrayList<String[]>();
+
+    try (Connection conn = DatabaseUtil.getConnection()) {
+        try (PreparedStatement statsStmt = conn.prepareStatement(
+                "SELECT "
+                        + "(SELECT COUNT(*) FROM students) AS total_students, "
+                        + "(SELECT COUNT(*) FROM faculty) AS total_faculty, "
+                        + "(SELECT COUNT(*) FROM subjects WHERE is_active = 1) AS total_courses, "
+                        + "(SELECT COUNT(*) FROM notices WHERE is_active = 1) AS total_notices")) {
+            try (ResultSet rs = statsStmt.executeQuery()) {
+                if (rs.next()) {
+                    totalStudents = String.valueOf(rs.getInt("total_students"));
+                    totalFaculty = String.valueOf(rs.getInt("total_faculty"));
+                    totalCourses = String.valueOf(rs.getInt("total_courses"));
+                    totalNotices = String.valueOf(rs.getInt("total_notices"));
+                }
+            }
+        }
+
+        try (PreparedStatement courseStmt = conn.prepareStatement(
+                "SELECT d.department_code, s.subject_code, s.subject_name, s.credits "
+                        + "FROM subjects s "
+                        + "JOIN departments d ON d.department_id = s.department_id "
+                        + "ORDER BY d.department_code, s.subject_code")) {
+            try (ResultSet rs = courseStmt.executeQuery()) {
+                while (rs.next()) {
+                    courseRows.add(new String[] {
+                            rs.getString("department_code"),
+                            rs.getString("subject_code"),
+                            rs.getString("subject_name"),
+                            String.valueOf(rs.getInt("credits"))
+                    });
+                }
+            }
+        }
+
+        try (PreparedStatement libraryStmt = conn.prepareStatement(
+                "SELECT request_id, student_id, request_date, status "
+                        + "FROM library_card_requests ORDER BY created_at DESC LIMIT 100")) {
+            try (ResultSet rs = libraryStmt.executeQuery()) {
+                while (rs.next()) {
+                    libraryRequests.add(new String[] {
+                            rs.getString("request_id"),
+                            rs.getString("student_id"),
+                            rs.getString("request_date"),
+                            rs.getString("status")
+                    });
+                }
+            }
+        }
+    } catch (Exception ignore) {
+        // Keep dashboard usable even if DB is temporarily unreachable.
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -175,8 +225,13 @@
                         <thead><tr><th>Department</th><th>Subject Code</th><th>Subject</th><th>Credits</th></tr></thead>
                         <tbody>
                             <% if (courseRows != null && !courseRows.isEmpty()) { %>
-                                <% for (Object row : courseRows) { %>
-                                    <tr><td colspan="4"><%= row %></td></tr>
+                                <% for (String[] row : courseRows) { %>
+                                    <tr>
+                                        <td><%= row[0] %></td>
+                                        <td><%= row[1] %></td>
+                                        <td><%= row[2] %></td>
+                                        <td><%= row[3] %></td>
+                                    </tr>
                                 <% } %>
                             <% } else { %>
                                 <tr><td colspan="4">No Data Available</td></tr>
@@ -294,8 +349,13 @@
                         <thead><tr><th>Request ID</th><th>Student ID</th><th>Request Date</th><th>Status</th></tr></thead>
                         <tbody>
                             <% if (libraryRequests != null && !libraryRequests.isEmpty()) { %>
-                                <% for (Object requestRow : libraryRequests) { %>
-                                    <tr><td colspan="4"><%= requestRow %></td></tr>
+                                <% for (String[] requestRow : libraryRequests) { %>
+                                    <tr>
+                                        <td><%= requestRow[0] %></td>
+                                        <td><%= requestRow[1] %></td>
+                                        <td><%= requestRow[2] %></td>
+                                        <td><%= requestRow[3] %></td>
+                                    </tr>
                                 <% } %>
                             <% } else { %>
                                 <tr><td colspan="4">No Data Available</td></tr>
