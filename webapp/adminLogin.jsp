@@ -1,4 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String error = request.getParameter("error");
+    if ("POST".equalsIgnoreCase(request.getMethod())) {
+        String password = request.getParameter("password");
+        if (password == null || password.trim().isEmpty()) {
+            error = "Invalid Credentials";
+        } else if ("admin@2026".equals(password)) {
+            session.setAttribute("userRole", "admin");
+            session.setAttribute("userId", "admin");
+            response.sendRedirect("adminDashboard.jsp");
+            return;
+        } else {
+            error = "Invalid Admin Key";
+        }
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,20 +26,14 @@
     <div class="login-wrapper">
         <div class="login-box">
             <h2>Admin Login</h2>
-            <% String error = request.getParameter("error"); 
-               if (error != null) { %>
+                <% if (error != null && !"Database Authentication Not Configured".equals(error)) { %>
                 <div class="error-message"><%= error %></div>
             <% } %>
             
-            <form method="POST" action="adminLogin">
+            <form method="POST" action="adminLogin.jsp">
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required placeholder="Enter admin username">
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required placeholder="Enter admin password">
+                    <label for="password">Admin Key</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter admin key">
                 </div>
                 
                 <button type="submit" class="btn btn-submit">Login</button>

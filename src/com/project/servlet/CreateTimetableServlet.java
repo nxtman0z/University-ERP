@@ -8,14 +8,21 @@ import java.io.IOException;
 
 public class CreateTimetableServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id = request.getParameter("timetableId");
-        String course = request.getParameter("course");
+        String department = request.getParameter("department");
+        String subject = request.getParameter("subject");
+        if (isBlank(subject)) {
+            subject = request.getParameter("course");
+        }
         String day = request.getParameter("day");
         String time = request.getParameter("time");
-        String subject = request.getParameter("subject");
-        String faculty = request.getParameter("faculty");
+        String subjectCode = request.getParameter("subjectCode");
+        if (isBlank(subjectCode)) {
+            subjectCode = request.getParameter("courseCode");
+        }
+        String facultyName = request.getParameter("facultyName");
 
-        if (isBlank(id) || isBlank(course) || isBlank(day) || isBlank(time) || isBlank(subject) || isBlank(faculty)) {
+        if (isBlank(department) || isBlank(subject) || isBlank(day) || isBlank(time)
+                || isBlank(subjectCode) || isBlank(facultyName)) {
             response.sendRedirect("adminDashboard.jsp?error=Invalid Timetable Data");
             return;
         }

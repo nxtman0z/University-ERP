@@ -9,12 +9,17 @@ import java.io.IOException;
 public class AddStudentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("studentId");
+        String rollNumber = request.getParameter("rollNumber");
         String name = request.getParameter("studentName");
-        String course = request.getParameter("course");
+        String course = request.getParameter("department");
+        if (isBlank(course)) {
+            course = request.getParameter("course");
+        }
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
 
-        if (isBlank(id) || isBlank(name) || isBlank(course) || isBlank(email) || isBlank(phone)) {
+        if (isBlank(id) || isBlank(rollNumber) || isBlank(name) || isBlank(course) || isBlank(email) || isBlank(phone) || isBlank(address)) {
             response.sendRedirect("adminDashboard.jsp?error=Invalid Student Data");
             return;
         }

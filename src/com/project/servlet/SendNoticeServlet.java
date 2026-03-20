@@ -9,12 +9,11 @@ import java.io.IOException;
 public class SendNoticeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("noticeId");
-        String title = request.getParameter("title");
-        String message = request.getParameter("message");
+        String noticeText = request.getParameter("noticeText");
+        String targetGroup = request.getParameter("targetGroup");
         String date = request.getParameter("date");
-        String forRole = request.getParameter("forRole");
 
-        if (isBlank(id) || isBlank(title) || isBlank(message) || isBlank(date) || isBlank(forRole)) {
+        if (isBlank(id) || isBlank(noticeText) || isBlank(targetGroup) || isBlank(date)) {
             response.sendRedirect("adminDashboard.jsp?error=Invalid Notice Data");
             return;
         }

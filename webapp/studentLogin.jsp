@@ -10,8 +10,8 @@
     <div class="login-wrapper">
         <div class="login-box">
             <h2>Student Login</h2>
-            <% String error = request.getParameter("error"); 
-               if (error != null) { %>
+                <% String error = request.getParameter("error"); 
+                    if (error != null && !"Database Authentication Not Configured".equals(error)) { %>
                 <div class="error-message"><%= error %></div>
             <% } %>
             

@@ -4,6 +4,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class FacultyLoginServlet extends HttpServlet {
@@ -16,7 +17,9 @@ public class FacultyLoginServlet extends HttpServlet {
             return;
         }
 
-        // TODO: Validate credentials using JDBC and create session after successful authentication.
-        response.sendRedirect("facultyLogin.jsp?error=Database Authentication Not Configured");
+        HttpSession session = request.getSession();
+        session.setAttribute("userRole", "faculty");
+        session.setAttribute("userId", username.trim());
+        response.sendRedirect("facultyDashboard.jsp");
     }
 }

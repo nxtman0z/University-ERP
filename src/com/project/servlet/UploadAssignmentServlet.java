@@ -9,13 +9,15 @@ import java.io.IOException;
 public class UploadAssignmentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("assignmentId");
+        String department = request.getParameter("department");
         String subject = request.getParameter("subject");
         String title = request.getParameter("title");
         String description = request.getParameter("description");
         String dueDate = request.getParameter("dueDate");
         String facultyId = (String) request.getSession().getAttribute("userId");
 
-        if (isBlank(id) || isBlank(subject) || isBlank(title) || isBlank(description) || isBlank(dueDate) || isBlank(facultyId)) {
+        if (isBlank(id) || isBlank(department) || isBlank(subject) || isBlank(title)
+                || isBlank(description) || isBlank(dueDate) || isBlank(facultyId)) {
             response.sendRedirect("facultyDashboard.jsp?error=Invalid Assignment Data");
             return;
         }

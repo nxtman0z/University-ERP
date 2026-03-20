@@ -23,7 +23,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard - University ERP System</title>
-    <link rel="stylesheet" href="css/dashboard.css?v=20260319">
+    <link rel="stylesheet" href="css/dashboard.css?v=20260320">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -50,17 +50,16 @@
         <div class="main-content">
             <header class="header">
                 <div class="header-left"><h1 class="page-title">Dashboard</h1></div>
-                <div class="header-center"><div class="search-box"><input type="text" placeholder="Search"><span class="search-icon">?</span></div></div>
                 <div class="header-right"><div class="student-profile"><div class="profile-avatar">S</div><span class="student-name"><%= studentDisplayName %></span></div></div>
             </header>
 
             <section id="dashboard" class="content-section active">
                 <div class="section-header"><h2>Dashboard Overview</h2><p>Summary based on request attributes</p></div>
                 <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-icon">C</div><div class="stat-content"><p class="stat-label">Total Classes Today</p><h3 class="stat-value"><%= classesToday %></h3></div></div>
-                    <div class="stat-card"><div class="stat-icon">AT</div><div class="stat-content"><p class="stat-label">Attendance Percentage</p><h3 class="stat-value"><%= attendancePercent %></h3></div></div>
-                    <div class="stat-card"><div class="stat-icon">AS</div><div class="stat-content"><p class="stat-label">Pending Assignments</p><h3 class="stat-value"><%= pendingAssignments %></h3></div></div>
-                    <div class="stat-card"><div class="stat-icon">N</div><div class="stat-content"><p class="stat-label">Latest Notices</p><h3 class="stat-value"><%= latestNotices %></h3></div></div>
+                    <div class="stat-card"><div class="stat-content"><p class="stat-label">Total Classes Today</p><h3 class="stat-value"><%= classesToday %></h3></div></div>
+                    <div class="stat-card"><div class="stat-content"><p class="stat-label">Attendance Percentage</p><h3 class="stat-value"><%= attendancePercent %></h3></div></div>
+                    <div class="stat-card"><div class="stat-content"><p class="stat-label">Pending Assignments</p><h3 class="stat-value"><%= pendingAssignments %></h3></div></div>
+                    <div class="stat-card"><div class="stat-content"><p class="stat-label">Latest Notices</p><h3 class="stat-value"><%= latestNotices %></h3></div></div>
                 </div>
             </section>
 

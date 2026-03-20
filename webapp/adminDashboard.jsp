@@ -11,8 +11,9 @@
     String totalCourses = totalCoursesAttr != null ? totalCoursesAttr.toString() : "0";
     String totalNotices = totalNoticesAttr != null ? totalNoticesAttr.toString() : "0";
     String adminDisplayName = session.getAttribute("userId") != null ? session.getAttribute("userId").toString() : "User";
+    String adminSessionId = session.getId();
 
-    List<?> attendanceRows = (List<?>) request.getAttribute("attendanceRows");
+    List<?> courseRows = (List<?>) request.getAttribute("courseRows");
     List<?> libraryRequests = (List<?>) request.getAttribute("libraryRequests");
 %>
 <!DOCTYPE html>
@@ -21,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - University ERP System</title>
-    <link rel="stylesheet" href="css/dashboard.css?v=20260319">
+    <link rel="stylesheet" href="css/dashboard.css?v=20260325">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -40,7 +41,6 @@
                     <li><a href="#courses" class="menu-item" onclick="showSection(event, 'courses')"><span class="menu-icon">C</span><span class="menu-text">Courses</span></a></li>
                     <li><a href="#timetable" class="menu-item" onclick="showSection(event, 'timetable')"><span class="menu-icon">T</span><span class="menu-text">Timetable</span></a></li>
                     <li><a href="#exams" class="menu-item" onclick="showSection(event, 'exams')"><span class="menu-icon">E</span><span class="menu-text">Exams</span></a></li>
-                    <li><a href="#attendance" class="menu-item" onclick="showSection(event, 'attendance')"><span class="menu-icon">AT</span><span class="menu-text">Attendance</span></a></li>
                     <li><a href="#notices" class="menu-item" onclick="showSection(event, 'notices')"><span class="menu-icon">N</span><span class="menu-text">Notices</span></a></li>
                     <li><a href="#library" class="menu-item" onclick="showSection(event, 'library')"><span class="menu-icon">L</span><span class="menu-text">Library Cards</span></a></li>
                 </ul>
@@ -53,11 +53,19 @@
         <main class="main-content">
             <header class="header">
                 <div class="header-left"><h1 class="page-title">Dashboard</h1></div>
-                <div class="header-center"><div class="search-box"><span class="search-icon">?</span><input type="text" placeholder="Search"></div></div>
                 <div class="header-right">
-                    <div class="admin-profile">
-                        <div class="profile-avatar">A</div>
-                        <div class="profile-info"><div class="profile-name"><%= adminDisplayName %></div><div class="profile-role">Administrator</div></div>
+                    <div class="admin-profile-wrapper">
+                        <button type="button" class="admin-profile admin-profile-btn" id="adminProfileBtn" aria-expanded="false" aria-controls="adminProfileCard">
+                            <div class="profile-avatar">A</div>
+                            <div class="profile-info"><div class="profile-name"><%= adminDisplayName %></div><div class="profile-role">Administrator</div></div>
+                        </button>
+                        <div class="admin-profile-card" id="adminProfileCard">
+                            <h3>Admin Details</h3>
+                            <div class="admin-profile-row"><span>Name</span><strong><%= adminDisplayName %></strong></div>
+                            <div class="admin-profile-row"><span>Role</span><strong>Administrator</strong></div>
+                            <div class="admin-profile-row"><span>Session</span><strong><%= adminSessionId %></strong></div>
+                            <div class="admin-profile-row"><span>Status</span><strong>Active</strong></div>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -65,10 +73,10 @@
             <section id="dashboard" class="content-section active">
                 <div class="section-header"><h2>Dashboard Overview</h2><p>Summary based on request attributes</p></div>
                 <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-icon">S</div><div class="stat-content"><div class="stat-value"><%= totalStudents %></div><div class="stat-label">Total Students</div></div></div>
-                    <div class="stat-card"><div class="stat-icon">F</div><div class="stat-content"><div class="stat-value"><%= totalFaculty %></div><div class="stat-label">Total Faculty</div></div></div>
-                    <div class="stat-card"><div class="stat-icon">C</div><div class="stat-content"><div class="stat-value"><%= totalCourses %></div><div class="stat-label">Total Courses</div></div></div>
-                    <div class="stat-card"><div class="stat-icon">N</div><div class="stat-content"><div class="stat-value"><%= totalNotices %></div><div class="stat-label">Total Notices</div></div></div>
+                    <div class="stat-card"><div class="stat-icon">🎓</div><div class="stat-content"><div class="stat-value"><%= totalStudents %></div><div class="stat-label">Total Students</div></div></div>
+                    <div class="stat-card"><div class="stat-icon">👨‍🏫</div><div class="stat-content"><div class="stat-value"><%= totalFaculty %></div><div class="stat-label">Total Faculty</div></div></div>
+                    <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-content"><div class="stat-value"><%= totalCourses %></div><div class="stat-label">Total Courses</div></div></div>
+                    <div class="stat-card"><div class="stat-icon">📢</div><div class="stat-content"><div class="stat-value"><%= totalNotices %></div><div class="stat-label">Total Notices</div></div></div>
                 </div>
             </section>
 
@@ -80,14 +88,18 @@
                         <form class="management-form" method="post" action="addStudent">
                             <div class="form-row">
                                 <div class="form-group"><label>Student ID</label><input type="text" name="studentId" required></div>
+                                <div class="form-group"><label>Roll Number</label><input type="text" name="rollNumber" required></div>
+                            </div>
+                            <div class="form-row">
                                 <div class="form-group"><label>Full Name</label><input type="text" name="studentName" required></div>
+                                <div class="form-group"><label>Department</label><input type="text" name="department" required></div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group"><label>Course</label><input type="text" name="course" required></div>
                                 <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+                                <div class="form-group"><label>Phone</label><input type="text" name="phone" required></div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group"><label>Phone</label><input type="text" name="phone" required></div>
+                                <div class="form-group"><label>Address</label><textarea name="address" required></textarea></div>
                             </div>
                             <button type="submit" class="btn btn-primary">Save Student</button>
                         </form>
@@ -106,7 +118,21 @@
                                 <div class="form-group"><label>Full Name</label><input type="text" name="facultyName" required></div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group"><label>Subject</label><input type="text" name="subject" required></div>
+                                <div class="form-group">
+                                    <label>Department</label>
+                                    <select name="facultyDepartment" required>
+                                        <option value="">Select Department</option>
+                                        <option value="MCA">MCA</option>
+                                        <option value="BTECH-CSE">BTECH CSE</option>
+                                        <option value="BCA">BCA</option>
+                                        <option value="MSC">MSC</option>
+                                        <option value="MBA">MBA</option>
+                                        <option value="BTECH-IT">BTECH IT</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Faculty Contact</label><input type="text" name="facultyContact" required></div>
                                 <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
                             </div>
                             <button type="submit" class="btn btn-primary">Save Faculty</button>
@@ -116,11 +142,46 @@
             </section>
 
             <section id="courses" class="content-section">
-                <div class="section-header"><h2>Course Management</h2><p>No data available</p></div>
+                <div class="section-header"><h2>Subject Management</h2><p>Add and view all subjects with departments</p></div>
+                <div class="form-container">
+                    <div class="form-card">
+                        <h3>Add Subject</h3>
+                        <form class="management-form" method="post" action="addCourse">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Department</label>
+                                    <select name="department" required>
+                                        <option value="">Select Department</option>
+                                        <option value="MCA">MCA</option>
+                                        <option value="BTECH-CSE">BTECH CSE</option>
+                                        <option value="BCA">BCA</option>
+                                        <option value="MSC">MSC</option>
+                                        <option value="MBA">MBA</option>
+                                        <option value="BTECH-IT">BTECH IT</option>
+                                    </select>
+                                </div>
+                                <div class="form-group"><label>Subject</label><input type="text" name="courseName" required></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Subject Code</label><input type="text" name="courseCode" required></div>
+                                <div class="form-group"><label>Credits</label><input type="number" name="credits" min="1" max="10" required></div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Subject</button>
+                        </form>
+                    </div>
+                </div>
                 <div class="table-container">
                     <table class="data-table">
-                        <thead><tr><th>Course Code</th><th>Course Name</th><th>Department</th><th>Credits</th></tr></thead>
-                        <tbody><tr><td colspan="4">No Data Available</td></tr></tbody>
+                        <thead><tr><th>Department</th><th>Subject Code</th><th>Subject</th><th>Credits</th></tr></thead>
+                        <tbody>
+                            <% if (courseRows != null && !courseRows.isEmpty()) { %>
+                                <% for (Object row : courseRows) { %>
+                                    <tr><td colspan="4"><%= row %></td></tr>
+                                <% } %>
+                            <% } else { %>
+                                <tr><td colspan="4">No Data Available</td></tr>
+                            <% } %>
+                        </tbody>
                     </table>
                 </div>
             </section>
@@ -132,16 +193,27 @@
                         <h3>Create Timetable Entry</h3>
                         <form class="management-form" method="post" action="createTimetable">
                             <div class="form-row">
-                                <div class="form-group"><label>Timetable ID</label><input type="text" name="timetableId" required></div>
-                                <div class="form-group"><label>Course</label><input type="text" name="course" required></div>
+                                <div class="form-group">
+                                    <label>Department</label>
+                                    <select name="department" required>
+                                        <option value="">Select Department</option>
+                                        <option value="MCA">MCA</option>
+                                        <option value="BTECH-CSE">BTECH CSE</option>
+                                        <option value="BCA">BCA</option>
+                                        <option value="MSC">MSC</option>
+                                        <option value="MBA">MBA</option>
+                                        <option value="BTECH-IT">BTECH IT</option>
+                                    </select>
+                                </div>
+                                <div class="form-group"><label>Subject</label><input type="text" name="subject" required></div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group"><label>Day</label><input type="text" name="day" required></div>
                                 <div class="form-group"><label>Time</label><input type="text" name="time" required></div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group"><label>Subject</label><input type="text" name="subject" required></div>
-                                <div class="form-group"><label>Faculty</label><input type="text" name="faculty" required></div>
+                                <div class="form-group"><label>Subject Code</label><input type="text" name="subjectCode" required></div>
+                                <div class="form-group"><label>Faculty Name</label><input type="text" name="facultyName" required></div>
                             </div>
                             <button type="submit" class="btn btn-primary">Save Timetable</button>
                         </form>
@@ -157,7 +229,18 @@
                         <form class="management-form" method="post" action="createExam">
                             <div class="form-row">
                                 <div class="form-group"><label>Exam ID</label><input type="text" name="examId" required></div>
-                                <div class="form-group"><label>Course</label><input type="text" name="course" required></div>
+                                <div class="form-group">
+                                    <label>Department</label>
+                                    <select name="department" required>
+                                        <option value="">Select Department</option>
+                                        <option value="MCA">MCA</option>
+                                        <option value="BTECH-CSE">BTECH CSE</option>
+                                        <option value="BCA">BCA</option>
+                                        <option value="MSC">MSC</option>
+                                        <option value="MBA">MBA</option>
+                                        <option value="BTECH-IT">BTECH IT</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group"><label>Subject</label><input type="text" name="subject" required></div>
@@ -173,24 +256,6 @@
                 </div>
             </section>
 
-            <section id="attendance" class="content-section">
-                <div class="section-header"><h2>Attendance</h2><p>Attendance report list</p></div>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead><tr><th>Student ID</th><th>Student Name</th><th>Course</th><th>Present</th><th>Absent</th><th>Percentage</th></tr></thead>
-                        <tbody>
-                            <% if (attendanceRows != null && !attendanceRows.isEmpty()) { %>
-                                <% for (Object row : attendanceRows) { %>
-                                    <tr><td colspan="6"><%= row %></td></tr>
-                                <% } %>
-                            <% } else { %>
-                                <tr><td colspan="6">No Data Available</td></tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
             <section id="notices" class="content-section">
                 <div class="section-header"><h2>Notice Management</h2><p>Create notice entries</p></div>
                 <div class="form-container">
@@ -198,11 +263,23 @@
                         <h3>Post Notice</h3>
                         <form class="management-form" method="post" action="sendNotice">
                             <div class="form-row"><div class="form-group"><label>Notice ID</label><input type="text" name="noticeId" required></div></div>
-                            <div class="form-row"><div class="form-group"><label>Title</label><input type="text" name="title" required></div></div>
-                            <div class="form-row"><div class="form-group"><label>Message</label><textarea name="message" required></textarea></div></div>
+                            <div class="form-row"><div class="form-group"><label>Notice</label><textarea name="noticeText" required></textarea></div></div>
                             <div class="form-row">
+                                <div class="form-group">
+                                    <label>Send To</label>
+                                    <select name="targetGroup" required>
+                                        <option value="">Select Target</option>
+                                        <option value="ALL_STUDENTS">All Students</option>
+                                        <option value="ALL_FACULTY">All Faculty</option>
+                                        <option value="DEPT_MCA">Department - MCA</option>
+                                        <option value="DEPT_BTECH_CSE">Department - BTECH CSE</option>
+                                        <option value="DEPT_BCA">Department - BCA</option>
+                                        <option value="DEPT_MSC">Department - MSC</option>
+                                        <option value="DEPT_MBA">Department - MBA</option>
+                                        <option value="DEPT_BTECH_IT">Department - BTECH IT</option>
+                                    </select>
+                                </div>
                                 <div class="form-group"><label>Date</label><input type="date" name="date" required></div>
-                                <div class="form-group"><label>For Role</label><input type="text" name="forRole" required></div>
                             </div>
                             <button type="submit" class="btn btn-primary">Save Notice</button>
                         </form>
@@ -277,6 +354,24 @@
                     showSectionById(sectionId);
                 });
             });
+
+            const profileBtn = document.getElementById('adminProfileBtn');
+            const profileCard = document.getElementById('adminProfileCard');
+
+            if (profileBtn && profileCard) {
+                profileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isOpen = profileCard.classList.toggle('open');
+                    profileBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!profileCard.contains(e.target) && !profileBtn.contains(e.target)) {
+                        profileCard.classList.remove('open');
+                        profileBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
         });
     </script>
 </body>

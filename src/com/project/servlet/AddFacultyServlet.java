@@ -10,10 +10,11 @@ public class AddFacultyServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("facultyId");
         String name = request.getParameter("facultyName");
-        String subject = request.getParameter("subject");
+        String department = request.getParameter("facultyDepartment");
+        String contact = request.getParameter("facultyContact");
         String email = request.getParameter("email");
 
-        if (isBlank(id) || isBlank(name) || isBlank(subject) || isBlank(email)) {
+        if (isBlank(id) || isBlank(name) || isBlank(department) || isBlank(contact) || isBlank(email)) {
             response.sendRedirect("adminDashboard.jsp?error=Invalid Faculty Data");
             return;
         }
