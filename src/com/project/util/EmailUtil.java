@@ -9,6 +9,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 
 public final class EmailUtil {
     private EmailUtil() {
@@ -20,9 +22,14 @@ public final class EmailUtil {
         String fromEmail = readConfig("ERP_SMTP_FROM", "noreply@university.local");
         String username = readConfig("ERP_SMTP_USERNAME", "");
         String password = readConfig("ERP_SMTP_PASSWORD", "");
+        boolean startTls = "true".equalsIgnoreCase(readConfig("ERP_SMTP_STARTTLS", "false"));
 
         if (host.isEmpty() || toEmail == null || toEmail.trim().isEmpty()) {
             return false;
+        }
+
+        if (!startTls && port == 587) {
+            startTls = true;
         }
 
         try (Socket socket = new Socket()) {
@@ -39,6 +46,26 @@ public final class EmailUtil {
             sendLine(writer, "EHLO localhost");
             if (!expectCodePrefix(reader, 250)) {
                 return false;
+            }
+
+            if (startTls) {
+                sendLine(writer, "STARTTLS");
+                if (!expectCode(reader, 220)) {
+                    return false;
+                }
+
+                SSLSocketFactory sslFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+                SSLSocket tlsSocket = (SSLSocket) sslFactory.createSocket(socket, host, port, true);
+                tlsSocket.setUseClientMode(true);
+                tlsSocket.startHandshake();
+
+                reader = new BufferedReader(new InputStreamReader(tlsSocket.getInputStream(), StandardCharsets.UTF_8));
+                writer = new BufferedWriter(new OutputStreamWriter(tlsSocket.getOutputStream(), StandardCharsets.UTF_8));
+
+                sendLine(writer, "EHLO localhost");
+                if (!expectCodePrefix(reader, 250)) {
+                    return false;
+                }
             }
 
             if (!username.isEmpty() && !password.isEmpty()) {
