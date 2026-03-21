@@ -15,6 +15,9 @@
     List<String[]> facultyRows = new ArrayList<String[]>();
     List<String[]> courseRows = new ArrayList<String[]>();
     List<String[]> libraryRequests = new ArrayList<String[]>();
+    List<String[]> departmentRows = new ArrayList<String[]>();
+    List<String[]> subjectRows = new ArrayList<String[]>();
+    List<String[]> facultyOptionRows = new ArrayList<String[]>();
 
     try (Connection conn = DatabaseUtil.getConnection()) {
         try (PreparedStatement statsStmt = conn.prepareStatement(
@@ -85,6 +88,51 @@
                             rs.getString("subject_code"),
                             rs.getString("subject_name"),
                             String.valueOf(rs.getInt("credits"))
+                    });
+                }
+            }
+        }
+
+        try (PreparedStatement departmentStmt = conn.prepareStatement(
+                "SELECT department_code, department_name FROM departments WHERE is_active = 1 ORDER BY department_code")) {
+            try (ResultSet rs = departmentStmt.executeQuery()) {
+                while (rs.next()) {
+                    departmentRows.add(new String[] {
+                            rs.getString("department_code"),
+                            rs.getString("department_name")
+                    });
+                }
+            }
+        }
+
+        try (PreparedStatement subjectStmt = conn.prepareStatement(
+                "SELECT d.department_code, s.subject_code, s.subject_name "
+                        + "FROM subjects s "
+                        + "JOIN departments d ON d.department_id = s.department_id "
+                        + "WHERE s.is_active = 1 "
+                        + "ORDER BY d.department_code, s.subject_code")) {
+            try (ResultSet rs = subjectStmt.executeQuery()) {
+                while (rs.next()) {
+                    subjectRows.add(new String[] {
+                            rs.getString("department_code"),
+                            rs.getString("subject_code"),
+                            rs.getString("subject_name")
+                    });
+                }
+            }
+        }
+
+        try (PreparedStatement facultyOptionStmt = conn.prepareStatement(
+                "SELECT f.faculty_id, f.full_name, d.department_code "
+                        + "FROM faculty f "
+                        + "JOIN departments d ON d.department_id = f.department_id "
+                        + "ORDER BY f.full_name")) {
+            try (ResultSet rs = facultyOptionStmt.executeQuery()) {
+                while (rs.next()) {
+                    facultyOptionRows.add(new String[] {
+                            rs.getString("faculty_id"),
+                            rs.getString("full_name"),
+                            rs.getString("department_code")
                     });
                 }
             }
@@ -313,13 +361,9 @@
                                     <label>Department</label>
                                     <select name="department" required>
                                         <option value="">Select Department</option>
-                                        <option value="MCA">MCA</option>
-                                        <option value="BCA">BCA</option>
-                                        <option value="BTECH">BTECH</option>
-                                        <option value="BTECH-CSE">BTECH CSE</option>
-                                        <option value="BTECH-IT">BTECH IT</option>
-                                        <option value="MBA">MBA</option>
-                                        <option value="MSC">MSC</option>
+                                        <% for (String[] dept : departmentRows) { %>
+                                            <option value="<%= dept[0] %>"><%= dept[0] %> - <%= dept[1] %></option>
+                                        <% } %>
                                     </select>
                                 </div>
                             </div>
@@ -351,12 +395,9 @@
                                     <label>Department</label>
                                     <select name="facultyDepartment" required>
                                         <option value="">Select Department</option>
-                                        <option value="MCA">MCA</option>
-                                        <option value="BTECH-CSE">BTECH CSE</option>
-                                        <option value="BCA">BCA</option>
-                                        <option value="MSC">MSC</option>
-                                        <option value="MBA">MBA</option>
-                                        <option value="BTECH-IT">BTECH IT</option>
+                                        <% for (String[] dept : departmentRows) { %>
+                                            <option value="<%= dept[0] %>"><%= dept[0] %> - <%= dept[1] %></option>
+                                        <% } %>
                                     </select>
                                 </div>
                             </div>
@@ -381,12 +422,9 @@
                                     <label>Department</label>
                                     <select name="department" required>
                                         <option value="">Select Department</option>
-                                        <option value="MCA">MCA</option>
-                                        <option value="BTECH-CSE">BTECH CSE</option>
-                                        <option value="BCA">BCA</option>
-                                        <option value="MSC">MSC</option>
-                                        <option value="MBA">MBA</option>
-                                        <option value="BTECH-IT">BTECH IT</option>
+                                        <% for (String[] dept : departmentRows) { %>
+                                            <option value="<%= dept[0] %>"><%= dept[0] %> - <%= dept[1] %></option>
+                                        <% } %>
                                     </select>
                                 </div>
                                 <div class="form-group"><label>Subject</label><input type="text" name="courseName" required></div>
@@ -410,25 +448,46 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>Department</label>
-                                    <select name="department" required>
+                                    <select name="department" id="ttDepartment" required>
                                         <option value="">Select Department</option>
-                                        <option value="MCA">MCA</option>
-                                        <option value="BTECH-CSE">BTECH CSE</option>
-                                        <option value="BCA">BCA</option>
-                                        <option value="MSC">MSC</option>
-                                        <option value="MBA">MBA</option>
-                                        <option value="BTECH-IT">BTECH IT</option>
+                                        <% for (String[] dept : departmentRows) { %>
+                                            <option value="<%= dept[0] %>"><%= dept[0] %> - <%= dept[1] %></option>
+                                        <% } %>
                                     </select>
                                 </div>
-                                <div class="form-group"><label>Subject</label><input type="text" name="subject" required></div>
+                                <div class="form-group">
+                                    <label>Subject</label>
+                                    <select name="subject" id="ttSubject" required>
+                                        <option value="">Select Subject</option>
+                                        <% for (String[] subject : subjectRows) { %>
+                                            <option value="<%= subject[2] %>" data-department="<%= subject[0] %>" data-code="<%= subject[1] %>"><%= subject[1] %> - <%= subject[2] %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group"><label>Day</label><input type="text" name="day" required></div>
                                 <div class="form-group"><label>Time</label><input type="text" name="time" required></div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group"><label>Subject Code</label><input type="text" name="subjectCode" required></div>
-                                <div class="form-group"><label>Faculty Name</label><input type="text" name="facultyName" required></div>
+                                <div class="form-group">
+                                    <label>Subject Code</label>
+                                    <select name="subjectCode" id="ttSubjectCode" required>
+                                        <option value="">Select Subject Code</option>
+                                        <% for (String[] subject : subjectRows) { %>
+                                            <option value="<%= subject[1] %>" data-department="<%= subject[0] %>" data-name="<%= subject[2] %>"><%= subject[1] %> - <%= subject[2] %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Faculty</label>
+                                    <select name="facultyName" id="ttFaculty" required>
+                                        <option value="">Select Faculty</option>
+                                        <% for (String[] faculty : facultyOptionRows) { %>
+                                            <option value="<%= faculty[0] %>" data-department="<%= faculty[2] %>"><%= faculty[1] %> (<%= faculty[0] %>)</option>
+                                        <% } %>
+                                    </select>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Save Timetable</button>
                         </form>
@@ -446,19 +505,24 @@
                                 <div class="form-group"><label>Exam ID</label><input type="text" name="examId" required></div>
                                 <div class="form-group">
                                     <label>Department</label>
-                                    <select name="department" required>
+                                    <select name="department" id="examDepartment" required>
                                         <option value="">Select Department</option>
-                                        <option value="MCA">MCA</option>
-                                        <option value="BTECH-CSE">BTECH CSE</option>
-                                        <option value="BCA">BCA</option>
-                                        <option value="MSC">MSC</option>
-                                        <option value="MBA">MBA</option>
-                                        <option value="BTECH-IT">BTECH IT</option>
+                                        <% for (String[] dept : departmentRows) { %>
+                                            <option value="<%= dept[0] %>"><%= dept[0] %> - <%= dept[1] %></option>
+                                        <% } %>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group"><label>Subject</label><input type="text" name="subject" required></div>
+                                <div class="form-group">
+                                    <label>Subject</label>
+                                    <select name="subject" id="examSubject" required>
+                                        <option value="">Select Subject</option>
+                                        <% for (String[] subject : subjectRows) { %>
+                                            <option value="<%= subject[1] %>" data-department="<%= subject[0] %>"><%= subject[1] %> - <%= subject[2] %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
                                 <div class="form-group"><label>Date</label><input type="date" name="date" required></div>
                             </div>
                             <div class="form-row">
@@ -486,12 +550,9 @@
                                         <option value="">Select Target</option>
                                         <option value="ALL_STUDENTS">All Students</option>
                                         <option value="ALL_FACULTY">All Faculty</option>
-                                        <option value="DEPT_MCA">Department - MCA</option>
-                                        <option value="DEPT_BTECH_CSE">Department - BTECH CSE</option>
-                                        <option value="DEPT_BCA">Department - BCA</option>
-                                        <option value="DEPT_MSC">Department - MSC</option>
-                                        <option value="DEPT_MBA">Department - MBA</option>
-                                        <option value="DEPT_BTECH_IT">Department - BTECH IT</option>
+                                        <% for (String[] dept : departmentRows) { %>
+                                            <option value="DEPT_<%= dept[0].replace("-", "_") %>">Department - <%= dept[0] %></option>
+                                        <% } %>
                                     </select>
                                 </div>
                                 <div class="form-group"><label>Date</label><input type="date" name="date" required></div>
@@ -643,6 +704,73 @@
             bindTableSearch('studentListSearch', 'studentListTable');
             bindTableSearch('facultyListSearch', 'facultyListTable');
             bindTableSearch('courseListSearch', 'courseListTable');
+
+            function filterSelectOptionsByDepartment(selectEl, departmentCode, placeholder) {
+                if (!selectEl) {
+                    return;
+                }
+                const targetDept = (departmentCode || '').trim().toUpperCase();
+                const options = selectEl.querySelectorAll('option[data-department]');
+                let anyVisible = false;
+
+                options.forEach(function(option) {
+                    const optionDept = (option.getAttribute('data-department') || '').trim().toUpperCase();
+                    const visible = !targetDept || optionDept === targetDept;
+                    option.hidden = !visible;
+                    option.disabled = !visible;
+                    if (visible) {
+                        anyVisible = true;
+                    }
+                });
+
+                selectEl.value = '';
+                if (placeholder) {
+                    const firstOption = selectEl.querySelector('option');
+                    if (firstOption) {
+                        firstOption.textContent = anyVisible ? placeholder : 'No options available for selected department';
+                    }
+                }
+            }
+
+            const ttDepartment = document.getElementById('ttDepartment');
+            const ttSubject = document.getElementById('ttSubject');
+            const ttSubjectCode = document.getElementById('ttSubjectCode');
+            const ttFaculty = document.getElementById('ttFaculty');
+
+            if (ttDepartment) {
+                ttDepartment.addEventListener('change', function() {
+                    const dept = ttDepartment.value;
+                    filterSelectOptionsByDepartment(ttSubject, dept, 'Select Subject');
+                    filterSelectOptionsByDepartment(ttSubjectCode, dept, 'Select Subject Code');
+                    filterSelectOptionsByDepartment(ttFaculty, dept, 'Select Faculty');
+                });
+            }
+
+            if (ttSubject && ttSubjectCode) {
+                ttSubject.addEventListener('change', function() {
+                    const selected = ttSubject.options[ttSubject.selectedIndex];
+                    const code = selected ? selected.getAttribute('data-code') : '';
+                    if (code) {
+                        ttSubjectCode.value = code;
+                    }
+                });
+
+                ttSubjectCode.addEventListener('change', function() {
+                    const selected = ttSubjectCode.options[ttSubjectCode.selectedIndex];
+                    const subjectName = selected ? selected.getAttribute('data-name') : '';
+                    if (subjectName) {
+                        ttSubject.value = subjectName;
+                    }
+                });
+            }
+
+            const examDepartment = document.getElementById('examDepartment');
+            const examSubject = document.getElementById('examSubject');
+            if (examDepartment) {
+                examDepartment.addEventListener('change', function() {
+                    filterSelectOptionsByDepartment(examSubject, examDepartment.value, 'Select Subject');
+                });
+            }
 
             const profileBtn = document.getElementById('adminProfileBtn');
             const profileCard = document.getElementById('adminProfileCard');

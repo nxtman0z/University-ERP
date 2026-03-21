@@ -22,6 +22,8 @@
     List<String[]> studentRows = new ArrayList<String[]>();
     List<String[]> assignmentRows = new ArrayList<String[]>();
     List<String[]> noticeRows = new ArrayList<String[]>();
+    List<String[]> facultyDepartmentRows = new ArrayList<String[]>();
+    List<String[]> facultySubjectRows = new ArrayList<String[]>();
 
     if (session.getAttribute("userId") != null) {
         String facultyId = session.getAttribute("userId").toString();
@@ -59,6 +61,41 @@
                         facultyContact = rs.getString("contact_no") != null ? rs.getString("contact_no") : "Not Available";
                         facultyDepartment = rs.getString("department_code");
                         facultyAvatarUrl = rs.getString("profile_photo_url");
+                    }
+                }
+            }
+
+            try (PreparedStatement departmentOptionsStmt = conn.prepareStatement(
+                    "SELECT d.department_code, d.department_name "
+                            + "FROM faculty f "
+                            + "JOIN departments d ON d.department_id = f.department_id "
+                            + "WHERE f.faculty_id = ?")) {
+                departmentOptionsStmt.setString(1, facultyId);
+                try (ResultSet rs = departmentOptionsStmt.executeQuery()) {
+                    while (rs.next()) {
+                        facultyDepartmentRows.add(new String[] {
+                                rs.getString("department_code"),
+                                rs.getString("department_name")
+                        });
+                    }
+                }
+            }
+
+            try (PreparedStatement subjectOptionsStmt = conn.prepareStatement(
+                    "SELECT d.department_code, s.subject_code, s.subject_name "
+                            + "FROM subjects s "
+                            + "JOIN departments d ON d.department_id = s.department_id "
+                            + "JOIN faculty f ON f.department_id = s.department_id "
+                            + "WHERE f.faculty_id = ? AND s.is_active = 1 "
+                            + "ORDER BY s.subject_code")) {
+                subjectOptionsStmt.setString(1, facultyId);
+                try (ResultSet rs = subjectOptionsStmt.executeQuery()) {
+                    while (rs.next()) {
+                        facultySubjectRows.add(new String[] {
+                                rs.getString("department_code"),
+                                rs.getString("subject_code"),
+                                rs.getString("subject_name")
+                        });
                     }
                 }
             }
@@ -237,22 +274,18 @@
                                     <label>Department</label>
                                     <select name="department" id="attendanceDepartment" required>
                                         <option value="">Select Department</option>
-                                        <option value="MCA">MCA</option>
-                                        <option value="BCA">BCA</option>
-                                        <option value="BTECH-CSE">BTECH CSE</option>
-                                        <option value="BTECH-IT">BTECH IT</option>
-                                        <option value="MBA">MBA</option>
-                                        <option value="MSC">MSC</option>
+                                        <% for (String[] dept : facultyDepartmentRows) { %>
+                                            <option value="<%= dept[0] %>"><%= dept[0] %> - <%= dept[1] %></option>
+                                        <% } %>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Subject</label>
                                     <select name="subject" id="attendanceSubject" required>
                                         <option value="">Select Subject</option>
-                                        <option value="AI">AI</option>
-                                        <option value="DBMS">DBMS</option>
-                                        <option value="Operating Systems">Operating Systems</option>
-                                        <option value="Data Structures">Data Structures</option>
+                                        <% for (String[] subject : facultySubjectRows) { %>
+                                            <option value="<%= subject[1] %>" data-code="<%= subject[1] %>"><%= subject[1] %> - <%= subject[2] %></option>
+                                        <% } %>
                                     </select>
                                 </div>
                             </div>
@@ -345,12 +378,9 @@
                                     <label>Department</label>
                                     <select name="department" required>
                                         <option value="">Select Department</option>
-                                        <option value="MCA">MCA</option>
-                                        <option value="BCA">BCA</option>
-                                        <option value="BTECH-CSE">BTECH CSE</option>
-                                        <option value="BTECH-IT">BTECH IT</option>
-                                        <option value="MBA">MBA</option>
-                                        <option value="MSC">MSC</option>
+                                        <% for (String[] dept : facultyDepartmentRows) { %>
+                                            <option value="<%= dept[0] %>"><%= dept[0] %> - <%= dept[1] %></option>
+                                        <% } %>
                                     </select>
                                 </div>
                             </div>
@@ -359,10 +389,9 @@
                                     <label>Subject</label>
                                     <select name="subject" required>
                                         <option value="">Select Subject</option>
-                                        <option value="AI">AI</option>
-                                        <option value="DBMS">DBMS</option>
-                                        <option value="Operating Systems">Operating Systems</option>
-                                        <option value="Data Structures">Data Structures</option>
+                                        <% for (String[] subject : facultySubjectRows) { %>
+                                            <option value="<%= subject[1] %>"><%= subject[1] %> - <%= subject[2] %></option>
+                                        <% } %>
                                     </select>
                                 </div>
                             </div>
@@ -520,13 +549,6 @@
                 }
             }
 
-            const subjectCodeMap = {
-                'AI': 'MCA401',
-                'DBMS': 'MCA305',
-                'Operating Systems': 'BCA302',
-                'Data Structures': 'BTECH210'
-            };
-
             const menuLinks = document.querySelectorAll('.sidebar-menu .menu-item[href^="#"]');
             menuLinks.forEach(function(link) {
                 const sectionId = link.getAttribute('href').replace('#', '');
@@ -566,7 +588,11 @@
 
                     document.getElementById('assignedDepartment').textContent = department;
                     document.getElementById('assignedSubject').textContent = subject;
-                    document.getElementById('assignedSubjectCode').textContent = subjectCodeMap[subject] || 'AUTO';
+                    const selectedSubjectOption = document.getElementById('attendanceSubject').selectedOptions[0];
+                    const selectedSubjectCode = selectedSubjectOption
+                        ? (selectedSubjectOption.getAttribute('data-code') || selectedSubjectOption.value)
+                        : 'AUTO';
+                    document.getElementById('assignedSubjectCode').textContent = selectedSubjectCode || 'AUTO';
                     document.getElementById('assignedTime').textContent = time;
 
                     const studentRowsList = document.querySelectorAll('.attendance-student-row');
