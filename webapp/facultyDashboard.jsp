@@ -239,7 +239,10 @@
                                         <option value="">Select Department</option>
                                         <option value="MCA">MCA</option>
                                         <option value="BCA">BCA</option>
-                                        <option value="BTech">BTech</option>
+                                        <option value="BTECH-CSE">BTECH CSE</option>
+                                        <option value="BTECH-IT">BTECH IT</option>
+                                        <option value="MBA">MBA</option>
+                                        <option value="MSC">MSC</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -276,7 +279,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>&nbsp;</label>
-                                    <button type="button" class="btn btn-secondary" id="loadAssignedStudents">Search Assigned Subject</button>
+                                    <button type="button" class="btn btn-secondary" id="loadAssignedStudents">Search Assigned Students</button>
                                 </div>
                             </div>
                             <div class="attendance-workspace">
@@ -303,7 +306,7 @@
                                             <tbody id="attendanceStudentRows">
                                                 <% if (studentRows != null && !studentRows.isEmpty()) { %>
                                                     <% for (String[] row : studentRows) { %>
-                                                        <tr class="attendance-student-row" data-department="<%= row[2] %>" data-subject="">
+                                                        <tr class="attendance-student-row" data-department="<%= row[2] %>">
                                                             <td>
                                                                 <label class="tick-mark-label">
                                                                     <input type="checkbox" name="studentIds" value="<%= row[0] %>" class="attendance-student-checkbox">
@@ -315,20 +318,8 @@
                                                         </tr>
                                                     <% } %>
                                                 <% } else { %>
-                                                    <tr class="attendance-student-row" data-department="MCA" data-subject="AI">
-                                                        <td><label class="tick-mark-label"><input type="checkbox" name="studentIds" value="MCA24-001" class="attendance-student-checkbox"><span class="tick-mark-box"></span></label></td>
-                                                        <td>MCA24-001 - Priya Sharma</td>
-                                                        <td><span class="status-chip default">Ready</span></td>
-                                                    </tr>
-                                                    <tr class="attendance-student-row" data-department="MCA" data-subject="AI">
-                                                        <td><label class="tick-mark-label"><input type="checkbox" name="studentIds" value="MCA24-002" class="attendance-student-checkbox"><span class="tick-mark-box"></span></label></td>
-                                                        <td>MCA24-002 - Rahul Verma</td>
-                                                        <td><span class="status-chip default">Ready</span></td>
-                                                    </tr>
-                                                    <tr class="attendance-student-row" data-department="BCA" data-subject="DBMS">
-                                                        <td><label class="tick-mark-label"><input type="checkbox" name="studentIds" value="BCA24-031" class="attendance-student-checkbox"><span class="tick-mark-box"></span></label></td>
-                                                        <td>BCA24-031 - Neha Yadav</td>
-                                                        <td><span class="status-chip default">Ready</span></td>
+                                                    <tr>
+                                                        <td colspan="3">No assigned students available for attendance.</td>
                                                     </tr>
                                                 <% } %>
                                             </tbody>
@@ -356,7 +347,10 @@
                                         <option value="">Select Department</option>
                                         <option value="MCA">MCA</option>
                                         <option value="BCA">BCA</option>
-                                        <option value="BTech">BTech</option>
+                                        <option value="BTECH-CSE">BTECH CSE</option>
+                                        <option value="BTECH-IT">BTECH IT</option>
+                                        <option value="MBA">MBA</option>
+                                        <option value="MSC">MSC</option>
                                     </select>
                                 </div>
                             </div>
@@ -506,6 +500,26 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            const messageStrips = document.querySelectorAll('.message-strip');
+            if (messageStrips.length > 0) {
+                setTimeout(function() {
+                    messageStrips.forEach(function(strip) {
+                        strip.style.transition = 'opacity 0.4s ease';
+                        strip.style.opacity = '0';
+                        setTimeout(function() {
+                            strip.style.display = 'none';
+                        }, 420);
+                    });
+                }, 3000);
+
+                const url = new URL(window.location.href);
+                const hasFlash = url.searchParams.has('success') || url.searchParams.has('error');
+                if (hasFlash) {
+                    const cleanUrl = url.pathname + (url.hash || '');
+                    window.history.replaceState({}, document.title, cleanUrl);
+                }
+            }
+
             const subjectCodeMap = {
                 'AI': 'MCA401',
                 'DBMS': 'MCA305',
@@ -558,17 +572,26 @@
                     const studentRowsList = document.querySelectorAll('.attendance-student-row');
                     let anyVisible = false;
                     studentRowsList.forEach(function(row) {
-                        const rowDepartment = (row.getAttribute('data-department') || '').trim();
-                        const rowSubject = (row.getAttribute('data-subject') || '').trim();
-                        const showRow = !rowDepartment || !rowSubject || (rowDepartment === department && rowSubject === subject);
+                        const rowDepartment = (row.getAttribute('data-department') || '').trim().toUpperCase();
+                        const selectedDepartment = department.trim().toUpperCase();
+                        const showRow = rowDepartment === selectedDepartment;
                         row.style.display = showRow ? '' : 'none';
                         if (showRow) {
                             anyVisible = true;
+                            const rowCheckbox = row.querySelector('.attendance-student-checkbox');
+                            const statusChip = row.querySelector('.status-chip');
+                            if (rowCheckbox) {
+                                rowCheckbox.checked = false;
+                            }
+                            if (statusChip) {
+                                statusChip.className = 'status-chip default';
+                                statusChip.textContent = 'Ready';
+                            }
                         }
                     });
 
                     if (!anyVisible) {
-                        alert('Assigned student list is not available for this filter yet.');
+                        alert('No assigned students found for selected department in this faculty timetable context.');
                     }
                 });
             }
