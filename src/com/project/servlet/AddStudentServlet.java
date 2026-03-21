@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +29,7 @@ public class AddStudentServlet extends HttpServlet {
         String address = request.getParameter("address");
 
         if (isBlank(id) || isBlank(rollNumber) || isBlank(name) || isBlank(course) || isBlank(email) || isBlank(phone) || isBlank(address)) {
-            response.sendRedirect("adminDashboard.jsp?error=Invalid Student Data");
+            redirectToSection(response, "students", "error", "Invalid Student Data", "Please fill all required student fields.");
             return;
         }
 
@@ -52,7 +54,7 @@ public class AddStudentServlet extends HttpServlet {
             Long departmentId = findDepartmentId(conn, departmentSql, course);
             if (departmentId == null) {
                 conn.rollback();
-                response.sendRedirect("adminDashboard.jsp?error=Invalid Department");
+                redirectToSection(response, "students", "error", "Invalid Department", "Invalid department selected.");
                 return;
             }
 
@@ -81,13 +83,35 @@ public class AddStudentServlet extends HttpServlet {
                     queueStmt.setString(4, mailBody);
                     queueStmt.executeUpdate();
                 }
-            }
 
-            conn.commit();
-            response.sendRedirect("adminDashboard.jsp?success=Student Added Successfully");
+                conn.commit();
+                if (mailSent) {
+                    redirectToSection(
+                            response,
+                            "students",
+                            "success",
+                            "Student Added Successfully",
+                            "Student added successfully. Mail sent successfully with Student ID and default password.");
+                } else {
+                    redirectToSection(
+                            response,
+                            "students",
+                            "success",
+                            "Student Added Successfully",
+                            "Student added successfully. Mail is queued and will be sent shortly.");
+                }
+                return;
+            }
         } catch (SQLException e) {
-            response.sendRedirect("adminDashboard.jsp?error=Database Operation Failed");
+            redirectToSection(response, "students", "error", "Database Operation Failed", "Student creation failed due to database issue.");
         }
+    }
+
+    private void redirectToSection(HttpServletResponse response, String section, String type, String message, String popup)
+            throws IOException {
+        String encodedMessage = URLEncoder.encode(message, StandardCharsets.UTF_8.name());
+        String encodedPopup = URLEncoder.encode(popup, StandardCharsets.UTF_8.name());
+        response.sendRedirect("adminDashboard.jsp?" + type + "=" + encodedMessage + "&popup=" + encodedPopup + "#" + section);
     }
 
     private Long findDepartmentId(Connection conn, String sql, String departmentCode) throws SQLException {

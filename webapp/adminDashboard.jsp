@@ -550,11 +550,20 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            const queryParams = new URLSearchParams(window.location.search);
+            const popupMessage = queryParams.get('popup');
+
             if (window.location.hash) {
                 const initialSection = window.location.hash.replace('#', '');
                 if (document.getElementById(initialSection)) {
                     showSectionById(initialSection);
                 }
+            }
+
+            if (popupMessage) {
+                window.alert(popupMessage);
+                const cleanUrl = window.location.pathname + (window.location.hash || '');
+                window.history.replaceState({}, document.title, cleanUrl);
             }
 
             const menuLinks = document.querySelectorAll('.sidebar-menu .menu-item[href^="#"]');

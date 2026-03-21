@@ -5,12 +5,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.project.util.DatabaseUtil;
+import com.project.util.EmailUtil;
 
 public class AddFacultyServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -21,7 +24,7 @@ public class AddFacultyServlet extends HttpServlet {
         String email = request.getParameter("email");
 
         if (isBlank(id) || isBlank(name) || isBlank(department) || isBlank(contact) || isBlank(email)) {
-            response.sendRedirect("adminDashboard.jsp?error=Invalid Faculty Data");
+            redirectToSection(response, "faculty", "error", "Invalid Faculty Data", "Please fill all required faculty fields.");
             return;
         }
 
@@ -39,7 +42,7 @@ public class AddFacultyServlet extends HttpServlet {
             Long departmentId = findDepartmentId(conn, departmentSql, department);
             if (departmentId == null) {
                 conn.rollback();
-                response.sendRedirect("adminDashboard.jsp?error=Invalid Department");
+                redirectToSection(response, "faculty", "error", "Invalid Department", "Invalid department selected.");
                 return;
             }
 
@@ -60,18 +63,51 @@ public class AddFacultyServlet extends HttpServlet {
                 facultyStmt.setString(5, "Faculty");
                 facultyStmt.executeUpdate();
 
-                queueStmt.setString(1, id.trim());
-                queueStmt.setString(2, email.trim());
-                queueStmt.setString(3, "Your University ERP Login Credentials");
-                queueStmt.setString(4, "Faculty ID: " + id.trim() + " | Temporary Password: " + tempPassword);
-                queueStmt.executeUpdate();
-            }
+                String subject = "Your University ERP Login Credentials";
+                String body = "Hello " + name.trim() + ",\n\n"
+                        + "Your account has been created successfully.\n"
+                        + "Faculty ID: " + id.trim() + "\n"
+                        + "Temporary Password: " + tempPassword + "\n\n"
+                        + "Please login and change your password immediately.\n"
+                        + "\nRegards,\nUniversity ERP Admin";
 
-            conn.commit();
-            response.sendRedirect("adminDashboard.jsp?success=Faculty Added Successfully");
+                boolean mailSent = EmailUtil.sendPlainText(email.trim(), subject, body);
+                if (!mailSent) {
+                    queueStmt.setString(1, id.trim());
+                    queueStmt.setString(2, email.trim());
+                    queueStmt.setString(3, subject);
+                    queueStmt.setString(4, body);
+                    queueStmt.executeUpdate();
+                }
+
+                conn.commit();
+                if (mailSent) {
+                    redirectToSection(
+                            response,
+                            "faculty",
+                            "success",
+                            "Faculty Added Successfully",
+                            "Faculty added successfully. Mail sent successfully with Faculty ID and default password.");
+                } else {
+                    redirectToSection(
+                            response,
+                            "faculty",
+                            "success",
+                            "Faculty Added Successfully",
+                            "Faculty added successfully. Mail is queued and will be sent shortly.");
+                }
+                return;
+            }
         } catch (SQLException e) {
-            response.sendRedirect("adminDashboard.jsp?error=Database Operation Failed");
+            redirectToSection(response, "faculty", "error", "Database Operation Failed", "Faculty creation failed due to database issue.");
         }
+    }
+
+    private void redirectToSection(HttpServletResponse response, String section, String type, String message, String popup)
+            throws IOException {
+        String encodedMessage = URLEncoder.encode(message, StandardCharsets.UTF_8.name());
+        String encodedPopup = URLEncoder.encode(popup, StandardCharsets.UTF_8.name());
+        response.sendRedirect("adminDashboard.jsp?" + type + "=" + encodedMessage + "&popup=" + encodedPopup + "#" + section);
     }
 
     private Long findDepartmentId(Connection conn, String sql, String departmentCode) throws SQLException {
