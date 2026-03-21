@@ -165,13 +165,27 @@
             <section id="dashboard" class="content-section active">
                 <div class="section-header"><h2>Dashboard Overview</h2><p>Summary based on request attributes</p></div>
                 <div class="stats-grid">
-                    <div class="stat-card" data-target-section="dashboard" data-scroll-target="dashboardStudentsTable"><div class="stat-icon">🎓</div><div class="stat-content"><div class="stat-value"><%= totalStudents %></div><div class="stat-label">Total Students</div></div></div>
-                    <div class="stat-card" data-target-section="faculty"><div class="stat-icon">👨‍🏫</div><div class="stat-content"><div class="stat-value"><%= totalFaculty %></div><div class="stat-label">Total Faculty</div></div></div>
-                    <div class="stat-card" data-target-section="courses"><div class="stat-icon">📚</div><div class="stat-content"><div class="stat-value"><%= totalCourses %></div><div class="stat-label">Total Courses</div></div></div>
+                    <div class="stat-card" data-target-section="student-directory"><div class="stat-icon">🎓</div><div class="stat-content"><div class="stat-value"><%= totalStudents %></div><div class="stat-label">Total Students</div></div></div>
+                    <div class="stat-card" data-target-section="faculty-directory"><div class="stat-icon">👨‍🏫</div><div class="stat-content"><div class="stat-value"><%= totalFaculty %></div><div class="stat-label">Total Faculty</div></div></div>
+                    <div class="stat-card" data-target-section="course-directory"><div class="stat-icon">📚</div><div class="stat-content"><div class="stat-value"><%= totalCourses %></div><div class="stat-label">Total Courses</div></div></div>
                     <div class="stat-card" data-target-section="notices"><div class="stat-icon">📢</div><div class="stat-content"><div class="stat-value"><%= totalNotices %></div><div class="stat-label">Total Notices</div></div></div>
                 </div>
-                <div class="table-container" id="dashboardStudentsTable">
-                    <table class="data-table">
+            </section>
+
+            <section id="student-directory" class="content-section">
+                <div class="section-header"><h2>Student Directory</h2><p>All registered students with search</p></div>
+                <div class="form-container">
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Search Student</label>
+                                <input type="text" id="studentListSearch" placeholder="Search by ID, roll number, name, email, phone, department">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="studentListTable">
                         <thead>
                             <tr>
                                 <th>Student ID</th>
@@ -198,6 +212,81 @@
                                 <% } %>
                             <% } else { %>
                                 <tr><td colspan="7">No Data Available</td></tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="faculty-directory" class="content-section">
+                <div class="section-header"><h2>Faculty Directory</h2><p>All registered faculty with search</p></div>
+                <div class="form-container">
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Search Faculty</label>
+                                <input type="text" id="facultyListSearch" placeholder="Search by ID, name, department, contact, email">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="facultyListTable">
+                        <thead>
+                            <tr>
+                                <th>Faculty ID</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Contact</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (facultyRows != null && !facultyRows.isEmpty()) { %>
+                                <% for (String[] row : facultyRows) { %>
+                                    <tr>
+                                        <td><%= row[0] %></td>
+                                        <td><%= row[1] %></td>
+                                        <td><%= row[2] %></td>
+                                        <td><%= row[3] %></td>
+                                        <td><%= row[4] %></td>
+                                    </tr>
+                                <% } %>
+                            <% } else { %>
+                                <tr><td colspan="5">No Data Available</td></tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="course-directory" class="content-section">
+                <div class="section-header"><h2>Course Directory</h2><p>All registered courses with search</p></div>
+                <div class="form-container">
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Search Course</label>
+                                <input type="text" id="courseListSearch" placeholder="Search by department, subject code, subject name, credits">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="courseListTable">
+                        <thead><tr><th>Department</th><th>Subject Code</th><th>Subject</th><th>Credits</th></tr></thead>
+                        <tbody>
+                            <% if (courseRows != null && !courseRows.isEmpty()) { %>
+                                <% for (String[] row : courseRows) { %>
+                                    <tr>
+                                        <td><%= row[0] %></td>
+                                        <td><%= row[1] %></td>
+                                        <td><%= row[2] %></td>
+                                        <td><%= row[3] %></td>
+                                    </tr>
+                                <% } %>
+                            <% } else { %>
+                                <tr><td colspan="4">No Data Available</td></tr>
                             <% } %>
                         </tbody>
                     </table>
@@ -263,34 +352,6 @@
                         </form>
                     </div>
                 </div>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Faculty ID</th>
-                                <th>Name</th>
-                                <th>Department</th>
-                                <th>Contact</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% if (facultyRows != null && !facultyRows.isEmpty()) { %>
-                                <% for (String[] row : facultyRows) { %>
-                                    <tr>
-                                        <td><%= row[0] %></td>
-                                        <td><%= row[1] %></td>
-                                        <td><%= row[2] %></td>
-                                        <td><%= row[3] %></td>
-                                        <td><%= row[4] %></td>
-                                    </tr>
-                                <% } %>
-                            <% } else { %>
-                                <tr><td colspan="5">No Data Available</td></tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
             </section>
 
             <section id="courses" class="content-section">
@@ -321,25 +382,6 @@
                             <button type="submit" class="btn btn-primary">Add Subject</button>
                         </form>
                     </div>
-                </div>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead><tr><th>Department</th><th>Subject Code</th><th>Subject</th><th>Credits</th></tr></thead>
-                        <tbody>
-                            <% if (courseRows != null && !courseRows.isEmpty()) { %>
-                                <% for (String[] row : courseRows) { %>
-                                    <tr>
-                                        <td><%= row[0] %></td>
-                                        <td><%= row[1] %></td>
-                                        <td><%= row[2] %></td>
-                                        <td><%= row[3] %></td>
-                                    </tr>
-                                <% } %>
-                            <% } else { %>
-                                <tr><td colspan="4">No Data Available</td></tr>
-                            <% } %>
-                        </tbody>
-                    </table>
                 </div>
             </section>
 
@@ -533,17 +575,30 @@
                     if (target) {
                         showSectionById(target);
                         window.location.hash = target;
-
-                        const scrollTargetId = card.getAttribute('data-scroll-target');
-                        if (scrollTargetId) {
-                            const scrollTarget = document.getElementById(scrollTargetId);
-                            if (scrollTarget) {
-                                scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            }
-                        }
                     }
                 });
             });
+
+            function bindTableSearch(inputId, tableId) {
+                const input = document.getElementById(inputId);
+                const table = document.getElementById(tableId);
+                if (!input || !table) {
+                    return;
+                }
+
+                input.addEventListener('input', function() {
+                    const query = input.value.trim().toLowerCase();
+                    const rows = table.querySelectorAll('tbody tr');
+                    rows.forEach(function(row) {
+                        const text = row.textContent.toLowerCase();
+                        row.style.display = text.indexOf(query) !== -1 ? '' : 'none';
+                    });
+                });
+            }
+
+            bindTableSearch('studentListSearch', 'studentListTable');
+            bindTableSearch('facultyListSearch', 'facultyListTable');
+            bindTableSearch('courseListSearch', 'courseListTable');
 
             const profileBtn = document.getElementById('adminProfileBtn');
             const profileCard = document.getElementById('adminProfileCard');
