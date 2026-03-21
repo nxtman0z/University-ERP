@@ -261,7 +261,20 @@ html, body {
     border-radius: 999px;
 }
 
+.student-profile-btn {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 999px;
+}
+
 .faculty-profile-btn:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.35);
+    outline-offset: 2px;
+}
+
+.student-profile-btn:focus-visible {
     outline: 3px solid rgba(37, 99, 235, 0.35);
     outline-offset: 2px;
 }
@@ -289,6 +302,26 @@ html, body {
     font-weight: 800;
     margin-bottom: 10px;
     color: var(--text-dark);
+}
+
+.admin-profile-card input,
+.admin-profile-card select,
+.admin-profile-card textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+
+.admin-profile-card input:focus,
+.admin-profile-card select:focus,
+.admin-profile-card textarea:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
 }
 
 .admin-profile-row {
@@ -915,6 +948,7 @@ html, body {
 
 .badge.success,
 .status-badge.approved,
+.status-badge.issued,
 .status-chip.submitted,
 .badge-success {
     background: #D1FAE5;

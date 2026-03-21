@@ -116,6 +116,46 @@
         <url-pattern>/markAttendance</url-pattern>
     </servlet-mapping>
 
+    <!-- Student Change Password Servlet -->
+    <servlet>
+        <servlet-name>StudentChangePasswordServlet</servlet-name>
+        <servlet-class>com.project.servlet.StudentChangePasswordServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StudentChangePasswordServlet</servlet-name>
+        <url-pattern>/updateStudentPassword</url-pattern>
+    </servlet-mapping>
+
+    <!-- Student Profile Photo Upload Servlet -->
+    <servlet>
+        <servlet-name>StudentProfilePhotoUploadServlet</servlet-name>
+        <servlet-class>com.project.servlet.StudentProfilePhotoUploadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StudentProfilePhotoUploadServlet</servlet-name>
+        <url-pattern>/uploadStudentPhoto</url-pattern>
+    </servlet-mapping>
+
+    <!-- Student Library Card Request Servlet -->
+    <servlet>
+        <servlet-name>StudentLibraryCardRequestServlet</servlet-name>
+        <servlet-class>com.project.servlet.StudentLibraryCardRequestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StudentLibraryCardRequestServlet</servlet-name>
+        <url-pattern>/requestLibraryCard</url-pattern>
+    </servlet-mapping>
+
+    <!-- Process Library Card Request Servlet -->
+    <servlet>
+        <servlet-name>ProcessLibraryCardRequestServlet</servlet-name>
+        <servlet-class>com.project.servlet.ProcessLibraryCardRequestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProcessLibraryCardRequestServlet</servlet-name>
+        <url-pattern>/processLibraryCardRequest</url-pattern>
+    </servlet-mapping>
+
     <!-- Logout Servlet -->
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>

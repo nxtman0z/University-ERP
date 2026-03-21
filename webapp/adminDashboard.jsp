@@ -91,15 +91,19 @@
         }
 
         try (PreparedStatement libraryStmt = conn.prepareStatement(
-                "SELECT request_id, student_id, request_date, status "
-                        + "FROM library_card_requests ORDER BY created_at DESC LIMIT 100")) {
+            "SELECT request_id, student_id, request_date, status, COALESCE(remarks, '') AS remarks, "
+                + "COALESCE(processed_by, '') AS processed_by, COALESCE(DATE_FORMAT(processed_at, '%Y-%m-%d %H:%i:%s'), '') AS processed_at "
+                + "FROM library_card_requests ORDER BY created_at DESC LIMIT 100")) {
             try (ResultSet rs = libraryStmt.executeQuery()) {
                 while (rs.next()) {
                     libraryRequests.add(new String[] {
                             rs.getString("request_id"),
                             rs.getString("student_id"),
                             rs.getString("request_date"),
-                            rs.getString("status")
+                    rs.getString("status"),
+                    rs.getString("remarks"),
+                    rs.getString("processed_by"),
+                    rs.getString("processed_at")
                     });
                 }
             }
@@ -487,10 +491,10 @@
             </section>
 
             <section id="library" class="content-section">
-                <div class="section-header"><h2>Library Card Requests</h2><p>Pending request queue</p></div>
+                <div class="section-header"><h2>Library Card Requests</h2><p>Approve, reject, or issue requests from here</p></div>
                 <div class="table-container">
                     <table class="data-table">
-                        <thead><tr><th>Request ID</th><th>Student ID</th><th>Request Date</th><th>Status</th></tr></thead>
+                        <thead><tr><th>Request ID</th><th>Student ID</th><th>Request Date</th><th>Status</th><th>Admin Remarks</th><th>Processed By</th><th>Processed At</th><th>Action</th></tr></thead>
                         <tbody>
                             <% if (libraryRequests != null && !libraryRequests.isEmpty()) { %>
                                 <% for (String[] requestRow : libraryRequests) { %>
@@ -498,11 +502,30 @@
                                         <td><%= requestRow[0] %></td>
                                         <td><%= requestRow[1] %></td>
                                         <td><%= requestRow[2] %></td>
-                                        <td><%= requestRow[3] %></td>
+                                        <td><span class="status-badge <%= requestRow[3].toLowerCase() %>"><%= requestRow[3] %></span></td>
+                                        <td><%= requestRow[4] %></td>
+                                        <td><%= requestRow[5] %></td>
+                                        <td><%= requestRow[6] %></td>
+                                        <td>
+                                            <% if ("PENDING".equalsIgnoreCase(requestRow[3])) { %>
+                                                <form method="post" action="processLibraryCardRequest" style="display:flex;flex-direction:column;gap:8px;min-width:180px;">
+                                                    <input type="hidden" name="requestId" value="<%= requestRow[0] %>">
+                                                    <select name="status" required>
+                                                        <option value="APPROVED">APPROVED</option>
+                                                        <option value="REJECTED">REJECTED</option>
+                                                        <option value="ISSUED">ISSUED</option>
+                                                    </select>
+                                                    <input type="text" name="remarks" placeholder="Remarks (optional)">
+                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                </form>
+                                            <% } else { %>
+                                                <span class="badge success">Processed</span>
+                                            <% } %>
+                                        </td>
                                     </tr>
                                 <% } %>
                             <% } else { %>
-                                <tr><td colspan="4">No Data Available</td></tr>
+                                <tr><td colspan="8">No Data Available</td></tr>
                             <% } %>
                         </tbody>
                     </table>
