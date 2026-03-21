@@ -165,12 +165,12 @@
             <section id="dashboard" class="content-section active">
                 <div class="section-header"><h2>Dashboard Overview</h2><p>Summary based on request attributes</p></div>
                 <div class="stats-grid">
-                    <div class="stat-card" data-target-section="students"><div class="stat-icon">🎓</div><div class="stat-content"><div class="stat-value"><%= totalStudents %></div><div class="stat-label">Total Students</div></div></div>
+                    <div class="stat-card" data-target-section="dashboard" data-scroll-target="dashboardStudentsTable"><div class="stat-icon">🎓</div><div class="stat-content"><div class="stat-value"><%= totalStudents %></div><div class="stat-label">Total Students</div></div></div>
                     <div class="stat-card" data-target-section="faculty"><div class="stat-icon">👨‍🏫</div><div class="stat-content"><div class="stat-value"><%= totalFaculty %></div><div class="stat-label">Total Faculty</div></div></div>
                     <div class="stat-card" data-target-section="courses"><div class="stat-icon">📚</div><div class="stat-content"><div class="stat-value"><%= totalCourses %></div><div class="stat-label">Total Courses</div></div></div>
                     <div class="stat-card" data-target-section="notices"><div class="stat-icon">📢</div><div class="stat-content"><div class="stat-value"><%= totalNotices %></div><div class="stat-label">Total Notices</div></div></div>
                 </div>
-                <div class="table-container">
+                <div class="table-container" id="dashboardStudentsTable">
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -533,6 +533,14 @@
                     if (target) {
                         showSectionById(target);
                         window.location.hash = target;
+
+                        const scrollTargetId = card.getAttribute('data-scroll-target');
+                        if (scrollTargetId) {
+                            const scrollTarget = document.getElementById(scrollTargetId);
+                            if (scrollTarget) {
+                                scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }
                     }
                 });
             });
