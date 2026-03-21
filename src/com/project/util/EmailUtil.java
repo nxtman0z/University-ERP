@@ -86,12 +86,12 @@ public final class EmailUtil {
             }
 
             sendLine(writer, "MAIL FROM:<" + fromEmail + ">");
-            if (!expectCode(reader, 250)) {
+            if (!expectAnyCode(reader, 250, 251)) {
                 return false;
             }
 
             sendLine(writer, "RCPT TO:<" + toEmail.trim() + ">");
-            if (!expectCode(reader, 250)) {
+            if (!expectAnyCode(reader, 250, 251, 252)) {
                 return false;
             }
 
@@ -169,6 +169,19 @@ public final class EmailUtil {
         } while (line.length() >= 4 && line.charAt(3) == '-');
 
         return matched;
+    }
+
+    private static boolean expectAnyCode(BufferedReader reader, int... expectedCodes) throws IOException {
+        String line = reader.readLine();
+        if (line == null || line.length() < 3) {
+            return false;
+        }
+        for (int code : expectedCodes) {
+            if (line.startsWith(String.valueOf(code))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static String safeHeader(String value) {
