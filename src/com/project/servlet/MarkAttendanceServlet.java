@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import com.project.util.DatabaseUtil;
 
@@ -68,6 +70,8 @@ public class MarkAttendanceServlet extends HttpServlet {
 
         String departmentSql = "SELECT department_id FROM departments WHERE department_code = ? AND is_active = 1";
         String subjectSql = "SELECT subject_id FROM subjects WHERE department_id = ? AND (subject_code = ? OR subject_name = ?)";
+        String assignedTimetableSql = "SELECT COUNT(*) AS total FROM timetable WHERE faculty_id = ? AND department_id = ? AND subject_id = ? AND day_name = ? AND start_time = ? AND end_time = ? AND is_active = 1";
+        String studentDepartmentSql = "SELECT COUNT(*) AS total FROM students WHERE student_id = ? AND department_id = ?";
         String sessionInsertSql = "INSERT INTO attendance_sessions (attendance_id, department_id, subject_id, faculty_id, attendance_date, time_slot, default_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
         String recordInsertSql = "INSERT INTO attendance_records (attendance_id, student_id, status, remarks) VALUES (?, ?, ?, ?)";
 
@@ -93,8 +97,23 @@ public class MarkAttendanceServlet extends HttpServlet {
                 return;
             }
 
+            String normalizedDay = resolveDayName(date);
+            String[] slotRange = parseTimeSlot(timeSlot);
+            if (isBlank(normalizedDay) || slotRange == null) {
+                conn.rollback();
+                response.sendRedirect("facultyDashboard.jsp?error=Invalid Time Slot or Date");
+                return;
+            }
+
+            if (!isAssignedTimetable(conn, assignedTimetableSql, facultyIdSafe, departmentId, subjectId, normalizedDay, slotRange[0], slotRange[1])) {
+                conn.rollback();
+                response.sendRedirect("facultyDashboard.jsp?error=Only assigned timetable subject and slot can be marked");
+                return;
+            }
+
             try (PreparedStatement sessionStmt = conn.prepareStatement(sessionInsertSql);
-                 PreparedStatement recordStmt = conn.prepareStatement(recordInsertSql)) {
+                 PreparedStatement recordStmt = conn.prepareStatement(recordInsertSql);
+                 PreparedStatement studentDeptStmt = conn.prepareStatement(studentDepartmentSql)) {
                 sessionStmt.setString(1, attendanceId);
                 sessionStmt.setLong(2, departmentId);
                 sessionStmt.setLong(3, subjectId);
@@ -109,6 +128,11 @@ public class MarkAttendanceServlet extends HttpServlet {
                     if (isBlank(studentId)) {
                         continue;
                     }
+
+                    if (!isStudentInDepartment(studentDeptStmt, studentId.trim(), departmentId)) {
+                        continue;
+                    }
+
                     recordStmt.setString(1, attendanceId);
                     recordStmt.setString(2, studentId.trim());
                     recordStmt.setString(3, normalizeStatus(status));
@@ -157,6 +181,56 @@ public class MarkAttendanceServlet extends HttpServlet {
             }
         }
         return null;
+    }
+
+    private boolean isAssignedTimetable(Connection conn, String sql, String facultyId, long departmentId, long subjectId,
+                                        String dayName, String startTime, String endTime) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, facultyId);
+            stmt.setLong(2, departmentId);
+            stmt.setLong(3, subjectId);
+            stmt.setString(4, dayName);
+            stmt.setString(5, startTime);
+            stmt.setString(6, endTime);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() && rs.getInt("total") > 0;
+            }
+        }
+    }
+
+    private boolean isStudentInDepartment(PreparedStatement stmt, String studentId, long departmentId) throws SQLException {
+        stmt.setString(1, studentId);
+        stmt.setLong(2, departmentId);
+        try (ResultSet rs = stmt.executeQuery()) {
+            return rs.next() && rs.getInt("total") > 0;
+        }
+    }
+
+    private String[] parseTimeSlot(String value) {
+        if (isBlank(value)) {
+            return null;
+        }
+        String[] parts = value.replace(" ", "").split("-");
+        if (parts.length != 2) {
+            return null;
+        }
+        if (!parts[0].matches("\\d{2}:\\d{2}") || !parts[1].matches("\\d{2}:\\d{2}")) {
+            return null;
+        }
+        return parts;
+    }
+
+    private String resolveDayName(String dateValue) {
+        if (isBlank(dateValue)) {
+            return null;
+        }
+        try {
+            LocalDate date = LocalDate.parse(dateValue.trim());
+            String day = date.getDayOfWeek().name().toLowerCase();
+            return Character.toUpperCase(day.charAt(0)) + day.substring(1);
+        } catch (DateTimeParseException ex) {
+            return null;
+        }
     }
 
     private String normalizeStatus(String status) {

@@ -24,6 +24,7 @@
     List<String[]> noticeRows = new ArrayList<String[]>();
     List<String[]> facultyDepartmentRows = new ArrayList<String[]>();
     List<String[]> facultySubjectRows = new ArrayList<String[]>();
+    List<String[]> facultyAssignedRows = new ArrayList<String[]>();
 
     if (session.getAttribute("userId") != null) {
         String facultyId = session.getAttribute("userId").toString();
@@ -95,6 +96,29 @@
                                 rs.getString("department_code"),
                                 rs.getString("subject_code"),
                                 rs.getString("subject_name")
+                        });
+                    }
+                }
+            }
+
+            try (PreparedStatement assignedStmt = conn.prepareStatement(
+                    "SELECT d.department_code, s.subject_code, s.subject_name, "
+                            + "CONCAT(TIME_FORMAT(t.start_time, '%H:%i'), '-', TIME_FORMAT(t.end_time, '%H:%i')) AS time_slot, "
+                            + "t.day_name "
+                            + "FROM timetable t "
+                            + "JOIN departments d ON d.department_id = t.department_id "
+                            + "JOIN subjects s ON s.subject_id = t.subject_id "
+                            + "WHERE t.faculty_id = ? AND t.is_active = 1 "
+                            + "ORDER BY FIELD(t.day_name, 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'), t.start_time")) {
+                assignedStmt.setString(1, facultyId);
+                try (ResultSet rs = assignedStmt.executeQuery()) {
+                    while (rs.next()) {
+                        facultyAssignedRows.add(new String[] {
+                                rs.getString("department_code"),
+                                rs.getString("subject_code"),
+                                rs.getString("subject_name"),
+                                rs.getString("time_slot"),
+                                rs.getString("day_name")
                         });
                     }
                 }
@@ -274,8 +298,8 @@
                                     <label>Department</label>
                                     <select name="department" id="attendanceDepartment" required>
                                         <option value="">Select Department</option>
-                                        <% for (String[] dept : facultyDepartmentRows) { %>
-                                            <option value="<%= dept[0] %>"><%= dept[0] %> - <%= dept[1] %></option>
+                                        <% for (String[] assigned : facultyAssignedRows) { %>
+                                            <option value="<%= assigned[0] %>"><%= assigned[0] %></option>
                                         <% } %>
                                     </select>
                                 </div>
@@ -283,8 +307,8 @@
                                     <label>Subject</label>
                                     <select name="subject" id="attendanceSubject" required>
                                         <option value="">Select Subject</option>
-                                        <% for (String[] subject : facultySubjectRows) { %>
-                                            <option value="<%= subject[1] %>" data-code="<%= subject[1] %>"><%= subject[1] %> - <%= subject[2] %></option>
+                                        <% for (String[] assigned : facultyAssignedRows) { %>
+                                            <option value="<%= assigned[1] %>" data-department="<%= assigned[0] %>" data-code="<%= assigned[1] %>"><%= assigned[1] %> - <%= assigned[2] %></option>
                                         <% } %>
                                     </select>
                                 </div>
@@ -294,10 +318,9 @@
                                     <label>Time Slot</label>
                                     <select name="timeSlot" id="attendanceTime" required>
                                         <option value="">Select Time Slot</option>
-                                        <option value="09:00-10:00">09:00 - 10:00</option>
-                                        <option value="10:00-11:00">10:00 - 11:00</option>
-                                        <option value="11:00-12:00">11:00 - 12:00</option>
-                                        <option value="13:00-14:00">13:00 - 14:00</option>
+                                        <% for (String[] assigned : facultyAssignedRows) { %>
+                                            <option value="<%= assigned[3] %>" data-department="<%= assigned[0] %>" data-subject="<%= assigned[1] %>" data-day="<%= assigned[4] %>"><%= assigned[3] %> (<%= assigned[4] %>)</option>
+                                        <% } %>
                                     </select>
                                 </div>
                                 <div class="form-group"><label>Date</label><input type="date" name="date" required></div>
@@ -577,9 +600,13 @@
             const loadAssignedStudentsBtn = document.getElementById('loadAssignedStudents');
             if (loadAssignedStudentsBtn) {
                 loadAssignedStudentsBtn.addEventListener('click', function() {
-                    const department = document.getElementById('attendanceDepartment').value;
-                    const subject = document.getElementById('attendanceSubject').value;
-                    const time = document.getElementById('attendanceTime').value;
+                    const departmentEl = document.getElementById('attendanceDepartment');
+                    const subjectEl = document.getElementById('attendanceSubject');
+                    const timeEl = document.getElementById('attendanceTime');
+
+                    const department = departmentEl.value;
+                    const subject = subjectEl.value;
+                    const time = timeEl.value;
 
                     if (!department || !subject || !time) {
                         alert('Please select Department, Subject, and Time first.');
@@ -621,6 +648,53 @@
                     }
                 });
             }
+
+            const attendanceDepartment = document.getElementById('attendanceDepartment');
+            const attendanceSubject = document.getElementById('attendanceSubject');
+            const attendanceTime = document.getElementById('attendanceTime');
+
+            function filterAttendanceOptions() {
+                if (!attendanceDepartment || !attendanceSubject || !attendanceTime) {
+                    return;
+                }
+
+                const selectedDept = (attendanceDepartment.value || '').trim().toUpperCase();
+                const selectedSubject = (attendanceSubject.value || '').trim().toUpperCase();
+
+                const subjectOptions = attendanceSubject.querySelectorAll('option[data-department]');
+                subjectOptions.forEach(function(option) {
+                    const dept = (option.getAttribute('data-department') || '').trim().toUpperCase();
+                    const visible = !selectedDept || dept === selectedDept;
+                    option.hidden = !visible;
+                    option.disabled = !visible;
+                });
+
+                const timeOptions = attendanceTime.querySelectorAll('option[data-department]');
+                timeOptions.forEach(function(option) {
+                    const dept = (option.getAttribute('data-department') || '').trim().toUpperCase();
+                    const sub = (option.getAttribute('data-subject') || '').trim().toUpperCase();
+                    const visible = (!selectedDept || dept === selectedDept) && (!selectedSubject || sub === selectedSubject);
+                    option.hidden = !visible;
+                    option.disabled = !visible;
+                });
+            }
+
+            if (attendanceDepartment) {
+                attendanceDepartment.addEventListener('change', function() {
+                    attendanceSubject.value = '';
+                    attendanceTime.value = '';
+                    filterAttendanceOptions();
+                });
+            }
+
+            if (attendanceSubject) {
+                attendanceSubject.addEventListener('change', function() {
+                    attendanceTime.value = '';
+                    filterAttendanceOptions();
+                });
+            }
+
+            filterAttendanceOptions();
 
             const studentCheckboxes = document.querySelectorAll('.attendance-student-checkbox');
             studentCheckboxes.forEach(function(checkbox) {

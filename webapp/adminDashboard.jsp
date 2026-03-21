@@ -466,8 +466,30 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group"><label>Day</label><input type="text" name="day" required></div>
-                                <div class="form-group"><label>Time</label><input type="text" name="time" required></div>
+                                <div class="form-group">
+                                    <label>Day</label>
+                                    <select name="day" required>
+                                        <option value="">Select Day</option>
+                                        <option value="Monday">Monday</option>
+                                        <option value="Tuesday">Tuesday</option>
+                                        <option value="Wednesday">Wednesday</option>
+                                        <option value="Thursday">Thursday</option>
+                                        <option value="Friday">Friday</option>
+                                        <option value="Saturday">Saturday</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Time</label>
+                                    <select name="time" required>
+                                        <option value="">Select Time Slot</option>
+                                        <option value="09:00-10:00">09:00 - 10:00</option>
+                                        <option value="10:00-11:00">10:00 - 11:00</option>
+                                        <option value="11:00-12:00">11:00 - 12:00</option>
+                                        <option value="13:00-14:00">13:00 - 14:00</option>
+                                        <option value="14:00-15:00">14:00 - 15:00</option>
+                                        <option value="15:00-16:00">15:00 - 16:00</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
