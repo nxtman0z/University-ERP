@@ -412,13 +412,25 @@
                         </div>
                     </div>
                     <div class="form-card">
-                        <h3>Profile Photo</h3>
-                        <form class="management-form" method="post" action="#" onsubmit="return false;">
-                            <div class="photo-upload-box">
-                                <div class="profile-avatar big">F</div>
-                                <p>The upload field is ready. The photo will be saved once the backend API is connected.</p>
-                                <input type="file" name="facultyPhoto" accept="image/*">
+                        <h3>Change Password</h3>
+                        <form class="management-form" method="post" action="updateFacultyPassword">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Current Password</label>
+                                    <input type="password" name="currentPassword" required>
+                                </div>
                             </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>New Password</label>
+                                    <input type="password" name="newPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirm New Password</label>
+                                    <input type="password" name="confirmPassword" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Password</button>
                         </form>
                     </div>
                 </div>
@@ -486,13 +498,22 @@
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     showSectionById(sectionId);
+                    window.location.hash = sectionId;
                 });
             });
+
+            if (window.location.hash) {
+                const initialSection = window.location.hash.replace('#', '');
+                if (document.getElementById(initialSection)) {
+                    showSectionById(initialSection);
+                }
+            }
 
             const openFacultyProfileBtn = document.getElementById('openFacultyProfile');
             if (openFacultyProfileBtn) {
                 openFacultyProfileBtn.addEventListener('click', function() {
                     showSectionById('profile');
+                    window.location.hash = 'profile';
                 });
             }
 
