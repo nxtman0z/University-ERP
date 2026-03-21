@@ -170,33 +170,6 @@
                     <div class="stat-card" data-target-section="courses"><div class="stat-icon">📚</div><div class="stat-content"><div class="stat-value"><%= totalCourses %></div><div class="stat-label">Total Courses</div></div></div>
                     <div class="stat-card" data-target-section="notices"><div class="stat-icon">📢</div><div class="stat-content"><div class="stat-value"><%= totalNotices %></div><div class="stat-label">Total Notices</div></div></div>
                 </div>
-            </section>
-
-            <section id="students" class="content-section">
-                <div class="section-header"><h2>Student Management</h2><p>Submit student data</p></div>
-                <div class="form-container">
-                    <div class="form-card">
-                        <h3>Add New Student</h3>
-                        <form class="management-form" method="post" action="addStudent">
-                            <div class="form-row">
-                                <div class="form-group"><label>Student ID</label><input type="text" name="studentId" required></div>
-                                <div class="form-group"><label>Roll Number</label><input type="text" name="rollNumber" required></div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Full Name</label><input type="text" name="studentName" required></div>
-                                <div class="form-group"><label>Department</label><input type="text" name="department" required></div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
-                                <div class="form-group"><label>Phone</label><input type="text" name="phone" required></div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Address</label><textarea name="address" required></textarea></div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Save Student</button>
-                        </form>
-                    </div>
-                </div>
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
@@ -228,6 +201,33 @@
                             <% } %>
                         </tbody>
                     </table>
+                </div>
+            </section>
+
+            <section id="students" class="content-section">
+                <div class="section-header"><h2>Student Management</h2><p>Submit student data</p></div>
+                <div class="form-container">
+                    <div class="form-card">
+                        <h3>Add New Student</h3>
+                        <form class="management-form" method="post" action="addStudent">
+                            <div class="form-row">
+                                <div class="form-group"><label>Student ID</label><input type="text" name="studentId" required></div>
+                                <div class="form-group"><label>Roll Number</label><input type="text" name="rollNumber" required></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Full Name</label><input type="text" name="studentName" required></div>
+                                <div class="form-group"><label>Department</label><input type="text" name="department" required></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+                                <div class="form-group"><label>Phone</label><input type="text" name="phone" required></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Address</label><textarea name="address" required></textarea></div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Student</button>
+                        </form>
+                    </div>
                 </div>
             </section>
 
