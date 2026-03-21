@@ -24,6 +24,7 @@ public class AddStudentServlet extends HttpServlet {
         if (isBlank(course)) {
             course = request.getParameter("course");
         }
+        course = normalizeDepartmentCode(course);
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
@@ -36,7 +37,8 @@ public class AddStudentServlet extends HttpServlet {
         String tempPassword = DatabaseUtil.generateTemporaryPassword(10);
         String passwordHash = DatabaseUtil.hashPassword(tempPassword);
 
-        String departmentSql = "SELECT department_id FROM departments WHERE department_code = ? AND is_active = 1";
+        String departmentSql = "SELECT department_id FROM departments WHERE UPPER(department_code) = ? AND is_active = 1";
+        String btechDepartmentSql = "SELECT department_id FROM departments WHERE UPPER(department_code) LIKE 'BTECH-%' AND is_active = 1 ORDER BY department_code LIMIT 1";
         String userInsertSql = "INSERT INTO users (user_id, role, password_hash, must_change_password, email, phone, is_active) VALUES (?, 'student', ?, 1, ?, ?, 1)";
         String studentInsertSql = "INSERT INTO students (student_id, roll_number, full_name, department_id, address) VALUES (?, ?, ?, ?, ?)";
         String emailQueueSql = "INSERT INTO email_queue (recipient_user_id, recipient_email, mail_subject, mail_body, template_key, status) VALUES (?, ?, ?, ?, 'STUDENT_WELCOME_CREDENTIALS', 'PENDING')";
@@ -52,6 +54,9 @@ public class AddStudentServlet extends HttpServlet {
             conn.setAutoCommit(false);
 
             Long departmentId = findDepartmentId(conn, departmentSql, course);
+            if (departmentId == null && "BTECH".equalsIgnoreCase(course)) {
+                departmentId = findBtechDepartmentId(conn, btechDepartmentSql);
+            }
             if (departmentId == null) {
                 conn.rollback();
                 redirectToSection(response, "students", "error", "Invalid Department", "Invalid department selected.");
@@ -116,7 +121,7 @@ public class AddStudentServlet extends HttpServlet {
 
     private Long findDepartmentId(Connection conn, String sql, String departmentCode) throws SQLException {
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, departmentCode.trim());
+            stmt.setString(1, departmentCode.trim().toUpperCase());
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getLong("department_id");
@@ -124,6 +129,36 @@ public class AddStudentServlet extends HttpServlet {
             }
         }
         return null;
+    }
+
+    private Long findBtechDepartmentId(Connection conn, String sql) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getLong("department_id");
+            }
+        }
+        return null;
+    }
+
+    private String normalizeDepartmentCode(String value) {
+        if (value == null) {
+            return null;
+        }
+
+        String normalized = value.trim().toUpperCase().replace('_', '-');
+        normalized = normalized.replaceAll("\\s+", "");
+
+        if ("BTECHCSE".equals(normalized)) {
+            return "BTECH-CSE";
+        }
+        if ("BTECHIT".equals(normalized)) {
+            return "BTECH-IT";
+        }
+        if ("BTECH".equals(normalized)) {
+            return "BTECH";
+        }
+        return normalized;
     }
 
     private boolean isBlank(String value) {

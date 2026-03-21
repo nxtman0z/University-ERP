@@ -309,7 +309,19 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group"><label>Full Name</label><input type="text" name="studentName" required></div>
-                                <div class="form-group"><label>Department</label><input type="text" name="department" required></div>
+                                <div class="form-group">
+                                    <label>Department</label>
+                                    <select name="department" required>
+                                        <option value="">Select Department</option>
+                                        <option value="MCA">MCA</option>
+                                        <option value="BCA">BCA</option>
+                                        <option value="BTECH">BTECH</option>
+                                        <option value="BTECH-CSE">BTECH CSE</option>
+                                        <option value="BTECH-IT">BTECH IT</option>
+                                        <option value="MBA">MBA</option>
+                                        <option value="MSC">MSC</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
