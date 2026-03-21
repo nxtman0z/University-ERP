@@ -166,6 +166,16 @@
         <url-pattern>/updateFacultyPassword</url-pattern>
     </servlet-mapping>
 
+    <!-- Faculty Profile Photo Upload Servlet -->
+    <servlet>
+        <servlet-name>FacultyProfilePhotoUploadServlet</servlet-name>
+        <servlet-class>com.project.servlet.FacultyProfilePhotoUploadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FacultyProfilePhotoUploadServlet</servlet-name>
+        <url-pattern>/uploadFacultyPhoto</url-pattern>
+    </servlet-mapping>
+
     <!-- Logout Servlet -->
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>

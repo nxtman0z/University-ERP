@@ -16,6 +16,7 @@
     String facultyEmail = session.getAttribute("userEmail") != null ? session.getAttribute("userEmail").toString() : "Not Available";
     String facultyDepartment = "Not Available";
     String facultyContact = "Not Available";
+    String facultyAvatarUrl = null;
 
     List<String[]> timetableRows = new ArrayList<String[]>();
     List<String[]> studentRows = new ArrayList<String[]>();
@@ -45,7 +46,7 @@
             }
 
             try (PreparedStatement profileStmt = conn.prepareStatement(
-                    "SELECT f.full_name, u.email, f.contact_no, d.department_code "
+                    "SELECT f.full_name, u.email, f.contact_no, d.department_code, f.profile_photo_url "
                             + "FROM faculty f "
                             + "JOIN users u ON u.user_id = f.faculty_id "
                             + "JOIN departments d ON d.department_id = f.department_id "
@@ -57,6 +58,7 @@
                         facultyEmail = rs.getString("email");
                         facultyContact = rs.getString("contact_no") != null ? rs.getString("contact_no") : "Not Available";
                         facultyDepartment = rs.getString("department_code");
+                        facultyAvatarUrl = rs.getString("profile_photo_url");
                     }
                 }
             }
@@ -170,7 +172,11 @@
                     <div class="faculty-profile-wrapper">
                         <button type="button" class="faculty-profile-btn" id="openFacultyProfile" title="View Faculty Profile">
                             <div class="faculty-profile">
-                                <div class="profile-avatar">F</div>
+                                <% if (facultyAvatarUrl != null && !facultyAvatarUrl.trim().isEmpty()) { %>
+                                    <img class="profile-avatar" src="<%= facultyAvatarUrl %>" alt="Faculty Profile Photo">
+                                <% } else { %>
+                                    <div class="profile-avatar"><%= facultyDisplayName != null && !facultyDisplayName.isEmpty() ? facultyDisplayName.substring(0, 1).toUpperCase() : "F" %></div>
+                                <% } %>
                                 <span class="faculty-name"><%= facultyDisplayName %></span>
                             </div>
                         </button>
@@ -410,6 +416,21 @@
                             <div><span>Department</span><strong><%= facultyDepartment %></strong></div>
                             <div><span>Contact</span><strong><%= facultyContact %></strong></div>
                         </div>
+                    </div>
+                    <div class="form-card">
+                        <h3>Profile Photo</h3>
+                        <form class="management-form" method="post" action="uploadFacultyPhoto" enctype="multipart/form-data">
+                            <div class="photo-upload-box">
+                                <% if (facultyAvatarUrl != null && !facultyAvatarUrl.trim().isEmpty()) { %>
+                                    <img class="profile-avatar big" src="<%= facultyAvatarUrl %>" alt="Faculty Profile Photo">
+                                <% } else { %>
+                                    <div class="profile-avatar big"><%= facultyDisplayName != null && !facultyDisplayName.isEmpty() ? facultyDisplayName.substring(0, 1).toUpperCase() : "F" %></div>
+                                <% } %>
+                                <p>Upload a profile picture to show on faculty dashboard.</p>
+                                <input type="file" name="facultyPhoto" accept="image/*" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Upload Photo</button>
+                        </form>
                     </div>
                     <div class="form-card">
                         <h3>Change Password</h3>
