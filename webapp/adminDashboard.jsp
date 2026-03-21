@@ -165,10 +165,10 @@
             <section id="dashboard" class="content-section active">
                 <div class="section-header"><h2>Dashboard Overview</h2><p>Summary based on request attributes</p></div>
                 <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-icon">🎓</div><div class="stat-content"><div class="stat-value"><%= totalStudents %></div><div class="stat-label">Total Students</div></div></div>
-                    <div class="stat-card"><div class="stat-icon">👨‍🏫</div><div class="stat-content"><div class="stat-value"><%= totalFaculty %></div><div class="stat-label">Total Faculty</div></div></div>
-                    <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-content"><div class="stat-value"><%= totalCourses %></div><div class="stat-label">Total Courses</div></div></div>
-                    <div class="stat-card"><div class="stat-icon">📢</div><div class="stat-content"><div class="stat-value"><%= totalNotices %></div><div class="stat-label">Total Notices</div></div></div>
+                    <div class="stat-card" data-target-section="students"><div class="stat-icon">🎓</div><div class="stat-content"><div class="stat-value"><%= totalStudents %></div><div class="stat-label">Total Students</div></div></div>
+                    <div class="stat-card" data-target-section="faculty"><div class="stat-icon">👨‍🏫</div><div class="stat-content"><div class="stat-value"><%= totalFaculty %></div><div class="stat-label">Total Faculty</div></div></div>
+                    <div class="stat-card" data-target-section="courses"><div class="stat-icon">📚</div><div class="stat-content"><div class="stat-value"><%= totalCourses %></div><div class="stat-label">Total Courses</div></div></div>
+                    <div class="stat-card" data-target-section="notices"><div class="stat-icon">📢</div><div class="stat-content"><div class="stat-value"><%= totalNotices %></div><div class="stat-label">Total Notices</div></div></div>
                 </div>
             </section>
 
@@ -508,12 +508,32 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.hash) {
+                const initialSection = window.location.hash.replace('#', '');
+                if (document.getElementById(initialSection)) {
+                    showSectionById(initialSection);
+                }
+            }
+
             const menuLinks = document.querySelectorAll('.sidebar-menu .menu-item[href^="#"]');
             menuLinks.forEach(function(link) {
                 const sectionId = link.getAttribute('href').replace('#', '');
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     showSectionById(sectionId);
+                    window.location.hash = sectionId;
+                });
+            });
+
+            const statCards = document.querySelectorAll('.stat-card[data-target-section]');
+            statCards.forEach(function(card) {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function() {
+                    const target = card.getAttribute('data-target-section');
+                    if (target) {
+                        showSectionById(target);
+                        window.location.hash = target;
+                    }
                 });
             });
 
