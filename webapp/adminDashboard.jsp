@@ -11,6 +11,8 @@
     String adminDisplayName = session.getAttribute("userId") != null ? session.getAttribute("userId").toString() : "User";
     String adminSessionId = session.getId();
 
+    List<String[]> studentRows = new ArrayList<String[]>();
+    List<String[]> facultyRows = new ArrayList<String[]>();
     List<String[]> courseRows = new ArrayList<String[]>();
     List<String[]> libraryRequests = new ArrayList<String[]>();
 
@@ -27,6 +29,46 @@
                     totalFaculty = String.valueOf(rs.getInt("total_faculty"));
                     totalCourses = String.valueOf(rs.getInt("total_courses"));
                     totalNotices = String.valueOf(rs.getInt("total_notices"));
+                }
+            }
+        }
+
+        try (PreparedStatement studentStmt = conn.prepareStatement(
+                "SELECT s.student_id, s.roll_number, s.full_name, d.department_code, u.email, u.phone, COALESCE(s.address, '') AS address "
+                        + "FROM students s "
+                        + "JOIN departments d ON d.department_id = s.department_id "
+                        + "JOIN users u ON u.user_id = s.student_id "
+                        + "ORDER BY s.created_at DESC")) {
+            try (ResultSet rs = studentStmt.executeQuery()) {
+                while (rs.next()) {
+                    studentRows.add(new String[] {
+                            rs.getString("student_id"),
+                            rs.getString("roll_number"),
+                            rs.getString("full_name"),
+                            rs.getString("department_code"),
+                            rs.getString("email"),
+                            rs.getString("phone"),
+                            rs.getString("address")
+                    });
+                }
+            }
+        }
+
+        try (PreparedStatement facultyStmt = conn.prepareStatement(
+                "SELECT f.faculty_id, f.full_name, d.department_code, COALESCE(f.contact_no, '') AS contact_no, u.email "
+                        + "FROM faculty f "
+                        + "JOIN departments d ON d.department_id = f.department_id "
+                        + "JOIN users u ON u.user_id = f.faculty_id "
+                        + "ORDER BY f.created_at DESC")) {
+            try (ResultSet rs = facultyStmt.executeQuery()) {
+                while (rs.next()) {
+                    facultyRows.add(new String[] {
+                            rs.getString("faculty_id"),
+                            rs.getString("full_name"),
+                            rs.getString("department_code"),
+                            rs.getString("contact_no"),
+                            rs.getString("email")
+                    });
                 }
             }
         }
@@ -155,6 +197,38 @@
                         </form>
                     </div>
                 </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Roll Number</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (studentRows != null && !studentRows.isEmpty()) { %>
+                                <% for (String[] row : studentRows) { %>
+                                    <tr>
+                                        <td><%= row[0] %></td>
+                                        <td><%= row[1] %></td>
+                                        <td><%= row[2] %></td>
+                                        <td><%= row[3] %></td>
+                                        <td><%= row[4] %></td>
+                                        <td><%= row[5] %></td>
+                                        <td><%= row[6] %></td>
+                                    </tr>
+                                <% } %>
+                            <% } else { %>
+                                <tr><td colspan="7">No Data Available</td></tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
             </section>
 
             <section id="faculty" class="content-section">
@@ -188,6 +262,34 @@
                             <button type="submit" class="btn btn-primary">Save Faculty</button>
                         </form>
                     </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Faculty ID</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Contact</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (facultyRows != null && !facultyRows.isEmpty()) { %>
+                                <% for (String[] row : facultyRows) { %>
+                                    <tr>
+                                        <td><%= row[0] %></td>
+                                        <td><%= row[1] %></td>
+                                        <td><%= row[2] %></td>
+                                        <td><%= row[3] %></td>
+                                        <td><%= row[4] %></td>
+                                    </tr>
+                                <% } %>
+                            <% } else { %>
+                                <tr><td colspan="5">No Data Available</td></tr>
+                            <% } %>
+                        </tbody>
+                    </table>
                 </div>
             </section>
 
