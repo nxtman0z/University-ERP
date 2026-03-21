@@ -497,7 +497,7 @@
                                     <select name="subjectCode" id="ttSubjectCode" required>
                                         <option value="">Select Subject Code</option>
                                         <% for (String[] subject : subjectRows) { %>
-                                            <option value="<%= subject[1] %>" data-department="<%= subject[0] %>" data-name="<%= subject[2] %>"><%= subject[1] %> - <%= subject[2] %></option>
+                                            <option value="<%= subject[1] %>" data-department="<%= subject[0] %>" data-name="<%= subject[2] %>"><%= subject[1] %></option>
                                         <% } %>
                                     </select>
                                 </div>
