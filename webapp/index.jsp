@@ -124,32 +124,38 @@
         <section class="contact-section" id="contact">
             <div class="section-container">
                 <div class="section-header">
-                    <h2>Contact Us</h2>
-                    <p class="section-subtitle">Have questions? We'd love to hear from you</p>
+                    <h2 class="contact-title">Contact Us</h2>
+                    <p class="contact-subtitle">Have questions? We'd love to hear from you</p>
                 </div>
                 
-                <div class="contact-content">
+                <div class="contact-content contact-wrapper">
                     <div class="contact-info">
-                        <div class="info-card">
-                            <div class="info-icon">📍</div>
-                            <h4>Address</h4>
-                            <p>University Campus<br>Educational District<br>City, Country 123456</p>
+                        <div class="info-card contact-info-card card-address">
+                            <div class="info-icon contact-icon-box icon-address">📍</div>
+                            <div>
+                                <h4>Address</h4>
+                                <p>University Campus<br>Educational District<br>City, Country 123456</p>
+                            </div>
                         </div>
                         
-                        <div class="info-card">
-                            <div class="info-icon">📞</div>
-                            <h4>Phone</h4>
-                            <p>+1 (555) 123-4567<br>+1 (555) 987-6543<br><small>Mon - Fri, 9AM - 6PM</small></p>
+                        <div class="info-card contact-info-card card-phone">
+                            <div class="info-icon contact-icon-box icon-phone">📞</div>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>+1 (555) 123-4567<br>+1 (555) 987-6543<br><small>Mon - Fri, 9AM - 6PM</small></p>
+                            </div>
                         </div>
                         
-                        <div class="info-card">
-                            <div class="info-icon">✉️</div>
-                            <h4>Email</h4>
-                            <p>support@universityerp.edu<br>info@universityerp.edu<br><small>Response within 24 hours</small></p>
+                        <div class="info-card contact-info-card card-email">
+                            <div class="info-icon contact-icon-box icon-email">✉️</div>
+                            <div>
+                                <h4>Email</h4>
+                                <p>support@universityerp.edu<br>info@universityerp.edu<br><small>Response within 24 hours</small></p>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="contact-form">
+                    <div class="contact-form contact-form-panel">
                         <form onsubmit="handleContactSubmit(event)">
                             <div class="form-group">
                                 <input type="text" placeholder="Full Name" required>
@@ -163,7 +169,7 @@
                             <div class="form-group">
                                 <textarea placeholder="Your Message" required></textarea>
                             </div>
-                            <button type="submit" class="btn btn-contact">Send Message</button>
+                            <button type="submit" class="btn btn-contact btn-send">Send Message</button>
                         </form>
                     </div>
                 </div>
