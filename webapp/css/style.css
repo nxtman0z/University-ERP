@@ -781,3 +781,385 @@ body.home-page::after {
         padding: 24px;
     }
 }
+
+/* ============================================
+   HOME PAGE V3 - CREATIVE REDESIGN
+   ============================================ */
+body.home-page {
+    font-family: 'Space Grotesk', 'Sora', sans-serif;
+}
+
+.neo-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    padding: 14px 24px;
+}
+
+.neo-nav-inner {
+    margin: 0 auto;
+    max-width: 1240px;
+    border-radius: 18px;
+    border: 1px solid rgba(166, 211, 255, 0.25);
+    background: linear-gradient(135deg, rgba(7, 18, 30, 0.66), rgba(7, 25, 44, 0.4));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+}
+
+.neo-brand {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.neo-brand-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #56b2ff, #7effd5);
+    box-shadow: 0 0 0 6px rgba(126, 255, 213, 0.14);
+}
+
+.neo-brand-text {
+    color: #f4fbff;
+    font-size: 1rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.neo-nav-label {
+    color: rgba(212, 230, 248, 0.92);
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.hero-stage {
+    min-height: 100vh;
+    width: min(1280px, 94vw);
+    margin: 0 auto;
+    padding: 130px 0 44px;
+    display: grid;
+    grid-template-columns: 1.08fr 1fr;
+    align-items: center;
+    gap: 28px;
+}
+
+.hero-copy {
+    padding: 12px 4px;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    color: rgba(207, 230, 255, 0.96);
+    background: rgba(11, 34, 55, 0.42);
+    border: 1px solid rgba(169, 211, 255, 0.28);
+    border-radius: 999px;
+    padding: 7px 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.74rem;
+    margin-bottom: 18px;
+}
+
+.hero-copy h1 {
+    font-family: 'Sora', 'Space Grotesk', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5.3rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    text-shadow: 0 18px 50px rgba(0, 0, 0, 0.58);
+}
+
+.hero-subtitle {
+    margin-top: 18px;
+    max-width: 590px;
+    color: rgba(227, 240, 251, 0.93);
+    font-size: 1.02rem;
+    line-height: 1.7;
+}
+
+.signal-row {
+    margin-top: 26px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.signal-pill {
+    border-radius: 999px;
+    border: 1px solid rgba(177, 217, 255, 0.28);
+    color: rgba(224, 240, 255, 0.95);
+    background: rgba(8, 24, 40, 0.5);
+    padding: 6px 12px;
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.micro-stats {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    max-width: 560px;
+}
+
+.stat-box {
+    border-radius: 14px;
+    border: 1px solid rgba(178, 214, 248, 0.24);
+    background: rgba(5, 17, 28, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 10px 12px;
+}
+
+.stat-box strong {
+    display: block;
+    color: #f8fdff;
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+}
+
+.stat-box span {
+    color: rgba(208, 226, 243, 0.9);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.role-board {
+    perspective: 1200px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
+.role-tile {
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+    border: 1px solid rgba(178, 214, 255, 0.26);
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 20px 22px 18px;
+    box-shadow: 0 20px 36px rgba(0, 0, 0, 0.35);
+    transform-style: preserve-3d;
+    transition: transform 0.26s ease, box-shadow 0.26s ease;
+    animation: roleRise 0.7s ease both;
+}
+
+.role-tile:nth-child(2) {
+    animation-delay: 0.08s;
+}
+
+.role-tile:nth-child(3) {
+    animation-delay: 0.16s;
+}
+
+.role-tile::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(170deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03));
+}
+
+.role-tile::after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    right: -60px;
+    top: -70px;
+    pointer-events: none;
+}
+
+.role-admin::after {
+    background: radial-gradient(circle, rgba(66, 138, 255, 0.42), rgba(66, 138, 255, 0));
+}
+
+.role-faculty::after {
+    background: radial-gradient(circle, rgba(255, 115, 82, 0.42), rgba(255, 115, 82, 0));
+}
+
+.role-student::after {
+    background: radial-gradient(circle, rgba(38, 203, 129, 0.42), rgba(38, 203, 129, 0));
+}
+
+.role-kicker,
+.role-icon,
+.role-tile h2,
+.role-tile p,
+.role-cta {
+    position: relative;
+    z-index: 1;
+}
+
+.role-kicker {
+    color: rgba(213, 231, 246, 0.92);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    margin-bottom: 8px;
+}
+
+.role-icon {
+    font-size: 1.72rem;
+    line-height: 1;
+}
+
+.role-tile h2 {
+    margin-top: 8px;
+    font-family: 'Sora', 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    line-height: 1.1;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+}
+
+.role-tile p {
+    margin-top: 8px;
+    color: rgba(228, 240, 251, 0.92);
+    font-size: 0.9rem;
+}
+
+.role-cta {
+    margin-top: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 46px;
+    border-radius: 13px;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #ffffff;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+}
+
+.role-admin .role-cta {
+    background: linear-gradient(135deg, #0f3270, #2c71c8);
+    box-shadow: 0 12px 24px rgba(44, 113, 200, 0.38);
+}
+
+.role-faculty .role-cta {
+    background: linear-gradient(135deg, #8e251d, #d34a39);
+    box-shadow: 0 12px 24px rgba(211, 74, 57, 0.36);
+}
+
+.role-student .role-cta {
+    background: linear-gradient(135deg, #0f5a33, #25a760);
+    box-shadow: 0 12px 24px rgba(37, 167, 96, 0.34);
+}
+
+.role-cta:hover {
+    transform: translateY(-2px);
+    filter: saturate(1.08);
+}
+
+.ready-ui .hero-copy,
+.ready-ui .role-board {
+    animation: appear 0.65s ease both;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes roleRise {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1100px) {
+    .hero-stage {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 118px 0 40px;
+    }
+
+    .hero-copy {
+        text-align: center;
+    }
+
+    .signal-row,
+    .micro-stats {
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .micro-stats {
+        max-width: 620px;
+    }
+}
+
+@media (max-width: 768px) {
+    .neo-nav {
+        padding: 10px 12px;
+    }
+
+    .neo-nav-inner {
+        padding: 11px 14px;
+    }
+
+    .neo-nav-label {
+        display: none;
+    }
+
+    .hero-stage {
+        width: min(1280px, 92vw);
+        padding: 106px 0 28px;
+    }
+
+    .hero-subtitle {
+        font-size: 0.94rem;
+    }
+
+    .micro-stats {
+        grid-template-columns: 1fr;
+        max-width: 320px;
+    }
+
+    .role-board {
+        gap: 12px;
+    }
+
+    .role-tile {
+        border-radius: 18px;
+        padding: 17px 16px 15px;
+    }
+
+    .role-tile h2 {
+        font-size: 1.32rem;
+    }
+}
