@@ -35,11 +35,12 @@ body {
 body.home-page {
     min-height: 100vh;
     color: #ffffff;
-    background-image: linear-gradient(rgba(6, 13, 22, 0.7), rgba(6, 13, 22, 0.62)), url('../images/university-building.jpg');
+    background-image: linear-gradient(rgba(4, 10, 18, 0.84), rgba(4, 10, 18, 0.8)), url('../images/university-building.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    background-blend-mode: multiply;
     overflow-x: hidden;
 }
 
