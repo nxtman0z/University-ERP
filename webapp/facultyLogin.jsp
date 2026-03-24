@@ -3,9 +3,9 @@
 <html>
 <head>
     <title>Faculty Login - University ERP</title>
-    <link rel="stylesheet" href="css/style.css?v=20260319">
+    <link rel="stylesheet" href="css/style.css?v=20260324-3">
 </head>
-<body>
+<body class="auth-page faculty-auth">
 <div class="container">
     <div class="login-wrapper">
         <div class="login-box">

@@ -19,9 +19,9 @@
 <html>
 <head>
     <title>Admin Login - University ERP</title>
-    <link rel="stylesheet" href="css/style.css?v=20260319">
+    <link rel="stylesheet" href="css/style.css?v=20260324-3">
 </head>
-<body>
+<body class="auth-page admin-auth">
 <div class="container">
     <div class="login-wrapper">
         <div class="login-box">
