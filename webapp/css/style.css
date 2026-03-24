@@ -220,32 +220,32 @@ body.home-page {
 
 .btn-admin {
     color: #ffffff;
-    background: linear-gradient(135deg, #1e3c72, #2a69ac);
+    background: linear-gradient(135deg, #184184, #2f6cc2);
 }
 
 .btn-faculty {
     color: #ffffff;
-    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    background: linear-gradient(135deg, #184184, #2f6cc2);
 }
 
 .btn-student {
     color: #ffffff;
-    background: linear-gradient(135deg, #196f3d, #27ae60);
+    background: linear-gradient(135deg, #184184, #2f6cc2);
 }
 
 .btn-admin:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(42, 105, 172, 0.52);
+    box-shadow: 0 12px 26px rgba(47, 108, 194, 0.48);
 }
 
 .btn-faculty:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(231, 76, 60, 0.46);
+    box-shadow: 0 12px 26px rgba(47, 108, 194, 0.48);
 }
 
 .btn-student:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(39, 174, 96, 0.44);
+    box-shadow: 0 12px 26px rgba(47, 108, 194, 0.48);
 }
 
 .btn-text {
