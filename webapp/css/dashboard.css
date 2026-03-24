@@ -70,6 +70,15 @@ html, body {
     font-size: 28px;
 }
 
+.sidebar-logo-image {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 3px;
+}
+
 .sidebar .logo-icon,
 .sidebar .menu-icon {
     display: none;

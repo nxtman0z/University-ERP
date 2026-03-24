@@ -19,12 +19,13 @@
 <html>
 <head>
     <title>Admin Login - UniCore ERP</title>
-    <link rel="stylesheet" href="css/style.css?v=20260324-3">
+    <link rel="stylesheet" href="css/style.css?v=20260324-5">
 </head>
 <body class="auth-page admin-auth">
 <div class="container">
     <div class="login-wrapper">
         <div class="login-box">
+            <div class="auth-brand"><img src="images/unicore-logo.png" alt="UniCore ERP Logo" class="auth-logo"><span class="auth-brand-text">UniCore ERP</span></div>
             <h2>Admin Login</h2>
                 <% if (error != null && !"Database Authentication Not Configured".equals(error)) { %>
                 <div class="error-message"><%= error %></div>

@@ -78,6 +78,15 @@ body.home-page {
     font-size: 1.9rem;
 }
 
+.logo-image {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 3px;
+}
+
 .logo-text {
     font-size: 1.25rem;
     font-weight: 800;
@@ -720,6 +729,29 @@ body.home-page {
     backdrop-filter: blur(13px);
     -webkit-backdrop-filter: blur(13px);
     animation: authCardIn 0.55s ease both;
+}
+
+.auth-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.auth-logo {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 3px;
+}
+
+.auth-brand-text {
+    color: rgba(224, 236, 252, 0.95);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
 }
 
 .login-box h2 {

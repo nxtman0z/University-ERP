@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UniCore ERP - Management Portal</title>
-    <link rel="stylesheet" href="css/style.css?v=20260324-4">
+    <link rel="stylesheet" href="css/style.css?v=20260324-5">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <span class="logo-icon">🎓</span>
+                <img src="images/unicore-logo.png" alt="UniCore ERP Logo" class="logo-image">
                 <span class="logo-text">UniCore ERP</span>
             </div>
             <ul class="nav-menu">

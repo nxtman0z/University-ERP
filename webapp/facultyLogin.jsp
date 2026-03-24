@@ -3,12 +3,13 @@
 <html>
 <head>
     <title>Faculty Login - UniCore ERP</title>
-    <link rel="stylesheet" href="css/style.css?v=20260324-3">
+    <link rel="stylesheet" href="css/style.css?v=20260324-5">
 </head>
 <body class="auth-page faculty-auth">
 <div class="container">
     <div class="login-wrapper">
         <div class="login-box">
+            <div class="auth-brand"><img src="images/unicore-logo.png" alt="UniCore ERP Logo" class="auth-logo"><span class="auth-brand-text">UniCore ERP</span></div>
             <h2>Faculty Login</h2>
                 <% String error = request.getParameter("error"); 
                     if (error != null && !"Database Authentication Not Configured".equals(error)) { %>

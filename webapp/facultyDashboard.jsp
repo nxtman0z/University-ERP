@@ -203,7 +203,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faculty Dashboard - UniCore ERP</title>
-    <link rel="stylesheet" href="css/dashboard.css?v=20260326">
+    <link rel="stylesheet" href="css/dashboard.css?v=20260324-logo">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -212,7 +212,7 @@
     <div class="faculty-container">
         <aside class="sidebar">
             <div class="sidebar-header">
-                <div class="logo"><span class="logo-icon">F</span><span class="logo-text">EduCore</span></div>
+                <div class="logo"><img src="images/unicore-logo.png" alt="UniCore ERP Logo" class="sidebar-logo-image"><span class="logo-text">UniCore ERP</span></div>
             </div>
             <nav class="sidebar-menu">
                 <ul>
