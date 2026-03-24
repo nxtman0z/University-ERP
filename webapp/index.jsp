@@ -15,8 +15,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <img src="images/unicore-logo.png" alt="UniCore ERP Logo" class="logo-image">
-                <span class="logo-text">UniCore ERP</span>
+                <img src="images/unicore-logo-banner.png" alt="UniCore ERP Logo" class="logo-image logo-image-wide">
             </div>
             <ul class="nav-menu">
                 <li><a href="#home" class="nav-link">Home</a></li>

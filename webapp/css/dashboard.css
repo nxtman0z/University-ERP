@@ -71,12 +71,13 @@ html, body {
 }
 
 .sidebar-logo-image {
-    width: 34px;
-    height: 34px;
+    width: auto;
+    height: 44px;
+    max-width: 210px;
     object-fit: contain;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.12);
-    padding: 3px;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
 }
 
 .sidebar .logo-icon,

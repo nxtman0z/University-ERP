@@ -79,12 +79,18 @@ body.home-page {
 }
 
 .logo-image {
-    width: 36px;
-    height: 36px;
+    width: auto;
+    height: 42px;
+    max-width: 220px;
     object-fit: contain;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.12);
-    padding: 3px;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+}
+
+.logo-image-wide {
+    height: 48px;
+    max-width: 260px;
 }
 
 .logo-text {
@@ -734,17 +740,18 @@ body.home-page {
 .auth-brand {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
+    justify-content: center;
+    margin-bottom: 14px;
 }
 
 .auth-logo {
-    width: 34px;
-    height: 34px;
+    width: auto;
+    height: 48px;
+    max-width: 230px;
     object-fit: contain;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.12);
-    padding: 3px;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
 }
 
 .auth-brand-text {

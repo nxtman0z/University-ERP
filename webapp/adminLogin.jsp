@@ -25,7 +25,7 @@
 <div class="container">
     <div class="login-wrapper">
         <div class="login-box">
-            <div class="auth-brand"><img src="images/unicore-logo.png" alt="UniCore ERP Logo" class="auth-logo"><span class="auth-brand-text">UniCore ERP</span></div>
+            <div class="auth-brand"><img src="images/unicore-logo-banner.png" alt="UniCore ERP Logo" class="auth-logo"></div>
             <h2>Admin Login</h2>
                 <% if (error != null && !"Database Authentication Not Configured".equals(error)) { %>
                 <div class="error-message"><%= error %></div>

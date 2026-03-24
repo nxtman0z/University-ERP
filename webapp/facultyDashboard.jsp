@@ -212,7 +212,7 @@
     <div class="faculty-container">
         <aside class="sidebar">
             <div class="sidebar-header">
-                <div class="logo"><img src="images/unicore-logo.png" alt="UniCore ERP Logo" class="sidebar-logo-image"><span class="logo-text">UniCore ERP</span></div>
+                <div class="logo"><img src="images/unicore-logo-banner.png" alt="UniCore ERP Logo" class="sidebar-logo-image"></div>
             </div>
             <nav class="sidebar-menu">
                 <ul>

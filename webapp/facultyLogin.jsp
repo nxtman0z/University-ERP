@@ -9,7 +9,7 @@
 <div class="container">
     <div class="login-wrapper">
         <div class="login-box">
-            <div class="auth-brand"><img src="images/unicore-logo.png" alt="UniCore ERP Logo" class="auth-logo"><span class="auth-brand-text">UniCore ERP</span></div>
+            <div class="auth-brand"><img src="images/unicore-logo-banner.png" alt="UniCore ERP Logo" class="auth-logo"></div>
             <h2>Faculty Login</h2>
                 <% String error = request.getParameter("error"); 
                     if (error != null && !"Database Authentication Not Configured".equals(error)) { %>
