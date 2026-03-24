@@ -172,15 +172,15 @@ body.home-page {
 }
 
 .admin-card {
-    border-top: 3px solid rgba(85, 124, 214, 0.95);
+    border-top: 3px solid rgba(98, 153, 235, 0.92);
 }
 
 .faculty-card {
-    border-top: 3px solid rgba(223, 96, 81, 0.95);
+    border-top: 3px solid rgba(98, 153, 235, 0.92);
 }
 
 .student-card {
-    border-top: 3px solid rgba(87, 198, 128, 0.95);
+    border-top: 3px solid rgba(98, 153, 235, 0.92);
 }
 
 .card-icon {
@@ -369,28 +369,13 @@ body.home-page {
     line-height: 1.7;
 }
 
-.card-student::before {
-    background: linear-gradient(90deg, #f093fb, #f5576c);
-}
-
-.card-faculty::before {
-    background: linear-gradient(90deg, #4facfe, #00f2fe);
-}
-
-.card-timetable::before {
-    background: linear-gradient(90deg, #43e97b, #38f9d7);
-}
-
-.card-exams::before {
-    background: linear-gradient(90deg, #fa709a, #fee140);
-}
-
-.card-attendance::before {
-    background: linear-gradient(90deg, #a18cd1, #fbc2eb);
-}
-
+.card-student::before,
+.card-faculty::before,
+.card-timetable::before,
+.card-exams::before,
+.card-attendance::before,
 .card-announce::before {
-    background: linear-gradient(90deg, #fd7043, #ffca28);
+    background: linear-gradient(90deg, #6c63ff, #48cae4);
 }
 
 .contact-content {
