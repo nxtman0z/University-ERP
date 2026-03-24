@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Login - University ERP</title>
+    <title>Admin Login - UniCore ERP</title>
     <link rel="stylesheet" href="css/style.css?v=20260324-3">
 </head>
 <body class="auth-page admin-auth">

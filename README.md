@@ -1,4 +1,4 @@
-﻿# University ERP System
+﻿# UniCore ERP
 
 ## Overview
 This project is a Java Servlet and JSP based ERP skeleton for a university system.

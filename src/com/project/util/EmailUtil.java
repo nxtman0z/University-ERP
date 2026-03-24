@@ -186,7 +186,7 @@ public final class EmailUtil {
 
     private static String safeHeader(String value) {
         if (value == null) {
-            return "University ERP Credentials";
+            return "UniCore ERP Credentials";
         }
         return value.replace("\r", " ").replace("\n", " ").trim();
     }

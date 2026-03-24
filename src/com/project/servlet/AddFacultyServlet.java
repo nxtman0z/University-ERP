@@ -63,13 +63,13 @@ public class AddFacultyServlet extends HttpServlet {
                 facultyStmt.setString(5, "Faculty");
                 facultyStmt.executeUpdate();
 
-                String subject = "Your University ERP Login Credentials";
+                String subject = "Your UniCore ERP Login Credentials";
                 String body = "Hello " + name.trim() + ",\n\n"
                         + "Your account has been created successfully.\n"
                         + "Faculty ID: " + id.trim() + "\n"
                         + "Temporary Password: " + tempPassword + "\n\n"
                         + "Please login and change your password immediately.\n"
-                        + "\nRegards,\nUniversity ERP Admin";
+                        + "\nRegards,\nUniCore ERP Admin";
 
                 boolean mailSent = EmailUtil.sendPlainText(email.trim(), subject, body);
                 if (!mailSent) {

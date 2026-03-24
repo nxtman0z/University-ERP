@@ -1,4 +1,4 @@
--- University ERP: JDBC-ready CRUD and dashboard query reference
+-- UniCore ERP: JDBC-ready CRUD and dashboard query reference
 -- Use PreparedStatement placeholders (?) in Java code.
 
 USE university_erp;

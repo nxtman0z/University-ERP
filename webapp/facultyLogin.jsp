@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Faculty Login - University ERP</title>
+    <title>Faculty Login - UniCore ERP</title>
     <link rel="stylesheet" href="css/style.css?v=20260324-3">
 </head>
 <body class="auth-page faculty-auth">

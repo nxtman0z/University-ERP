@@ -42,13 +42,13 @@ public class AddStudentServlet extends HttpServlet {
         String userInsertSql = "INSERT INTO users (user_id, role, password_hash, must_change_password, email, phone, is_active) VALUES (?, 'student', ?, 1, ?, ?, 1)";
         String studentInsertSql = "INSERT INTO students (student_id, roll_number, full_name, department_id, address) VALUES (?, ?, ?, ?, ?)";
         String emailQueueSql = "INSERT INTO email_queue (recipient_user_id, recipient_email, mail_subject, mail_body, template_key, status) VALUES (?, ?, ?, ?, 'STUDENT_WELCOME_CREDENTIALS', 'PENDING')";
-        String mailSubject = "Your University ERP Login Credentials";
+        String mailSubject = "Your UniCore ERP Login Credentials";
         String mailBody = "Hello " + name.trim() + ",\n\n"
             + "Your account has been created successfully.\n"
             + "Student ID: " + id.trim() + "\n"
             + "Temporary Password: " + tempPassword + "\n\n"
             + "Please login and change your password immediately.\n"
-            + "\nRegards,\nUniversity ERP Admin";
+            + "\nRegards,\nUniCore ERP Admin";
 
         try (Connection conn = DatabaseUtil.getConnection()) {
             conn.setAutoCommit(false);

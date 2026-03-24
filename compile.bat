@@ -1,10 +1,10 @@
 @echo off
-REM Compilation script for University ERP System
+REM Compilation script for UniCore ERP
 REM This script compiles all Java files for deployment to Tomcat
 
 echo.
 echo ====================================
-echo University ERP - Java Compilation
+echo UniCore ERP - Java Compilation
 echo ====================================
 echo.
 

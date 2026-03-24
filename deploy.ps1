@@ -1,9 +1,9 @@
-# University ERP Deployment Script for Windows PowerShell
+# UniCore ERP Deployment Script for Windows PowerShell
 # This script helps deploy the application to Tomcat
 
 Write-Host "`n" -ForegroundColor Green
 Write-Host "╔════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║  University ERP - Deployment Helper    ║" -ForegroundColor Cyan
+Write-Host "║  UniCore ERP - Deployment Helper       ║" -ForegroundColor Cyan
 Write-Host "╚════════════════════════════════════════╝" -ForegroundColor Cyan
 Write-Host "`n"
 

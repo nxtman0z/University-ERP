@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>University ERP System - Management Portal</title>
+    <title>UniCore ERP - Management Portal</title>
     <link rel="stylesheet" href="css/style.css?v=20260324-4">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
         <div class="nav-container">
             <div class="nav-logo">
                 <span class="logo-icon">🎓</span>
-                <span class="logo-text">EduCore ERP</span>
+                <span class="logo-text">UniCore ERP</span>
             </div>
             <ul class="nav-menu">
                 <li><a href="#home" class="nav-link">Home</a></li>
@@ -31,7 +31,7 @@
         <!-- Home/Login Cards Section -->
         <section class="login-section" id="home">
             <div class="section-header">
-                <h1>University ERP System</h1>
+                <h1>UniCore ERP</h1>
                 <p class="section-subtitle">Select your role to access the portal</p>
             </div>
             
@@ -178,7 +178,7 @@
 
         <!-- Footer Section -->
         <footer class="main-footer">
-            <p>&copy; 2024 University ERP System | All rights reserved</p>
+            <p>&copy; 2024 UniCore ERP | All rights reserved</p>
         </footer>
     </div>
 

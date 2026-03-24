@@ -1,4 +1,4 @@
--- University ERP: full relational schema for admin, faculty, and student workflows.
+-- UniCore ERP: full relational schema for admin, faculty, and student workflows.
 -- MySQL version: 8.0+
 
 CREATE DATABASE IF NOT EXISTS university_erp
