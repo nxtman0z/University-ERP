@@ -35,39 +35,11 @@ body {
 body.home-page {
     min-height: 100vh;
     color: #ffffff;
-    background-image: linear-gradient(rgba(4, 10, 18, 0.84), rgba(4, 10, 18, 0.8)), url('../images/university-building.jpg');
+    background-image: linear-gradient(var(--hero-overlay), var(--hero-overlay)), url('../images/university-building.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-blend-mode: multiply;
-    overflow-x: hidden;
-}
-
-body.home-page::before,
-body.home-page::after {
-    content: "";
-    position: fixed;
-    z-index: -1;
-    width: 38vmax;
-    height: 38vmax;
-    border-radius: 50%;
-    filter: blur(20px);
-    pointer-events: none;
-}
-
-body.home-page::before {
-    top: -12vmax;
-    left: -14vmax;
-    background: radial-gradient(circle, rgba(68, 139, 255, 0.22), rgba(68, 139, 255, 0));
-    animation: blobOne 12s ease-in-out infinite;
-}
-
-body.home-page::after {
-    right: -14vmax;
-    bottom: -14vmax;
-    background: radial-gradient(circle, rgba(10, 201, 153, 0.2), rgba(10, 201, 153, 0));
-    animation: blobTwo 14s ease-in-out infinite;
 }
 
 /* ============================================
@@ -78,10 +50,10 @@ body.home-page::after {
     top: 0;
     width: 100%;
     z-index: 1000;
-    background: linear-gradient(120deg, rgba(7, 22, 38, 0.56), rgba(13, 35, 59, 0.34));
-    border-bottom: 1px solid rgba(182, 214, 255, 0.24);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .nav-container {
@@ -138,7 +110,7 @@ body.home-page::after {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding-top: 86px;
+    padding-top: 78px;
 }
 
 .login-section {
@@ -148,31 +120,29 @@ body.home-page::after {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 92px 34px 70px;
+    padding: 95px 34px 70px;
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 48px;
-    width: min(920px, 100%);
+    margin-bottom: 44px;
 }
 
 .section-header h1 {
-    font-size: clamp(2.5rem, 5.1vw, 5rem);
+    font-size: clamp(2.3rem, 4.5vw, 4.25rem);
     line-height: 1.08;
     font-weight: 800;
     color: #ffffff;
-    letter-spacing: -0.02em;
-    text-shadow: 0 16px 44px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 10px 32px rgba(0, 0, 0, 0.45);
     margin-bottom: 14px;
 }
 
 .section-subtitle {
     font-size: 1rem;
-    color: rgba(229, 241, 255, 0.95);
-    letter-spacing: 0.16em;
+    color: rgba(245, 249, 255, 0.92);
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    text-shadow: 0 5px 16px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 5px 16px rgba(0, 0, 0, 0.45);
 }
 
 /* Role cards: desktop 3 cols, mobile 1 col */
@@ -181,72 +151,24 @@ body.home-page::after {
     max-width: 1180px;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 26px;
-    perspective: 1200px;
+    gap: 24px;
 }
 
 .login-card {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-    background: linear-gradient(150deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.26);
-    border-radius: 26px;
-    box-shadow: 0 22px 46px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-    padding: 44px 28px 34px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+    padding: 36px 26px;
     text-align: center;
-    transition: transform 0.36s ease, box-shadow 0.36s ease, border-color 0.36s ease, background 0.36s ease;
-    animation: cardReveal 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-.login-card::before {
-    content: "";
-    position: absolute;
-    inset: 1px;
-    border-radius: inherit;
-    background: linear-gradient(170deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.03));
-    pointer-events: none;
-    z-index: -1;
-}
-
-.login-card::after {
-    content: "";
-    position: absolute;
-    width: 190px;
-    height: 190px;
-    border-radius: 50%;
-    top: -72px;
-    right: -62px;
-    background: radial-gradient(circle, rgba(118, 172, 255, 0.48), rgba(118, 172, 255, 0));
-    opacity: 0.6;
-    transition: transform 0.4s ease, opacity 0.35s ease;
-    pointer-events: none;
+    transition: transform 0.32s ease, box-shadow 0.32s ease;
 }
 
 .login-card:hover {
-    transform: translateY(-12px) scale(1.018);
-    box-shadow: 0 34px 58px rgba(0, 0, 0, 0.46), inset 0 1px 0 rgba(255, 255, 255, 0.24);
-    border-color: rgba(255, 255, 255, 0.5);
-    background: linear-gradient(150deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-}
-
-.login-card:hover::after {
-    opacity: 0.8;
-    transform: scale(1.12);
-}
-
-.login-card:nth-child(1) {
-    animation-delay: 0.05s;
-}
-
-.login-card:nth-child(2) {
-    animation-delay: 0.16s;
-}
-
-.login-card:nth-child(3) {
-    animation-delay: 0.27s;
+    transform: translateY(-8px);
+    box-shadow: 0 22px 46px rgba(0, 0, 0, 0.34);
 }
 
 .admin-card {
@@ -262,112 +184,77 @@ body.home-page::after {
 }
 
 .card-icon {
-    font-size: 3.3rem;
+    font-size: 3.5rem;
     line-height: 1;
-    margin-bottom: 16px;
-    display: inline-block;
-    filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.34));
-    animation: iconFloat 3.8s ease-in-out infinite;
+    margin-bottom: 14px;
 }
 
 .login-card h2 {
-    font-size: 2.1rem;
+    font-size: 1.6rem;
     color: #ffffff;
     font-weight: 700;
-    letter-spacing: -0.01em;
-    margin-bottom: 8px;
-    text-shadow: 0 10px 24px rgba(0, 0, 0, 0.42);
+    margin-bottom: 6px;
 }
 
 .card-role {
-    font-size: 0.98rem;
-    color: rgba(229, 239, 252, 0.96);
-    margin-bottom: 24px;
+    font-size: 0.92rem;
+    color: rgba(233, 240, 250, 0.92);
+    margin-bottom: 20px;
 }
 
 /* ============================================
    BUTTONS
    ============================================ */
 .btn {
-    position: relative;
-    overflow: hidden;
     display: inline-block;
     width: 100%;
     border: none;
-    border-radius: 16px;
-    padding: 15px 22px;
+    border-radius: 50px;
+    padding: 13px 22px;
     text-decoration: none;
     text-align: center;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.28s ease, box-shadow 0.28s ease, filter 0.28s ease;
-}
-
-.btn::before {
-    content: "";
-    position: absolute;
-    top: -210%;
-    left: -60%;
-    width: 44%;
-    height: 520%;
-    transform: rotate(24deg);
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-    transition: left 0.65s ease;
-}
-
-.btn:hover::before {
-    left: 120%;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .btn-admin {
     color: #ffffff;
-    background: linear-gradient(135deg, #102b57, #245ca1);
+    background: linear-gradient(135deg, #1e3c72, #2a69ac);
 }
 
 .btn-faculty {
     color: #ffffff;
-    background: linear-gradient(135deg, #9a2e22, #d94837);
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
 }
 
 .btn-student {
     color: #ffffff;
-    background: linear-gradient(135deg, #145830, #229855);
+    background: linear-gradient(135deg, #196f3d, #27ae60);
 }
 
 .btn-admin:hover {
     transform: translateY(-2px);
-    box-shadow: 0 16px 28px rgba(36, 92, 161, 0.6);
-    filter: saturate(1.08);
+    box-shadow: 0 10px 24px rgba(42, 105, 172, 0.52);
 }
 
 .btn-faculty:hover {
     transform: translateY(-2px);
-    box-shadow: 0 16px 28px rgba(217, 72, 55, 0.56);
-    filter: saturate(1.08);
+    box-shadow: 0 10px 24px rgba(231, 76, 60, 0.46);
 }
 
 .btn-student:hover {
     transform: translateY(-2px);
-    box-shadow: 0 16px 28px rgba(34, 152, 85, 0.54);
-    filter: saturate(1.08);
+    box-shadow: 0 10px 24px rgba(39, 174, 96, 0.44);
 }
 
 .btn-text {
-    position: relative;
-    z-index: 1;
     display: inline-block;
 }
 
 .btn-arrow {
-    position: relative;
-    z-index: 1;
     display: inline-block;
     margin-left: 8px;
-    transition: transform 0.22s ease;
-}
-
-.btn:hover .btn-arrow {
-    transform: translateX(3px);
 }
 
 /* ============================================
@@ -638,73 +525,6 @@ body.home-page::after {
     }
 }
 
-@keyframes cardReveal {
-    from {
-        opacity: 0;
-        transform: translateY(24px) scale(0.98);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes cardSweep {
-    from {
-        transform: translateX(-70%) rotate(18deg);
-    }
-    to {
-        transform: translateX(230%) rotate(18deg);
-    }
-}
-
-@keyframes iconFloat {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
-    100% {
-        transform: translateY(0);
-    }
-}
-
-@keyframes blobOne {
-    0% {
-        transform: translate(0, 0);
-    }
-    50% {
-        transform: translate(30px, 22px);
-    }
-    100% {
-        transform: translate(0, 0);
-    }
-}
-
-@keyframes blobTwo {
-    0% {
-        transform: translate(0, 0);
-    }
-    50% {
-        transform: translate(-28px, -18px);
-    }
-    100% {
-        transform: translate(0, 0);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .login-card,
-    .card-icon,
-    .btn,
-    .btn::before,
-    .btn-arrow {
-        animation: none !important;
-        transition: none !important;
-    }
-}
-
 /* ============================================
    RESPONSIVE
    ============================================ */
@@ -733,10 +553,6 @@ body.home-page::after {
 
     .login-section {
         padding: 86px 16px 56px;
-    }
-
-    .section-header h1 {
-        font-size: clamp(2.2rem, 11vw, 3.3rem);
     }
 
     .section-header {
@@ -774,392 +590,9 @@ body.home-page::after {
 
     .login-card {
         padding: 30px 20px;
-        border-radius: 20px;
     }
 
     .login-box {
         padding: 24px;
-    }
-}
-
-/* ============================================
-   HOME PAGE V3 - CREATIVE REDESIGN
-   ============================================ */
-body.home-page {
-    font-family: 'Space Grotesk', 'Sora', sans-serif;
-}
-
-.neo-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 30;
-    padding: 14px 24px;
-}
-
-.neo-nav-inner {
-    margin: 0 auto;
-    max-width: 1240px;
-    border-radius: 18px;
-    border: 1px solid rgba(166, 211, 255, 0.25);
-    background: linear-gradient(135deg, rgba(7, 18, 30, 0.66), rgba(7, 25, 44, 0.4));
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
-    padding: 12px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 14px;
-}
-
-.neo-brand {
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.neo-brand-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #56b2ff, #7effd5);
-    box-shadow: 0 0 0 6px rgba(126, 255, 213, 0.14);
-}
-
-.neo-brand-text {
-    color: #f4fbff;
-    font-size: 1rem;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    font-weight: 700;
-}
-
-.neo-nav-label {
-    color: rgba(212, 230, 248, 0.92);
-    font-size: 0.82rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-}
-
-.hero-stage {
-    min-height: 100vh;
-    width: min(1280px, 94vw);
-    margin: 0 auto;
-    padding: 130px 0 44px;
-    display: grid;
-    grid-template-columns: 1.08fr 1fr;
-    align-items: center;
-    gap: 28px;
-}
-
-.hero-copy {
-    padding: 12px 4px;
-}
-
-.eyebrow {
-    display: inline-flex;
-    align-items: center;
-    color: rgba(207, 230, 255, 0.96);
-    background: rgba(11, 34, 55, 0.42);
-    border: 1px solid rgba(169, 211, 255, 0.28);
-    border-radius: 999px;
-    padding: 7px 14px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-size: 0.74rem;
-    margin-bottom: 18px;
-}
-
-.hero-copy h1 {
-    font-family: 'Sora', 'Space Grotesk', sans-serif;
-    font-size: clamp(2.5rem, 6vw, 5.3rem);
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-    color: #ffffff;
-    text-shadow: 0 18px 50px rgba(0, 0, 0, 0.58);
-}
-
-.hero-subtitle {
-    margin-top: 18px;
-    max-width: 590px;
-    color: rgba(227, 240, 251, 0.93);
-    font-size: 1.02rem;
-    line-height: 1.7;
-}
-
-.signal-row {
-    margin-top: 26px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.signal-pill {
-    border-radius: 999px;
-    border: 1px solid rgba(177, 217, 255, 0.28);
-    color: rgba(224, 240, 255, 0.95);
-    background: rgba(8, 24, 40, 0.5);
-    padding: 6px 12px;
-    font-size: 0.76rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-}
-
-.micro-stats {
-    margin-top: 22px;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    max-width: 560px;
-}
-
-.stat-box {
-    border-radius: 14px;
-    border: 1px solid rgba(178, 214, 248, 0.24);
-    background: rgba(5, 17, 28, 0.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    padding: 10px 12px;
-}
-
-.stat-box strong {
-    display: block;
-    color: #f8fdff;
-    font-size: 0.95rem;
-    letter-spacing: 0.03em;
-}
-
-.stat-box span {
-    color: rgba(208, 226, 243, 0.9);
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-}
-
-.role-board {
-    perspective: 1200px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
-}
-
-.role-tile {
-    position: relative;
-    overflow: hidden;
-    border-radius: 22px;
-    border: 1px solid rgba(178, 214, 255, 0.26);
-    background: linear-gradient(155deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    padding: 20px 22px 18px;
-    box-shadow: 0 20px 36px rgba(0, 0, 0, 0.35);
-    transform-style: preserve-3d;
-    transition: transform 0.26s ease, box-shadow 0.26s ease;
-    animation: roleRise 0.7s ease both;
-}
-
-.role-tile:nth-child(2) {
-    animation-delay: 0.08s;
-}
-
-.role-tile:nth-child(3) {
-    animation-delay: 0.16s;
-}
-
-.role-tile::before {
-    content: "";
-    position: absolute;
-    inset: 1px;
-    border-radius: inherit;
-    pointer-events: none;
-    background: linear-gradient(170deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03));
-}
-
-.role-tile::after {
-    content: "";
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    right: -60px;
-    top: -70px;
-    pointer-events: none;
-}
-
-.role-admin::after {
-    background: radial-gradient(circle, rgba(66, 138, 255, 0.42), rgba(66, 138, 255, 0));
-}
-
-.role-faculty::after {
-    background: radial-gradient(circle, rgba(255, 115, 82, 0.42), rgba(255, 115, 82, 0));
-}
-
-.role-student::after {
-    background: radial-gradient(circle, rgba(38, 203, 129, 0.42), rgba(38, 203, 129, 0));
-}
-
-.role-kicker,
-.role-icon,
-.role-tile h2,
-.role-tile p,
-.role-cta {
-    position: relative;
-    z-index: 1;
-}
-
-.role-kicker {
-    color: rgba(213, 231, 246, 0.92);
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    margin-bottom: 8px;
-}
-
-.role-icon {
-    font-size: 1.72rem;
-    line-height: 1;
-}
-
-.role-tile h2 {
-    margin-top: 8px;
-    font-family: 'Sora', 'Space Grotesk', sans-serif;
-    font-size: 1.5rem;
-    line-height: 1.1;
-    color: #ffffff;
-    letter-spacing: -0.01em;
-}
-
-.role-tile p {
-    margin-top: 8px;
-    color: rgba(228, 240, 251, 0.92);
-    font-size: 0.9rem;
-}
-
-.role-cta {
-    margin-top: 14px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 46px;
-    border-radius: 13px;
-    text-decoration: none;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: #ffffff;
-    transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
-}
-
-.role-admin .role-cta {
-    background: linear-gradient(135deg, #0f3270, #2c71c8);
-    box-shadow: 0 12px 24px rgba(44, 113, 200, 0.38);
-}
-
-.role-faculty .role-cta {
-    background: linear-gradient(135deg, #8e251d, #d34a39);
-    box-shadow: 0 12px 24px rgba(211, 74, 57, 0.36);
-}
-
-.role-student .role-cta {
-    background: linear-gradient(135deg, #0f5a33, #25a760);
-    box-shadow: 0 12px 24px rgba(37, 167, 96, 0.34);
-}
-
-.role-cta:hover {
-    transform: translateY(-2px);
-    filter: saturate(1.08);
-}
-
-.ready-ui .hero-copy,
-.ready-ui .role-board {
-    animation: appear 0.65s ease both;
-}
-
-@keyframes appear {
-    from {
-        opacity: 0;
-        transform: translateY(14px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes roleRise {
-    from {
-        opacity: 0;
-        transform: translateY(18px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@media (max-width: 1100px) {
-    .hero-stage {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 118px 0 40px;
-    }
-
-    .hero-copy {
-        text-align: center;
-    }
-
-    .signal-row,
-    .micro-stats {
-        justify-content: center;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .micro-stats {
-        max-width: 620px;
-    }
-}
-
-@media (max-width: 768px) {
-    .neo-nav {
-        padding: 10px 12px;
-    }
-
-    .neo-nav-inner {
-        padding: 11px 14px;
-    }
-
-    .neo-nav-label {
-        display: none;
-    }
-
-    .hero-stage {
-        width: min(1280px, 92vw);
-        padding: 106px 0 28px;
-    }
-
-    .hero-subtitle {
-        font-size: 0.94rem;
-    }
-
-    .micro-stats {
-        grid-template-columns: 1fr;
-        max-width: 320px;
-    }
-
-    .role-board {
-        gap: 12px;
-    }
-
-    .role-tile {
-        border-radius: 18px;
-        padding: 17px 16px 15px;
-    }
-
-    .role-tile h2 {
-        font-size: 1.32rem;
     }
 }
