@@ -76,42 +76,42 @@
         <section class="features-section" id="features">
             <div class="section-container">
                 <div class="section-header">
-                    <h2>Features</h2>
-                    <p class="section-subtitle">Everything you need for university management</p>
+                    <h2 class="features-title">Features</h2>
+                    <p class="features-subtitle">Everything you need for university management</p>
                 </div>
                 
                 <div class="features-grid">
-                    <div class="feature-card">
+                    <div class="feature-card card-student">
                         <div class="feature-icon">📊</div>
                         <h3>Student Management</h3>
                         <p>Manage student records, enrollment, and personal information efficiently</p>
                     </div>
                     
-                    <div class="feature-card">
+                    <div class="feature-card card-faculty">
                         <div class="feature-icon">👥</div>
                         <h3>Faculty Management</h3>
                         <p>Handle faculty assignments, schedules, and performance tracking</p>
                     </div>
                     
-                    <div class="feature-card">
+                    <div class="feature-card card-timetable">
                         <div class="feature-icon">📅</div>
                         <h3>Timetable Management</h3>
                         <p>Create and manage class schedules with automatic conflict detection</p>
                     </div>
                     
-                    <div class="feature-card">
+                    <div class="feature-card card-exams">
                         <div class="feature-icon">📝</div>
                         <h3>Assignment & Exams</h3>
                         <p>Upload assignments and schedule exams with automated grading</p>
                     </div>
                     
-                    <div class="feature-card">
+                    <div class="feature-card card-attendance">
                         <div class="feature-icon">✓</div>
                         <h3>Attendance Tracking</h3>
                         <p>Real-time attendance management and reporting for all stakeholders</p>
                     </div>
                     
-                    <div class="feature-card">
+                    <div class="feature-card card-announce">
                         <div class="feature-icon">📢</div>
                         <h3>Announcements</h3>
                         <p>Send notifications and announcements to students and faculty instantly</p>
