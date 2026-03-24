@@ -524,22 +524,6 @@ body.home-page {
     box-shadow: 0 14px 28px rgba(47, 108, 194, 0.45);
 }
 
-.faculty-auth .btn-submit {
-    background: linear-gradient(135deg, #b33224, #dd4a37);
-}
-
-.faculty-auth .btn-submit:hover {
-    box-shadow: 0 14px 28px rgba(221, 74, 55, 0.42);
-}
-
-.student-auth .btn-submit {
-    background: linear-gradient(135deg, #166238, #25a55e);
-}
-
-.student-auth .btn-submit:hover {
-    box-shadow: 0 14px 28px rgba(37, 165, 94, 0.4);
-}
-
 .error-message {
     background: rgba(254, 226, 226, 0.95);
     color: #8a1f1f;
